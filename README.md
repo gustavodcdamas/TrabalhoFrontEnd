@@ -1,59 +1,84 @@
-# AgenciaFrontend
+# {Nome do seu Projeto}
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+Este repositório contém um projeto desenvolvido utilizando NestJS(Node.js), Angular e TypeScript. Neste arquivo README, você encontrará um guia passo a passo para abrir o projeto em seu ambiente local.
 
-## Development server
+## Pré-requisitos
 
-To start a local development server, run:
+Antes de começar, verifique se você possui as seguintes ferramentas instaladas em sua máquina:
 
-```bash
-ng serve
-```
+- Node.js (versão 12 ou superior)
+- npm (gerenciador de pacotes do Node.js)
+- Angular Instalado
+- NestJS Instalado
+- Docker Instalado
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Passo 1: Clonar o Front End
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Comece clonando o fornt end para sua máquina local. Abra o terminal e execute o seguinte comando:
 
 ```bash
-ng generate --help
+git clone https://github.com/gustavodcdamas/TrabalhoFrontEnd
 ```
 
-## Building
+Isso criará uma cópia local do repositório em seu ambiente.
 
-To build the project run:
+
+## Passo 2: Instalar dependências
+
+Navegue até o diretório raiz do projeto e execute o seguinte comando para instalar as dependências do Node.js:
 
 ```bash
-ng build
+cd nome-do-repositorio
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Esse comando irá ler o arquivo `package.json` e instalar todas as dependências necessárias para o projeto.
 
-## Running unit tests
+## Passo 3: Configurar variáveis de ambiente
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+O projeto pode exigir algumas variáveis de ambiente para funcionar corretamente. Verifique se existe um arquivo `.env.example` no diretório raiz do projeto. Se existir, faça uma cópia desse arquivo e renomeie-o para `.env`. Em seguida, atualize as variáveis de ambiente de acordo com as configurações do seu ambiente local.
+
+## Passo 4: Iniciar o servidor
+
+Para iniciar o servidor Docker, execute o seguinte comando:
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Isso iniciará o servidor e você poderá acessá-lo através do seu navegador no endereço `http://localhost:3000`.
 
-For end-to-end (e2e) testing, run:
+## Passo 5: Iniciar o cliente React
+
+O projeto pode conter um diretório separado para o cliente React. Nesse caso, navegue até o diretório do cliente e execute o seguinte comando:
 
 ```bash
-ng e2e
+cd client
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Isso iniciará o cliente React e você poderá acessá-lo através do seu navegador no endereço `http://localhost:3000`.
 
-## Additional Resources
+## Passo 6: Modificar o projeto
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Agora que você tem o projeto em execução, você pode fazer modificações no código conforme necessário. Sinta-se à vontade para explorar e adaptar o projeto de acordo com suas necessidades.
+
+## Passo 7: Publicar suas modificações
+
+Se desejar publicar suas modificações em um repositório remoto no GitHub, siga estes passos:
+
+1. Crie um novo repositório vazio no GitHub.
+2. No terminal, navegue até o diretório raiz do projeto.
+3. Execute os seguintes comandos:
+
+```bash
+git remote set-url origin https://github.com/seu-usuario/nome-do-novo-repositorio.git
+git add .
+git commit -m "Adicionar minhas modificações"
+git push -u origin master
+```
+
+Isso configurará o repositório remoto e enviará suas modificações para lá.
+
+---
