@@ -1,0 +1,151 @@
+/* Services Section */
+.services {
+  padding: 50px 0;
+  }
+
+  .section-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--preto);
+  margin-bottom: 40px;
+  }
+
+  /* Carrossel Styles - CORREÇÃO AQUI */
+  /* Standardized container width for all carousels */
+  .services-container, .portfolio-container, .solutions-container {
+  position: relative;
+  margin-top: 30px;
+  overflow: visible; /* Changed from hidden to allow buttons to appear outside */
+  width: 100%; /* Full width containment */
+  max-width: 1200px; /* Match the main container max-width */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px; /* Add padding for the arrows */
+  }
+
+  /* Internal containers with hidden overflow */
+  .services-grid, .portfolio-carousel, .solutions-grid {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  display: flex;
+  transition: transform 0.3s ease;
+  padding-bottom: 15px;
+  }
+
+  .service-card {
+  background-color: var(--branco);
+  border-radius: 10px;
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 150px; /* Tamanho fixo para os cards */
+  height: 150px; /* Altura fixa para os cards */
+  transition: all 0.3s ease;
+  border: 1px solid #E5E5E5;
+  flex-shrink: 0; /* Evita que os cards encolham */
+  margin-right: 15px;
+  }
+
+  .service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .service-icon {
+  background-color: var(--laranja);
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  }
+
+  .service-icon img {
+  width: 25px;
+  height: 25px;
+  filter: brightness(0) invert(1);
+  }
+
+  .service-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--preto);
+  margin-bottom: 5px;
+  }
+
+  /* Consistent navigation positioning for all carousels */
+  .services-nav, .portfolio-nav, .solutions-nav {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 10;
+  pointer-events: none; /* Prevent interference with carousel items */
+  display: flex;
+  justify-content: space-between;
+  }
+
+  /* Navigation button styling */
+  .services-nav-button, .portfolio-nav-button, .solutions-nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  font-size: 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  pointer-events: auto; /* Make buttons clickable */
+  position: absolute;
+  }
+
+  /* Position the prev/next buttons outside the carousel */
+  .services-nav-button.prev, .portfolio-nav-button.prev, .solutions-nav-button.prev {
+  left: 0;
+  }
+
+  .services-nav-button.next, .portfolio-nav-button.next, .solutions-nav-button.next {
+  right: 0;
+  }
+
+  /* Standardized indicators */
+  .services-indicators, .portfolio-indicators, .solutions-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  }
+
+  .services-indicator, .portfolio-indicator {
+  width: 30px;
+  height: 4px;
+  background-color: #E5E5E5;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+  }
+
+  .solutions-indicator {
+  width: 30px;
+  height: 4px;
+  background-color: #666;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+  }
+
+  .services-indicator.active, .portfolio-indicator.active {
+  background-color: var(--laranja);
+  }
+
+  .solutions-indicator.active {
+  background-color: var(--branco);
+  }

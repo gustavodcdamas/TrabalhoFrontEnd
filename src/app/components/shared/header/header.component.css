@@ -1,0 +1,47 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #000; /* Adiciona a barra preta de fundo */
+  color: #fff; /* Altera o texto para branco para melhor contraste */
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 64px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff; /* Garante que o texto fique branco */
+}
+
+.logo-subtext {
+  font-weight: 400;
+  font-size: 12px;
+  color: #ccc; /* Um cinza claro para o subtítulo */
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+nav li a {
+  color: #fff; /* Links em branco */
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  text-decoration: none;
+}
+
+nav li a:hover {
+  text-decoration: underline;
+}

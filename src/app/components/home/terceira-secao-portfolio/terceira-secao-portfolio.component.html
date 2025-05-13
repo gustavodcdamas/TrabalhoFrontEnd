@@ -1,1 +1,34 @@
-<p>terceira-secao-portfolio works!</p>
+<!-- Portfolio Section -->
+ <section class="portfolio" id="projetos">
+  <div class="container">
+      <h2 class="section-title">Portfolio</h2>
+      <div class="portfolio-container">
+          <!-- Botão Anterior -->
+          <button class="portfolio-nav-button prev" (click)="prevSlide()">&#8249;</button>
+
+          <!-- Carrossel -->
+          <div class="portfolio-carousel-wrapper">
+              <div class="portfolio-carousel" [style.transform]="'translateX(' + portfolioPosition + 'px)'">
+                  <div class="portfolio-item" *ngFor="let item of portfolioItems">
+                      <img [src]="item.image" alt="{{ item.title }}" class="portfolio-image" />
+                      <h3 class="portfolio-title">{{ item.title }}</h3>
+                      <p class="portfolio-description">{{ item.description }}</p>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Botão Próximo -->
+          <button class="portfolio-nav-button next" (click)="nextSlide()">&#8250;</button>
+      </div>
+
+      <!-- Indicadores -->
+      <div class="portfolio-indicators">
+          <div
+              class="portfolio-indicator"
+              *ngFor="let index of indicators"
+              [class.active]="index === activeIndex"
+              (click)="goToSlide(index)"
+          ></div>
+      </div>
+  </div>
+</section>

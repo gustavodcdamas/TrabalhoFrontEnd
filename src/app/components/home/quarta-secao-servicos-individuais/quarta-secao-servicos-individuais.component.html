@@ -1,1 +1,187 @@
-<p>quarta-secao-servicos-individuais works!</p>
+<!-- Briefing Form Section -->
+<section class="briefing-form" id="briefing-form">
+  <div class="container">
+      <h2 class="section-title">Briefing de Orçamento</h2>
+      <div id="formulario-passos" class="formulario-passos">
+          <!-- Header comum para todas as etapas -->
+          <div id="form-header" class="form-header">
+              <div class="form-step">
+                  <div id="step1" class="step-number active">1</div>
+                  <p>Informações Básicas</p>
+              </div>
+              <div class="form-step">
+                  <div id="step2" class="step-number">2</div>
+                  <p>Tipo de Projeto</p>
+              </div>
+              <div class="form-step">
+                  <div id="step3" class="step-number">3</div>
+                  <p>Especificações</p>
+              </div>
+              <div class="form-step">
+                  <div id="step4" class="step-number">4</div>
+                  <p>Detalhes</p>
+              </div>
+              <div class="form-step">
+                  <div id="step5" class="step-number">5</div>
+                  <p>Finalização</p>
+              </div>
+          </div>
+
+          <!-- Etapa 1 -->
+          <div *ngIf="activeStep === 1" id="passo-1" class="form-content">
+              <div class="form-group">
+                  <label for="nome-empresa">Nome da Empresa?</label>
+                  <input type="text" id="nome-empresa" placeholder="Digite o nome da empresa">
+              </div>
+
+              <div class="form-question">
+                  <p>Faturamento mensal</p>
+                  <div class="form-options">
+                      <div class="form-option">
+                          <input type="text" placeholder="00,00 R$">
+                      </div>
+                      <div class="form-option">
+                          <input type="checkbox" id="sem-faturamento">
+                          <label for="sem-faturamento">Não tenho faturamento ainda</label>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" disabled>Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(2)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Etapa 2 -->
+          <div *ngIf="activeStep === 2" id="passo-2" class="form-content">
+              <div class="form-question">
+                  <p>Por que, e qual o propósito da criação deste site? O que se espera realizar?</p>
+                  <textarea placeholder="Digite o"></textarea>
+              </div>
+
+              <div class="form-question">
+                  <p>Quais tipos de páginas você precisa?</p>
+                  <div class="form-options">
+                    <div class="form-option" (click)="toggleSelecao($event)">Página de captura</div>
+<div class="form-option" (click)="toggleSelecao($event)">Página de vendas</div>
+<div class="form-option" (click)="toggleSelecao($event)">eCommerce</div>
+<div class="form-option" (click)="toggleSelecao($event)">Blog de lançamentos</div>
+                      <div class="form-option">
+                          <input type="text" placeholder="Outro:">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" (click)="voltaEtapa(1)">Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(3)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 3 -->
+          <div id="passo-3" class="form-content" style="display: none;">
+              <div class="form-question">
+                  <p>O site demanda atualizações periódicas, se sim, qual frequência?</p>
+                  <div class="form-options">
+                      <div class="form-option" onclick="toggleSelecao(this)">Diariamente</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Semanalmente</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Mensalmente</div>
+                  </div>
+              </div>
+
+              <div class="form-question">
+                  <p>O que você quer que os usuários façam no site?</p>
+                  <textarea placeholder="Digite o"></textarea>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" onclick="voltaEtapa(2)">Voltar</button>
+                  <button class="nav-button next-button" onclick="avancaEtapa(4)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 4 -->
+          <div id="passo-4" class="form-content" style="display: none;">
+              <div class="form-question">
+                  <p>Existem outras demandas que a Agência Cuei pode te ajudar?</p>
+                  <div class="form-options">
+                      <div class="form-option" onclick="toggleSelecao(this)">Marketing</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Design</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Social Media</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Dev Web</div>
+                  </div>
+              </div>
+
+              <div class="form-question">
+                  <p>Você já possui uma Identidade Visual?</p>
+                  <p class="form-subtitle">Estética definida da marca, exemplo, logo, cartões de visita, instagram profissional, etc</p>
+                  <div class="form-options">
+                      <div class="form-option" onclick="toggleSelecao(this)">Sim</div>
+                      <div class="form-option" onclick="toggleSelecao(this)">Não</div>
+                  </div>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" onclick="voltaEtapa(3)">Voltar</button>
+                  <button class="nav-button next-button" onclick="avancaEtapa(5)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 5 -->
+          <div id="passo-5" class="form-content" style="display: none;">
+              <p class="form-subtitle">Vamos encaminhar seu orçamento personalizado nesse telefone e email</p>
+
+              <div class="form-group">
+                  <label for="nome-final">Nome</label>
+                  <input type="text" id="nome-final" placeholder="Digite o seu nome e sobrenome">
+              </div>
+
+              <div class="form-group">
+                  <label for="telefone-final">Telefone</label>
+                  <input type="tel" id="telefone-final" placeholder="(00) 00000-0000">
+              </div>
+
+              <div class="form-group">
+                  <label for="email-final">E-mail</label>
+                  <input type="email" id="email-final" placeholder="Digite o seu e-mail">
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" onclick="voltaEtapa(4)">Voltar</button>
+                  <button type="submit" class="nav-button next-button">Enviar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="services-container">
+    <!-- Botão Anterior -->
+    <button class="services-nav-button prev" (click)="prevSlide()">&#8249;</button>
+
+    <!-- Carrossel de Serviços -->
+    <div class="services-grid-wrapper">
+      <div class="services-grid" [style.transform]="'translateX(' + servicosPosition + 'px)'">
+        <div class="service-card" *ngFor="let item of servicosItems">
+          <h3 class="service-title">{{ item.title }}</h3>
+          <p class="service-description">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão Próximo -->
+    <button class="services-nav-button next" (click)="nextSlide()">&#8250;</button>
+
+  </div>
+
+  <!-- Links de Rolagem Suave -->
+  <a href="#" (click)="scrollToElement('briefing-form')">Agendar</a>
+</section>
+
+<!-- Botão Voltar -->
+<button class="nav-button back-button" (click)="voltaEtapa(1)">Voltar</button>
+
+<!-- Botão Avançar -->
+<button class="nav-button next-button" (click)="avancaEtapa(3)">Avançar</button>
