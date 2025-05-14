@@ -34,17 +34,24 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #E5E5E5;
-  color: var(--preto);
+  background-color: #eee;
+  color: #333;
   justify-content: center;
   align-items: center;
   margin-bottom: 5px;
-  transition: all 0.3s ease;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
   }
 
   .step-number.active {
   background-color: var(--laranja);
   color: var(--branco);
+  }
+
+  .step-number.ativo {
+  background: orange;
+  color: #fff;
+  transform: scale(1.15);
+  box-shadow: 0 0 10px orange;
   }
 
   .form-content {
@@ -188,3 +195,11 @@
 .services-nav-button.next {
   right: 10px;
 }
+
+
+
+.form-option.selected {
+  background: #007bff;
+  color: #fff;
+}
+
