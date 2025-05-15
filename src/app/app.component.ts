@@ -14,7 +14,7 @@ import { NonaSecaoDuvidasComponent } from "./components/home/nona-secao-duvidas/
 import { DecimaSecaoContatoComponent } from "./components/home/decima-secao-contato/decima-secao-contato.component";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PrimeiraSecaoComponent, HeaderComponent, SegundaSecaoServicosComponent, FooterComponent, SextaSecaoSolucoesComponent, TerceiraSecaoPortfolioComponent, QuartaSecaoServicosIndividuaisComponent, SetimaSecaoBeneficiosComponent, OitavaSecaoSobreComponent, NonaSecaoDuvidasComponent, DecimaSecaoContatoComponent],
+  imports: [RouterOutlet, PrimeiraSecaoComponent, HeaderComponent, SegundaSecaoServicosComponent, FooterComponent, SextaSecaoSolucoesComponent, TerceiraSecaoPortfolioComponent, QuartaSecaoServicosIndividuaisComponent, SetimaSecaoBeneficiosComponent, OitavaSecaoSobreComponent, NonaSecaoDuvidasComponent, DecimaSecaoContatoComponent, QuintaSecaoPacotesComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

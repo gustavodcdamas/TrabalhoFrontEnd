@@ -8,6 +8,8 @@
 .briefing-form {
   padding: 50px 0;
   background-color: var(--cinza-claro);
+  margin-left: 150px;
+  margin-right: 150px;
   }
 
   .formulario-passos {

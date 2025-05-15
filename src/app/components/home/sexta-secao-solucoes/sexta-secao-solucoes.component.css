@@ -17,7 +17,8 @@
   padding-left: 0;
   padding-right: 0;
   font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
+  text-align: left;
+  size: 30px;
 }
 
 /* Container principal */

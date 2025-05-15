@@ -220,25 +220,3 @@
       </div>
   </div>
 </section>
-
-<section class="services">
-  <div class="services-container">
-    <!-- Botão Anterior -->
-    <button class="services-nav-button prev" (click)="prevSlide()">&#8249;</button>
-
-    <!-- Carrossel de Serviços -->
-    <div class="services-grid-wrapper">
-      <div class="services-grid" [style.transform]="'translateX(' + servicosPosition + 'px)'">
-        <div class="service-card" *ngFor="let item of servicosItems">
-          <h3 class="service-title">{{ item.title }}</h3>
-          <p class="service-description">{{ item.description }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Botão Próximo -->
-    <button class="services-nav-button next" (click)="nextSlide()">&#8250;</button>
-
-  </div>
-</section>
-
