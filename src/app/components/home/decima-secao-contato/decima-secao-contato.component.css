@@ -1,0 +1,101 @@
+/* Contato Section */
+.contact {
+  padding: 50px 0;
+  padding-left: 150px;
+  padding-right: 150px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.contact-container {
+  display: flex;
+  gap: 40px;
+}
+
+.contact-form {
+  flex: 1;
+  background-color: var(--branco);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.contact-subtitle {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.contact-method {
+  margin-bottom: 30px;
+}
+
+.contact-method-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.contact-details {
+  font-size: 16px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  border-color: #ff8800;
+  box-shadow: 0 0 0 2px #ff880033;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.contact-form button,
+.contact-form .submit-btn {
+  width: 100%;
+  padding: 14px 0;
+  background: #ff8800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.contact-form button:hover,
+.contact-form .submit-btn:hover {
+  background: #ff7300;
+}

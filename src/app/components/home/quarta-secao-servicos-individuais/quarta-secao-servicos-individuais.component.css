@@ -1,3 +1,9 @@
+:host {
+  font-family: Arial, Helvetica, sans-serif;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
 /* Briefing Form */
 .briefing-form {
   padding: 50px 0;
@@ -82,11 +88,18 @@
   }
 
   .form-option {
-  padding: 10px 15px;
-  background-color: var(--cinza-claro);
-  border-radius: 5px;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 8px 8px 0 0;
+  border: 2px solid #ff8800;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #222;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  user-select: none;
   }
 
   .form-option:hover {
@@ -94,8 +107,9 @@
   }
 
   .form-option.selected {
-  background-color: var(--laranja);
-  color: var(--branco);
+  background: #ff8800;
+  color: #fff;
+  border-color: #ff8800;
   }
 
   .form-nav {
@@ -142,18 +156,24 @@
   display: flex;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .services-grid-wrapper {
   flex: 1;
   overflow: hidden;
+  margin-left: 200px;
+  margin-right: 200px;
 }
 
 .services-grid {
   display: flex;
   transition: transform 0.3s ease-in-out;
+  margin-left: 200px;
+  margin-right: 200px;
 }
 
 .service-card {
@@ -189,17 +209,54 @@
 }
 
 .services-nav-button.prev {
-  left: 10px;
+  left: 150px;
 }
 
 .services-nav-button.next {
-  right: 10px;
+  right: 150px;
+
 }
 
+.formulario-passos input,
+.formulario-passos textarea,
+.formulario-passos select {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
 
+.formulario-passos input:focus,
+.formulario-passos textarea:focus,
+.formulario-passos select:focus {
+  border-color: #ff8800;
+  box-shadow: 0 0 0 2px #ff880033;
+}
 
-.form-option.selected {
-  background: #007bff;
-  color: #fff;
+.formulario-passos label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input-outros {
+  width: 100%;
+  padding: 12px 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  margin-top: 8px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 

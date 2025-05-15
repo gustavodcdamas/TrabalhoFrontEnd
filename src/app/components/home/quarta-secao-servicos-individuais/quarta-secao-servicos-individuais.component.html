@@ -75,19 +75,26 @@
 
               <div class="form-question">
                   <p>Quais tipos de páginas você precisa?</p>
+                  <!-- Exemplo para etapa 2: seleção de tipos de página -->
                   <div class="form-options">
-                    <div 
-                      class="form-option" 
+                    <div
+                      class="form-option"
                       *ngFor="let tipo of tiposPagina"
                       [class.selected]="isSelecionado(tipo)"
-                      (click)="toggleSelecao(tipo)">
+                      (click)="toggleSelecao(tipo)"
+                    >
                       {{ tipo }}
                     </div>
-                    <div class="form-option">
-                      <input type="text" placeholder="Outro:">
-                    </div>
                   </div>
-              </div>
+                  <div *ngIf="isSelecionado('Outros')" style="margin-top:10px;">
+                    <input
+                      type="text"
+                      [(ngModel)]="outrosTipo"
+                      placeholder="Descreva o tipo de página"
+                      class="input-outros"
+                    />
+                  </div>
+                </div>
 
               <div class="form-nav">
                   <button class="nav-button back-button" (click)="voltaEtapa(1)">Voltar</button>
@@ -100,8 +107,8 @@
               <div class="form-question">
                   <p>O site demanda atualizações periódicas, se sim, qual frequência?</p>
                   <div class="form-options">
-                      <div 
-                          class="form-option" 
+                      <div
+                          class="form-option"
                           *ngFor="let freq of frequenciasAtualizacao"
                           [class.selected]="isFrequenciaSelecionada(freq)"
                           (click)="selecionaFrequencia(freq)">
@@ -126,8 +133,8 @@
               <div class="form-question">
                   <p>Existem outras demandas que a Agência Cuei pode te ajudar?</p>
                   <div class="form-options">
-                      <div 
-                          class="form-option" 
+                      <div
+                          class="form-option"
                           *ngFor="let demanda of demandas"
                           [class.selected]="isDemandaSelecionada(demanda)"
                           (click)="toggleDemanda(demanda)">
@@ -140,8 +147,8 @@
                   <p>Você já possui uma Identidade Visual?</p>
                   <p class="form-subtitle">Estética definida da marca, exemplo, logo, cartões de visita, instagram profissional, etc</p>
                   <div class="form-options">
-                      <div 
-                          class="form-option" 
+                      <div
+                          class="form-option"
                           *ngFor="let opcao of identidadeVisualOpcoes"
                           [class.selected]="isIdentidadeVisualSelecionada(opcao)"
                           (click)="selecionaIdentidadeVisual(opcao)">
@@ -233,13 +240,5 @@
     <button class="services-nav-button next" (click)="nextSlide()">&#8250;</button>
 
   </div>
-
-  <!-- Links de Rolagem Suave -->
-  <a href="#" (click)="scrollToElement('briefing-form')">Agendar</a>
 </section>
 
-<!-- Botão Voltar -->
-<button class="nav-button back-button" (click)="voltaEtapa(1)">Voltar</button>
-
-<!-- Botão Avançar -->
-<button class="nav-button next-button" (click)="avancaEtapa(3)">Avançar</button>

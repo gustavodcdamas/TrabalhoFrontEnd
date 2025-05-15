@@ -1,3 +1,25 @@
+/* Fundo preto na seção */
+.solutions {
+  background: #181818;
+  padding: 50px 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Margem interna geral de 150px */
+.solutions .container {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+/* Título branco */
+.solutions .section-title {
+  color: #fff;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
 /* Container principal */
 .solutions-container {
   display: flex;
@@ -32,6 +54,8 @@
 .solutions-grid-wrapper {
   flex: 1;
   overflow: hidden;
+  padding-left: 100px;
+  padding-right: 400px;
 }
 
 /* Carrossel */
@@ -44,13 +68,23 @@
 .solution-card {
   width: 300px; /* Largura do card */
   margin-right: 20px; /* Espaçamento entre os cards */
-  background-color: #f4f4f4;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  background: #ff8800;
+  color: #fff;
+  border-radius: 16px;
+  padding: 24px 16px;
+  margin: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 220px;
+  max-width: 260px;
+  box-shadow: 0 2px 8px rgba(255, 136, 0, 0.18);
+}
+
+.solution-title,
+.solution-description,
+.solution-price {
+  color: #fff;
 }
 
 .solution-title {
@@ -67,21 +101,27 @@
 .solution-price {
   font-size: 16px;
   font-weight: bold;
-  color: #007bff;
+  color: #fffdfc;
   margin-top: 10px;
 }
 
+/* Botão contratar com destaque */
 .contratar-btn {
-  background-color: #007bff;
-  color: #fff;
+  background: #fff;
+  color: #ff8800;
   border: none;
-  padding: 10px 15px;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: bold;
   cursor: pointer;
-  border-radius: 5px;
+  margin-top: 10px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .contratar-btn:hover {
-  background-color: #0056b3;
+  background: #ff8800;
+  color: #fff;
+  border: 1px solid #fff;
 }
 
 /* Indicadores */
@@ -102,4 +142,12 @@
 
 .solutions-indicator.active {
   background-color: #000;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 991px) {
+  .solutions .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }

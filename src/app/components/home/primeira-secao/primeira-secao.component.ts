@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -12,7 +13,7 @@ declare global {
 @Component({
   selector: 'app-primeira-secao',
   templateUrl: './primeira-secao.component.html',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   styleUrls: ['./primeira-secao.component.css']
 })
 export class PrimeiraSecaoComponent {
@@ -74,7 +75,7 @@ export class PrimeiraSecaoComponent {
     const mensagem = encodeURIComponent(
       `Olá! Quero solicitar um orçamento.\n` +
       `Nome: ${this.nome}\n` +
-      `E-mail: ${this.email}\n` 
+      `E-mail: ${this.email}\n`
     );
     window.open(`https://wa.me/${numeroDestino}?text=${mensagem}`, '_blank');
   }

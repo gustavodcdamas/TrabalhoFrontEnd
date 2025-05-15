@@ -2,9 +2,13 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
-  background-color: #000; /* Adiciona a barra preta de fundo */
-  color: #fff; /* Altera o texto para branco para melhor contraste */
+  padding: 20px 150px; /* Aplica 150px de padding lateral */
+  background-color: #0c0c0c; /* Fundo preto ocupa toda a largura */
+  color: #fff;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo-container {

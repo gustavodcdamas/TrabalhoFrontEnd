@@ -1,1 +1,61 @@
-<p>decima-secao-contato works!</p>
+<!-- Contato Section -->
+<section class="contact" id="contato">
+    <div class="container">
+        <h2 class="section-title">Contato</h2>
+        <div class="contact-container">
+            <div class="contact-form">
+                <h3 class="contact-title">Mande uma mensagem pra gente</h3>
+                <form (ngSubmit)="enviarViaWhatsApp()">
+                    <div class="form-group">
+                        <label for="nome-contato">Nome e sobrenome</label>
+                        <input type="text" id="nome-contato" placeholder="Digite o seu nome" [(ngModel)]="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email-contato">E-mail</label>
+                        <input type="email" id="email-contato" placeholder="Digite o seu e-mail" [(ngModel)]="email" name="email" required>
+                        <div *ngIf="email && !emailValido()" class="erro">E-mail inválido.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone-contato">Telefone</label>
+                        <input
+                          type="tel"
+                          id="telefone-contato"
+                          placeholder="(00) 99999-9999"
+                          [(ngModel)]="telefone"
+                          name="telefone"
+                          required
+                          (input)="formatarTelefone()"
+                          autocomplete="tel"
+                        />
+                        <div *ngIf="telefone && !telefoneValido()" class="erro">Telefone inválido.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" rows="4" placeholder="Digite sua mensagem aqui" [(ngModel)]="mensagem" name="mensagem"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button" [disabled]="!emailValido() || !telefoneValido()">
+                        Enviar mensagem
+                        <span>→</span>
+                    </button>
+                </form>
+            </div>
+            <div class="contact-info">
+                <h3 class="contact-title">Fale com um atendente agora</h3>
+                <p class="contact-subtitle">Entre em contato direto com um de nossos atendentes. Estamos à disposição para conversarmos, tirar dúvidas, ou montar um orçamento personalizado.</p>
+                <div class="contact-method">
+                    <h4 class="contact-method-title">Contato direto</h4>
+                    <p class="contact-details">(31) 99999-9999</p>
+                    <p class="contact-details">cuei&#64;contato.com.br</p>
+                </div>
+                <div class="contact-method">
+                    <h4 class="contact-method-title">Redes Cuei</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><img src="facebook.svg" alt="Facebook"></a>
+                        <a href="#" class="social-icon"><img src="instagram.svg" alt="Instagram"></a>
+                        <a href="#" class="social-icon"><img src="linkedin.svg" alt="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
