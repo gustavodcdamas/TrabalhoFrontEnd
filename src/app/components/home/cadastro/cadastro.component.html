@@ -1,0 +1,68 @@
+<!-- cadastro.component.html -->
+<div class="cadastro-container">
+  <div class="cadastro-card">
+    <h2 class="cadastro-title">Cadastro</h2>
+
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="nome"
+          placeholder="Digite seu nome completo"
+          [ngClass]="{'invalid': hasError('nome', 'required')}"
+        >
+        <div *ngIf="hasError('nome', 'required')" class="error-message">
+          Nome é obrigatório
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Digite o seu e-mail"
+          [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email')}"
+        >
+        <div *ngIf="hasError('email', 'required')" class="error-message">
+          E-mail é obrigatório
+        </div>
+        <div *ngIf="hasError('email', 'email')" class="error-message">
+          Informe um e-mail válido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="Digite sua senha"
+          [ngClass]="{'invalid': hasError('senha', 'required') || hasError('senha', 'minlength')}"
+        >
+        <div *ngIf="hasError('senha', 'required')" class="error-message">
+          Senha é obrigatória
+        </div>
+        <div *ngIf="hasError('senha', 'minlength')" class="error-message">
+          A senha deve ter pelo menos 6 caracteres
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="confirmarSenha"
+          placeholder="Confirme sua senha"
+          [ngClass]="{'invalid': hasError('confirmarSenha', 'required') || hasError('confirmarSenha', 'senhasNaoConferem')}"
+        >
+        <div *ngIf="hasError('confirmarSenha', 'required')" class="error-message">
+          Confirmação de senha é obrigatória
+        </div>
+        <div *ngIf="hasError('confirmarSenha', 'senhasNaoConferem')" class="error-message">
+          As senhas não conferem
+        </div>
+      </div>
+
+      <button type="submit" class="cadastrar-button">CADASTRAR</button>
+      <button type="button" class="voltar-button" (click)="navegarParaLogin()">VOLTAR PARA LOGIN</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<!-- clientes.component.html exemplo -->
+<div class="page-content">
+  <header class="header">
+    <div class="greeting">
+      <h1>Clientes</h1>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-bar">
+        <i class="icon-search">🔍</i>
+        <input type="text" placeholder="Buscar clientes...">
+      </div>
+
+      <button class="add-button">
+        <i class="icon-add">+</i> Adicionar Cliente
+      </button>
+    </div>
+  </header>
+
+  <div class="content-card">
+    <div class="card-header">
+      <h2>Lista de Clientes</h2>
+      <div class="card-actions">
+        <button class="filter-button">
+          <i class="icon-filter">📊</i> Filtrar
+        </button>
+        <button class="export-button">
+          <i class="icon-export">📤</i> Exportar
+        </button>
+      </div>
+    </div>
+
+    <div class="client-table">
+      <div class="table-header">
+        <div class="header-name">Nome</div>
+        <div class="header-email">Email</div>
+        <div class="header-phone">Telefone</div>
+        <div class="header-status">Status</div>
+        <div class="header-actions">Ações</div>
+      </div>
+
+      <div class="table-rows">
+        <!-- Exemplo de dados - substitua por dados reais -->
+        <div class="table-row">
+          <div class="cell-name">João Silva</div>
+          <div class="cell-email">joao.silva&#64;exemplo.com</div>
+          <div class="cell-phone">(11) 98765-4321</div>
+          <div class="cell-status"><span class="status-active">Ativo</span></div>
+          <div class="cell-actions">
+            <button class="action-button">
+              <i class="icon-edit">✏️</i>
+            </button>
+            <button class="action-button">
+              <i class="icon-delete">🗑️</i>
+            </button>
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="cell-name">Maria Oliveira</div>
+          <div class="cell-email">maria.oliveira&#64;exemplo.com</div>
+          <div class="cell-phone">(21) 98765-4321</div>
+          <div class="cell-status"><span class="status-active">Ativo</span></div>
+          <div class="cell-actions">
+            <button class="action-button">
+              <i class="icon-edit">✏️</i>
+            </button>
+            <button class="action-button">
+              <i class="icon-delete">🗑️</i>
+            </button>
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="cell-name">Carlos Santos</div>
+          <div class="cell-email">carlos.santos&#64;exemplo.com</div>
+          <div class="cell-phone">(31) 98765-4321</div>
+          <div class="cell-status"><span class="status-inactive">Inativo</span></div>
+          <div class="cell-actions">
+            <button class="action-button">
+              <i class="icon-edit">✏️</i>
+            </button>
+            <button class="action-button">
+              <i class="icon-delete">🗑️</i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-pagination">
+        <button class="pagination-prev">
+          <i class="icon-arrow-left">←</i> Anterior
+        </button>
+
+        <div class="pagination-numbers">
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+        </div>
+
+        <button class="pagination-next">
+          Próximo <i class="icon-arrow-right">→</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

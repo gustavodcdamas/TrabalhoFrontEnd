@@ -1,4 +1,3 @@
-<!-- admin-dashboard.component.html -->
 <div class="dashboard-container">
   <!-- Sidebar -->
   <div class="sidebar">
@@ -8,56 +7,56 @@
 
     <nav class="sidebar-nav">
       <ul>
-        <li class="active">
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/dashboard')">
+          <a routerLink="/admin/dashboard">
             <i class="icon-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/clientes')">
+          <a routerLink="/admin/clientes">
             <i class="icon-clientes"></i>
             <span>Clientes</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/contas')">
+          <a routerLink="/admin/contas">
             <i class="icon-contas"></i>
             <span>Contas</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/servicos')">
+          <a routerLink="/admin/servicos">
             <i class="icon-servicos"></i>
             <span>Serviços</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/compras')">
+          <a routerLink="/admin/compras">
             <i class="icon-compras"></i>
             <span>Compras</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/idvs')">
+          <a routerLink="/admin/idvs">
             <i class="icon-idvs"></i>
             <span>IDVs</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/services')">
+          <a routerLink="/admin/services">
             <i class="icon-services"></i>
             <span>Services</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/my-privileges')">
+          <a routerLink="/admin/my-privileges">
             <i class="icon-privileges"></i>
             <span>My Privileges</span>
           </a>
         </li>
-        <li>
-          <a href="javascript:void(0)">
+        <li [class.active]="isActiveRoute('/admin/setting')">
+          <a routerLink="/admin/setting">
             <i class="icon-setting"></i>
             <span>Setting</span>
           </a>
@@ -66,171 +65,8 @@
     </nav>
   </div>
 
-  <!-- Main Content -->
+  <!-- Main Content - Apenas o router-outlet -->
   <div class="main-content">
-    <!-- Header -->
-    <header class="header">
-      <div class="greeting">
-        <h1>Olá, {{ userName }}</h1>
-      </div>
-
-      <div class="header-actions">
-        <div class="search-bar">
-          <i class="icon-search"></i>
-          <input type="text" placeholder="Search for something">
-        </div>
-
-        <div class="action-buttons">
-          <button class="settings-btn">
-            <i class="icon-settings"></i>
-          </button>
-          <button class="notifications-btn">
-            <i class="icon-notifications"></i>
-            <span class="notification-badge"></span>
-          </button>
-          <div class="user-profile">
-            <img src="assets/images/profile.png" alt="Profile">
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Cards Section -->
-    <div class="cards-section">
-      <div class="section-header">
-        <h2>My Cards</h2>
-        <button class="add-card-btn">+ Add Card</button>
-      </div>
-
-      <div class="cards-container">
-        <!-- Cards -->
-        <div *ngFor="let card of cards" [ngClass]="['card', card.isActive ? 'card-active' : 'card-inactive']">
-          <div class="card-top">
-            <div class="card-balance">
-              <span class="balance-label">Balance</span>
-              <h3 class="balance-amount">${{ card.balance.toLocaleString() }}</h3>
-            </div>
-            <div class="card-chip">
-              <i class="icon-chip"></i>
-            </div>
-          </div>
-
-          <div class="card-info">
-            <div class="card-holder">
-              <span class="info-label">CARD HOLDER</span>
-              <span class="info-value">{{ card.cardHolder }}</span>
-            </div>
-            <div class="card-expiry">
-              <span class="info-label">VALID THRU</span>
-              <span class="info-value">{{ card.validThru }}</span>
-            </div>
-          </div>
-
-          <div class="card-number">
-            {{ card.cardNumber }}
-          </div>
-
-          <div class="card-brand">
-            <i class="icon-mastercard"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Expense Chart Section -->
-    <div class="expense-section">
-      <div class="section-header">
-        <h2>My Expense</h2>
-      </div>
-
-      <div class="expense-chart">
-        <div class="chart-container">
-          <!-- Chart bars -->
-          <div class="chart-bar" *ngFor="let data of expenseData">
-            <div class="bar-value" [style.height]="getBarHeight(data.amount)"></div>
-            <div class="bar-label">{{ data.month }}</div>
-          </div>
-        </div>
-        <div class="chart-max-value">${{ 12500 }}</div>
-      </div>
-    </div>
-
-    <!-- Transactions Section -->
-    <div class="transactions-section">
-      <div class="section-header">
-        <h2>Recent Transactions</h2>
-      </div>
-
-      <div class="transactions-tabs">
-        <button
-          [ngClass]="{'active': activeTab === 'all'}"
-          (click)="setActiveTab('all')">
-          All Transactions
-        </button>
-        <button
-          [ngClass]="{'active': activeTab === 'income'}"
-          (click)="setActiveTab('income')">
-          Income
-        </button>
-        <button
-          [ngClass]="{'active': activeTab === 'expense'}"
-          (click)="setActiveTab('expense')">
-          Expense
-        </button>
-      </div>
-
-      <div class="transactions-table">
-        <div class="table-header">
-          <div class="header-description">Description</div>
-          <div class="header-id">Transaction ID</div>
-          <div class="header-type">Type</div>
-          <div class="header-card">Card</div>
-          <div class="header-date">Date</div>
-          <div class="header-amount">Amount</div>
-          <div class="header-receipt">Receipt</div>
-        </div>
-
-        <div class="table-rows">
-          <div class="table-row" *ngFor="let transaction of getFilteredTransactions()">
-            <div class="cell-description">
-              <i [ngClass]="[
-                'icon-transaction',
-                transaction.isIncome ? 'icon-arrow-down' : 'icon-arrow-up'
-              ]"></i>
-              <span>{{ transaction.description }}</span>
-            </div>
-            <div class="cell-id">{{ transaction.id }}</div>
-            <div class="cell-type">{{ transaction.type }}</div>
-            <div class="cell-card">{{ transaction.cardLastFour }} ****</div>
-            <div class="cell-date">{{ transaction.date }}</div>
-            <div class="cell-amount" [ngClass]="{ 'income': transaction.isIncome, 'expense': !transaction.isIncome }">
-              {{ transaction.isIncome ? '+' : '-' }}${{ transaction.amount }}
-            </div>
-            <div class="cell-receipt">
-              <button class="download-btn">Download</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-pagination">
-          <button class="pagination-prev" (click)="goToPreviousPage()">
-            <i class="icon-arrow-left"></i> Previous
-          </button>
-
-          <div class="pagination-numbers">
-            <button
-              *ngFor="let page of [1, 2, 3, 4]"
-              [ngClass]="{'active': currentPage === page}"
-              (click)="goToPage(page)">
-              {{ page }}
-            </button>
-          </div>
-
-          <button class="pagination-next" (click)="goToNextPage()">
-            Next <i class="icon-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+    <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,0 +1,42 @@
+<!-- login.component.html -->
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Digite o seu e-mail"
+          [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email')}"
+        >
+        <div *ngIf="hasError('email', 'required')" class="error-message">
+          E-mail é obrigatório
+        </div>
+        <div *ngIf="hasError('email', 'email')" class="error-message">
+          Informe um e-mail válido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="Digite sua senha"
+          [ngClass]="{'invalid': hasError('senha', 'required') || hasError('senha', 'minlength')}"
+        >
+        <div *ngIf="hasError('senha', 'required')" class="error-message">
+          Senha é obrigatória
+        </div>
+        <div *ngIf="hasError('senha', 'minlength')" class="error-message">
+          A senha deve ter pelo menos 6 caracteres
+        </div>
+      </div>
+
+      <button type="submit" class="login-button" (click)="navegarParaAdmin()">ENTRAR</button>
+      <button type="button" class="cadastro-button" (click)="navegarParaCadastro()">CADASTRAR</button>
+
+    </form>
+  </div>
+</div>

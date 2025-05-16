@@ -1,7 +1,6 @@
 // admin-dashboard.component.ts
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 // Interfaces para os dados
 interface Card {
@@ -28,13 +27,13 @@ interface ExpenseData {
 }
 
 @Component({
-  selector: 'app-admin-dashboard',
+  selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet],
-  templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.css'
+  imports: [CommonModule],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
-export class AdminDashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   userName: string = 'Nome';
   cards: Card[] = [];
   transactions: Transaction[] = [];
@@ -43,33 +42,12 @@ export class AdminDashboardComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 4;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
-    // Só carrega os dados se estiver na página principal do dashboard
-    if (this.router.url === '/admin' || this.router.url === '/admin/dashboard') {
-      this.loadCards();
-      this.loadTransactions();
-      this.loadExpenseData();
-    }
-  }
-
-  // Método melhorado para verificar a rota ativa
-  isActiveRoute(route: string): boolean {
-    console.log('Current URL:', this.router.url, 'Checking against:', route);
-    return this.router.url === route || this.router.url.startsWith(route + '/');
-  }
-
-  // Método para navegação programática
-  navigateTo(route: string): void {
-    console.log('Navigating to:', route);
-    this.router.navigateByUrl(route).then(() => {
-      console.log('Navigation complete to:', route);
-      // Força a detecção de mudanças para atualizar a UI
-      this.cdr.detectChanges();
-    }).catch(err => {
-      console.error('Navigation error:', err);
-    });
+    this.loadCards();
+    this.loadTransactions();
+    this.loadExpenseData();
   }
 
   loadCards(): void {
