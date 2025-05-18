@@ -1,4 +1,4 @@
-<!-- clientes.component.html exemplo -->
+<!-- clientes.component.html corrigido -->
 <div class="page-content">
   <header class="header">
     <div class="greeting">
@@ -8,12 +8,10 @@
     <div class="header-actions">
       <div class="search-bar">
         <i class="icon-search">🔍</i>
-        <input type="text" placeholder="Buscar clientes...">
+        <input type="text" [(ngModel)]="searchTerm" (input)="searchClientes()" placeholder="Buscar clientes...">
       </div>
 
-      <button class="add-button">
-        <i class="icon-add">+</i> Adicionar Cliente
-      </button>
+      <button class="add-button" (click)="openAddModal()">+ Novo Cliente</button>
     </div>
   </header>
 
@@ -39,66 +37,120 @@
         <div class="header-actions">Ações</div>
       </div>
 
-      <div class="table-rows">
-        <!-- Exemplo de dados - substitua por dados reais -->
-        <div class="table-row">
-          <div class="cell-name">João Silva</div>
-          <div class="cell-email">joao.silva&#64;exemplo.com</div>
-          <div class="cell-phone">(11) 98765-4321</div>
-          <div class="cell-status"><span class="status-active">Ativo</span></div>
-          <div class="cell-actions">
-            <button class="action-button">
-              <i class="icon-edit">✏️</i>
-            </button>
-            <button class="action-button">
-              <i class="icon-delete">🗑️</i>
-            </button>
+      <div class="table-rows" *ngIf="filteredClientes.length > 0">
+        <div class="table-row" *ngFor="let cliente of getPaginatedClientes()">
+          <div class="cell-name">{{cliente.nome}}</div>
+          <div class="cell-email">{{cliente.email}}</div>
+          <div class="cell-phone">{{cliente.telefone}}</div>
+          <div class="cell-status">
+            <span [ngClass]="cliente.status === 'ativo' ? 'status-active' : 'status-inactive'">
+              {{cliente.status === 'ativo' ? 'Ativo' : 'Inativo'}}
+            </span>
           </div>
-        </div>
-        <div class="table-row">
-          <div class="cell-name">Maria Oliveira</div>
-          <div class="cell-email">maria.oliveira&#64;exemplo.com</div>
-          <div class="cell-phone">(21) 98765-4321</div>
-          <div class="cell-status"><span class="status-active">Ativo</span></div>
           <div class="cell-actions">
-            <button class="action-button">
+            <button class="action-button" (click)="openEditModal(cliente)">
               <i class="icon-edit">✏️</i>
             </button>
-            <button class="action-button">
-              <i class="icon-delete">🗑️</i>
-            </button>
-          </div>
-        </div>
-        <div class="table-row">
-          <div class="cell-name">Carlos Santos</div>
-          <div class="cell-email">carlos.santos&#64;exemplo.com</div>
-          <div class="cell-phone">(31) 98765-4321</div>
-          <div class="cell-status"><span class="status-inactive">Inativo</span></div>
-          <div class="cell-actions">
-            <button class="action-button">
-              <i class="icon-edit">✏️</i>
-            </button>
-            <button class="action-button">
+            <button class="action-button" (click)="deleteCliente(cliente.id)">
               <i class="icon-delete">🗑️</i>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="table-pagination">
-        <button class="pagination-prev">
-          <i class="icon-arrow-left">←</i> Anterior
-        </button>
+      <div class="empty-state" *ngIf="filteredClientes.length === 0">
+        <p>Nenhum cliente encontrado.</p>
+        <button class="add-button" (click)="openAddModal()">+ Novo Cliente</button>
+      </div>
 
-        <div class="pagination-numbers">
-          <button class="active">1</button>
-          <button>2</button>
-          <button>3</button>
-        </div>
+      <div class="table-pagination" *ngIf="filteredClientes.length > 0">
+        <button class="pagination-button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">&lt;</button>
 
-        <button class="pagination-next">
-          Próximo <i class="icon-arrow-right">→</i>
-        </button>
+        <ng-container *ngIf="totalPages <= 5">
+          <button *ngFor="let page of getPages()"
+                  class="pagination-button"
+                  [ngClass]="{'active': page === currentPage}"
+                  (click)="goToPage(page)">
+            {{page}}
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="totalPages > 5">
+          <button class="pagination-button" [ngClass]="{'active': currentPage === 1}" (click)="goToPage(1)">1</button>
+
+          <button *ngIf="currentPage > 3" class="pagination-ellipsis">...</button>
+
+          <ng-container *ngFor="let page of getPages()">
+            <button *ngIf="page !== 1 && page !== totalPages && page >= currentPage - 1 && page <= currentPage + 1"
+                    class="pagination-button"
+                    [ngClass]="{'active': page === currentPage}"
+                    (click)="goToPage(page)">
+              {{page}}
+            </button>
+          </ng-container>
+
+          <button *ngIf="currentPage < totalPages - 2" class="pagination-ellipsis">...</button>
+
+          <button class="pagination-button" [ngClass]="{'active': currentPage === totalPages}" (click)="goToPage(totalPages)">
+            {{totalPages}}
+          </button>
+        </ng-container>
+
+        <button class="pagination-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para adicionar/editar cliente (corrigido) -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+        <button class="close-button" (click)="closeModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="clienteForm" (ngSubmit)="saveCliente()">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" formControlName="nome" placeholder="Digite o nome completo">
+            <div class="error-message" *ngIf="clienteForm.get('nome')?.invalid && clienteForm.get('nome')?.touched">
+              <span *ngIf="clienteForm.get('nome')?.errors?.['required']">Nome é obrigatório</span>
+              <span *ngIf="clienteForm.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" placeholder="Digite o email">
+            <div class="error-message" *ngIf="clienteForm.get('email')?.invalid && clienteForm.get('email')?.touched">
+              <span *ngIf="clienteForm.get('email')?.errors?.['required']">Email é obrigatório</span>
+              <span *ngIf="clienteForm.get('email')?.errors?.['email']">Email inválido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" formControlName="telefone" placeholder="(00) 00000-0000" (input)="formatPhone($event)">
+            <div class="error-message" *ngIf="clienteForm.get('telefone')?.invalid && clienteForm.get('telefone')?.touched">
+              <span *ngIf="clienteForm.get('telefone')?.errors?.['required']">Telefone é obrigatório</span>
+              <span *ngIf="clienteForm.get('telefone')?.errors?.['pattern']">Formato: (00) 00000-0000</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="clienteForm.invalid">Salvar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

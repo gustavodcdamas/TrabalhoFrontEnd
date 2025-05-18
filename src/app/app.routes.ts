@@ -1,4 +1,3 @@
-// routes.ts atualizado
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home/home.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
@@ -18,11 +17,22 @@ import { SettingComponent } from './components/admin/setting/setting.component';
 import { LoginComponent } from './components/home/login/login.component';
 import { CadastroComponent } from './components/home/cadastro/cadastro.component';
 
+// Importação correta do componente de contato
+import { DecimaSecaoContatoComponent } from './components/home/decima-secao-contato/decima-secao-contato.component';
+import { PortifolioComponent } from './components/home/portifolio/portifolio.component';
+import { PoliticaPrivacidadeComponent } from './components/home/politica-privacidade/politica-privacidade.component';
+import { TermosServicoComponent } from './components/home/termos-servico/termos-servico.component';
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent},
+  { path: 'contato', component: DecimaSecaoContatoComponent },
+  { path: 'portifolio', component: PortifolioComponent },
+  { path: 'projetos', redirectTo: 'portifolio', pathMatch: 'full' }, // Alias para manter compatibilidade
+  { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'sobre-nos', component: SobreNosComponent },
+  { path: 'politica-privacidade', component: PoliticaPrivacidadeComponent },
+  { path: 'termos-servico', component: TermosServicoComponent },
   {
     path: 'admin',
     component: AdminDashboardComponent,

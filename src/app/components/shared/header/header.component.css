@@ -1,3 +1,4 @@
+/* Estilos para o Novo Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -5,37 +6,47 @@ header {
   padding: 20px 150px; /* Aplica 150px de padding lateral */
   background-color: #0c0c0c; /* Fundo preto ocupa toda a largura */
   color: #fff;
-  margin-left: 0;
-  margin-right: 0;
   width: 100%;
   box-sizing: border-box;
 }
 
 .logo-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .logo {
   width: 64px;
+  height: auto;
+}
+
+.logo-text-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .logo-text {
   font-weight: 700;
   font-size: 14px;
   color: #fff; /* Garante que o texto fique branco */
+  text-decoration: none;
+  margin-bottom: 3px;
 }
 
 .logo-subtext {
   font-weight: 400;
   font-size: 12px;
   color: #ccc; /* Um cinza claro para o subtítulo */
+  text-decoration: none;
 }
 
 nav ul {
   display: flex;
   list-style: none;
   gap: 40px;
+  margin: 0;
+  padding: 0;
 }
 
 nav li a {
@@ -44,8 +55,63 @@ nav li a {
   font-weight: 400;
   line-height: 140%;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 nav li a:hover {
   text-decoration: underline;
+}
+
+nav ul li a.active {
+  color: #ff6a00; /* Cor laranja usada em seu design */
+  font-weight: 600;
+  position: relative;
+}
+
+nav ul li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ff6a00;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+  header {
+    padding: 15px 50px;
+  }
+
+  nav ul {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 15px 30px;
+  }
+
+  .logo-container {
+    margin-bottom: 15px;
+  }
+
+  nav ul {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px 25px;
+  }
+
+  nav li {
+    margin-bottom: 5px;
+  }
 }

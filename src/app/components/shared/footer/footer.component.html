@@ -1,27 +1,37 @@
+<!-- footer.component.html -->
 <footer>
   <div class="container footer-container">
-      <div class="footer-logo">
+    <div class="footer-links">
+      <h3>Links Úteis</h3>
+      <ul>
+        <li><a [routerLink]="['/portifolio']" routerLinkActive="active">Projetos</a></li>
+        <li><a [routerLink]="['/contato']" routerLinkActive="active">Contato</a></li>
+        <li><a [routerLink]="['/sobre-nos']" routerLinkActive="active">Sobre nós</a></li>
+        <li><a [routerLink]="['/termos-servico']" routerLinkActive="active">Termos de Serviço</a></li>
+        <li><a [routerLink]="['/politica-privacidade']" routerLinkActive="active">Política de Privacidade</a></li>
+      </ul>
+    </div>
 
-          <img src="assets/img/logo.png" alt="Logo CUEI" class="logo">
-          <div class="logo-text">AGÊNCIA CUEI</div>
+    <div class="footer-logo">
+      <a [routerLink]="['/']" class="logo-link">
+        <img src="assets/img/logo.png" alt="Logo CUEI" class="logo">
+      </a>
+      <a [routerLink]="['/']" class="logo-text-link">AGÊNCIA CUEI</a>
+      <p>Nos acompanhe nas redes sociais!</p>
+      <div class="social-links">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-behance"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://wa.me/5531997904195" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
       </div>
+    </div>
 
-      <div class="footer-links">
-          <ul>
-              <li><a href="#projetos">Projetos</a></li>
-              <li><a href="#contato">Contato</a></li>
-              <li><a href="/sobre-nos">Sobre nós</a></li>
-          </ul>
-      </div>
-
-      <div class="footer-contact">
-          <p>Cuei Contato</p>
-          <p>cuei&#64;contato.com.br</p>
-            <div class="social-links">
-              <a href="#" class="social-icon"><img src="facebook-white.svg" alt="Facebook"></a>
-              <a href="#" class="social-icon"><img src="instagram-white.svg" alt="Instagram"></a>
-              <a href="#" class="social-icon"><img src="linkedin-white.svg" alt="LinkedIn"></a>
-          </div>
-      </div>
+    <div class="footer-contact">
+      <h3>Fale Conosco</h3>
+      <p>Email: contatocuei.com.br</p>
+      <p>WhatsApp: +55 (31) 9 9790-4195</p>
+    </div>
   </div>
 </footer>
