@@ -1,1 +1,180 @@
-<p>idvs works!</p>
+<!-- idvs.component.html -->
+<div class="idvs-container">
+  <div class="page-header">
+    <h1>Identidades Visuais</h1>
+    <div class="actions">
+      <button class="add-button" (click)="abrirModalNovoIDV()">+ Novo Projeto</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar projeto..." class="search-input" [(ngModel)]="searchTerm" (input)="searchIDVs(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterIDVs('all')">Todos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'completed'}" (click)="filterIDVs('completed')">Concluídos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'in-progress'}" (click)="filterIDVs('in-progress')">Em Andamento</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'pending'}" (click)="filterIDVs('pending')">Pendentes</div>
+  </div>
+
+  <div class="idvs-grid">
+    <!-- Cards de Projetos de IDV -->
+    <div class="idv-card" *ngFor="let idv of filteredIDVs">
+      <div class="idv-image">
+        <img [src]="idv.imagemUrl" [alt]="idv.titulo">
+        <div class="idv-status" [ngClass]="idv.status">
+          {{ getStatusLabel(idv.status) }}
+        </div>
+      </div>
+      <div class="idv-body">
+        <h3 class="idv-title">{{ idv.titulo }}</h3>
+        <p class="idv-client">Cliente: {{ idv.cliente }}</p>
+        <p class="idv-description">{{ idv.descricao }}</p>
+        <div class="idv-details">
+          <div class="detail-item">
+            <span class="detail-label">Data de Início</span>
+            <span class="detail-value">{{ idv.dataInicio | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Entrega Prevista</span>
+            <span class="detail-value">{{ idv.dataEntrega | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div class="idv-tags">
+          <span class="tag-item" *ngFor="let tag of idv.tags">{{ tag }}</span>
+        </div>
+      </div>
+      <div class="idv-footer">
+        <button class="action-button edit" (click)="editarIDV(idv.id)">Editar</button>
+        <button class="action-button details" (click)="verDetalhesIDV(idv.id)">Detalhes</button>
+
+        <ng-container *ngIf="idv.status === 'pending'">
+          <button class="action-button start" (click)="iniciarIDV(idv.id)">Iniciar</button>
+        </ng-container>
+
+        <ng-container *ngIf="idv.status === 'in-progress'">
+          <button class="action-button complete" (click)="concluirIDV(idv.id)">Concluir</button>
+        </ng-container>
+
+        <ng-container *ngIf="idv.status === 'completed'">
+          <button class="action-button download" (click)="baixarArquivosIDV(idv.id)">Baixar</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há projetos -->
+  <div class="no-idvs-message" *ngIf="filteredIDVs.length === 0">
+    <p>Nenhum projeto de identidade visual encontrado para os filtros selecionados.</p>
+    <button class="add-button" (click)="abrirModalNovoIDV()">+ Adicionar Novo Projeto</button>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination" *ngIf="filteredIDVs.length > 0">
+    <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+    <ng-container *ngFor="let page of getPaginationArray()">
+      <button class="pagination-button" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  </div>
+
+  <!-- Modal de Novo Projeto de IDV -->
+  <div class="modal" *ngIf="showNovoIDVModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Editar Projeto' : 'Novo Projeto' }}</h2>
+        <button class="close-button" (click)="fecharModalNovoIDV()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="idvForm" (ngSubmit)="salvarNovoIDV()">
+          <div class="form-group">
+            <label for="titulo">Título do Projeto</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Redesign Logo Empresa X">
+            <div class="error-message" *ngIf="hasError('titulo', 'required')">
+              Título é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <input type="text" id="cliente" formControlName="cliente" placeholder="Nome do cliente">
+            <div class="error-message" *ngIf="hasError('cliente', 'required')">
+              Cliente é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" formControlName="descricao" rows="3" placeholder="Descrição do projeto"></textarea>
+            <div class="error-message" *ngIf="hasError('descricao', 'required')">
+              Descrição é obrigatória
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label for="dataInicio">Data de Início</label>
+              <input type="date" id="dataInicio" formControlName="dataInicio">
+              <div class="error-message" *ngIf="hasError('dataInicio', 'required')">
+                Data de início é obrigatória
+              </div>
+            </div>
+
+            <div class="form-group half-width">
+              <label for="dataEntrega">Data de Entrega</label>
+              <input type="date" id="dataEntrega" formControlName="dataEntrega">
+              <div class="error-message" *ngIf="hasError('dataEntrega', 'required')">
+                Data de entrega é obrigatória
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="imagemUrl">URL da Imagem</label>
+            <input type="text" id="imagemUrl" formControlName="imagemUrl" placeholder="Ex: assets/images/projeto1.jpg">
+            <div class="error-message" *ngIf="hasError('imagemUrl', 'required')">
+              URL da imagem é obrigatória
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="pending">Pendente</option>
+              <option value="in-progress">Em Andamento</option>
+              <option value="completed">Concluído</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tags</label>
+            <div class="tags-container">
+              <div class="tag-item" *ngFor="let tag of tags.controls; let i = index">
+                <div class="tag-input-group">
+                  <input type="text" [formControlName]="i" placeholder="Ex: Logo, Branding">
+                  <button type="button" class="remove-tag" (click)="removerTag(i)">×</button>
+                </div>
+                <div class="error-message" *ngIf="tag.touched && tag.invalid">
+                  Tag é obrigatória
+                </div>
+              </div>
+              <button type="button" class="add-tag-button" (click)="adicionarTag()">
+                + Adicionar Tag
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="fecharModalNovoIDV()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="idvForm.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

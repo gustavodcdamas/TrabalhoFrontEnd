@@ -1,1 +1,116 @@
-<p>compras works!</p>
+<!-- compras.component.html -->
+<div class="compras-container">
+  <div class="page-header">
+    <h1>Controle de Compras</h1>
+    <div class="actions">
+      <button class="add-button">+ Nova Compra</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar compra..." class="search-input" [(ngModel)]="searchTerm" (input)="searchCompras(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-summary">
+    <div class="summary-card">
+      <div class="summary-icon pending">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getComprasByStatus('pending') }}</h3>
+        <p>Compras Pendentes</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon completed">
+        <i class="fas fa-check"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getComprasByStatus('completed') }}</h3>
+        <p>Compras Concluídas</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon processing">
+        <i class="fas fa-sync-alt"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getComprasByStatus('processing') }}</h3>
+        <p>Em Processamento</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon total">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ formatCurrency(getTotalGasto()) }}</h3>
+        <p>Total de Gastos</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterCompras('all')">Todas</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'pending'}" (click)="filterCompras('pending')">Pendentes</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'processing'}" (click)="filterCompras('processing')">Em Processamento</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'completed'}" (click)="filterCompras('completed')">Concluídas</div>
+  </div>
+
+  <div class="table-container">
+    <table class="compras-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Produto/Serviço</th>
+          <th>Data</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compra of filteredCompras">
+          <td class="compra-id">#{{ compra.id }}</td>
+          <td class="compra-item">
+            <div class="item-info">
+              <img [src]="'assets/icons/' + compra.icone" [alt]="compra.item" class="item-icon">
+              <div>
+                <span class="item-name">{{ compra.item }}</span>
+                <span class="item-category">{{ compra.categoria }}</span>
+              </div>
+            </div>
+          </td>
+          <td>{{ compra.data | date:'dd/MM/yyyy' }}</td>
+          <td class="compra-valor">{{ formatCurrency(compra.valor) }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="compra.status">
+              {{ getStatusLabel(compra.status) }}
+            </span>
+          </td>
+          <td class="compra-actions">
+            <button class="icon-button view" (click)="verDetalhesCompra(compra.id)">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="icon-button edit" (click)="editarCompra(compra.id)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="icon-button" [ngClass]="{'cancel': compra.status !== 'completed', 'download': compra.status === 'completed'}"
+                   (click)="compra.status === 'completed' ? downloadComprovante(compra.id) : cancelarCompra(compra.id)">
+              <i class="fas" [ngClass]="{'fa-times': compra.status !== 'completed', 'fa-download': compra.status === 'completed'}"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination">
+    <button class="pagination-button">&lt;</button>
+    <button class="pagination-button active">1</button>
+    <button class="pagination-button">2</button>
+    <button class="pagination-button">3</button>
+    <button class="pagination-button">&gt;</button>
+  </div>
+</div>

@@ -1,1 +1,143 @@
-<p>servicos works!</p>
+<!-- servicos.component.html atualizado -->
+<div class="servicos-container">
+  <div class="page-header">
+    <h1>Serviços</h1>
+    <div class="actions">
+      <button class="add-button" (click)="abrirModalNovoServico()">+ Novo Serviço</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar serviço..." class="search-input" [(ngModel)]="searchTerm" (input)="searchServicos(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterServicos('all')">Todos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'design'}" (click)="filterServicos('design')">Design</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'marketing'}" (click)="filterServicos('marketing')">Marketing</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'web'}" (click)="filterServicos('web')">Web</div>
+  </div>
+
+  <div class="servicos-grid">
+    <!-- Cards de Serviços -->
+    <div class="servico-card" *ngFor="let servico of filteredServicos">
+      <div class="servico-header" [ngClass]="servico.categoria">
+        <div class="servico-icon">
+          <img [src]="'assets/icons/' + servico.icone" [alt]="servico.titulo">
+        </div>
+        <div class="servico-price">{{ formatCurrency(servico.preco) }}</div>
+      </div>
+      <div class="servico-body">
+        <h3 class="servico-title">{{ servico.titulo }}</h3>
+        <p class="servico-description">{{ servico.descricao }}</p>
+        <div class="servico-features">
+          <span class="feature-item" *ngFor="let feature of servico.recursos">{{ feature }}</span>
+        </div>
+      </div>
+      <div class="servico-footer">
+        <button class="action-button edit" (click)="editarServico(servico.id)">Editar</button>
+        <button class="action-button details" (click)="verDetalhesServico(servico.id)">Detalhes</button>
+        <button class="action-button delete" (click)="excluirServico(servico.id)">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há serviços -->
+  <div class="no-servicos-message" *ngIf="filteredServicos.length === 0">
+    <p>Nenhum serviço encontrado para os filtros selecionados.</p>
+    <button class="add-button" (click)="abrirModalNovoServico()">+ Adicionar Novo Serviço</button>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination" *ngIf="filteredServicos.length > 0">
+    <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+    <ng-container *ngFor="let page of getPaginationArray()">
+      <button class="pagination-button" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  </div>
+
+  <!-- Modal de Novo Serviço -->
+  <div class="modal" *ngIf="showNovoServicoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Editar Serviço' : 'Novo Serviço' }}</h2>
+        <button class="close-button" (click)="fecharModalNovoServico()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="servicoForm" (ngSubmit)="salvarNovoServico()">
+          <div class="form-group">
+            <label for="titulo">Título do Serviço</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Design de Logo">
+            <div class="error-message" *ngIf="hasError('titulo', 'required')">
+              Título é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" formControlName="descricao" rows="3" placeholder="Descreva o serviço oferecido"></textarea>
+            <div class="error-message" *ngIf="hasError('descricao', 'required')">
+              Descrição é obrigatória
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="preco">Preço (R$)</label>
+            <input type="number" id="preco" formControlName="preco" min="0" placeholder="Ex: 599">
+            <div class="error-message" *ngIf="hasError('preco', 'required')">
+              Preço é obrigatório
+            </div>
+            <div class="error-message" *ngIf="hasError('preco', 'min')">
+              Preço deve ser maior ou igual a zero
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" formControlName="categoria">
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="web">Web</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="icone">Ícone</label>
+            <input type="text" id="icone" formControlName="icone" placeholder="Ex: design-icon.svg">
+            <div class="error-message" *ngIf="hasError('icone', 'required')">
+              Ícone é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Recursos Incluídos</label>
+            <div class="recursos-container">
+              <div class="recurso-item" *ngFor="let recurso of recursos.controls; let i = index">
+                <div class="recurso-input-group">
+                  <input type="text" [formControlName]="i" placeholder="Ex: Logo ou Relatórios">
+                  <button type="button" class="remove-recurso" (click)="removerRecurso(i)">×</button>
+                </div>
+                <div class="error-message" *ngIf="recurso.touched && recurso.invalid">
+                  Recurso é obrigatório
+                </div>
+              </div>
+              <button type="button" class="add-recurso-button" (click)="adicionarRecurso()">
+                + Adicionar Recurso
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="fecharModalNovoServico()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="servicoForm.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

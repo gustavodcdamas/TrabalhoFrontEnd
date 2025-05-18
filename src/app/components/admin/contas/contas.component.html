@@ -1,1 +1,158 @@
-<p>contas works!</p>
+<!-- contas.component.html atualizado -->
+<div class="contas-container">
+  <div class="page-header">
+    <h1>Gerenciamento de Contas</h1>
+    <div class="actions">
+      <button class="add-button" (click)="abrirModalNovaConta()">+ Nova Conta</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar conta..." class="search-input" [(ngModel)]="searchTerm" (input)="searchContas(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterContas('all')">Todas</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'active'}" (click)="filterContas('active')">Ativas</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'inactive'}" (click)="filterContas('inactive')">Inativas</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'pending'}" (click)="filterContas('pending')">Pendentes</div>
+  </div>
+
+  <div class="contas-grid">
+    <!-- Cartões de conta serão renderizados dinamicamente -->
+    <div class="conta-card" *ngFor="let conta of filteredContas">
+      <div class="conta-header">
+        <div class="conta-logo">
+          <img src="assets/icons/account.svg" alt="Conta">
+        </div>
+        <div class="conta-status" [ngClass]="conta.status">
+          {{ getStatusLabel(conta.status) }}
+        </div>
+      </div>
+      <div class="conta-body">
+        <h3 class="conta-title">{{ conta.titulo }}</h3>
+        <p class="conta-number">{{ conta.numero }}</p>
+        <div class="conta-info">
+          <div class="info-group">
+            <span class="info-label">TITULAR</span>
+            <span class="info-value">{{ conta.titular }}</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">VALIDADE</span>
+            <span class="info-value">{{ conta.validade }}</span>
+          </div>
+        </div>
+        <div class="conta-balance">
+          <span class="balance-label">Saldo</span>
+          <span class="balance-value">{{ formatCurrency(conta.saldo) }}</span>
+        </div>
+      </div>
+      <div class="conta-footer">
+        <button class="action-button edit" (click)="editarConta(conta.id)">Editar</button>
+        <button class="action-button details" (click)="verDetalhesConta(conta.id)">Detalhes</button>
+
+        <!-- Botões condicionais baseados no status da conta -->
+        <ng-container *ngIf="conta.status === 'active'">
+          <button class="action-button deactivate" (click)="desativarConta(conta.id)">Desativar</button>
+        </ng-container>
+
+        <ng-container *ngIf="conta.status === 'inactive'">
+          <button class="action-button activate" (click)="ativarConta(conta.id)">Ativar</button>
+        </ng-container>
+
+        <ng-container *ngIf="conta.status === 'pending'">
+          <button class="action-button activate" (click)="ativarConta(conta.id)">Ativar</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há contas -->
+  <div class="no-contas-message" *ngIf="filteredContas.length === 0">
+    <p>Nenhuma conta encontrada para os filtros selecionados.</p>
+    <button class="add-button" (click)="abrirModalNovaConta()">+ Adicionar Nova Conta</button>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination" *ngIf="filteredContas.length > 0">
+    <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+    <ng-container *ngFor="let page of getPaginationArray()">
+      <button class="pagination-button" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  </div>
+
+  <!-- Modal de Nova Conta -->
+  <div class="modal" *ngIf="showNovaContaModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nova Conta</h2>
+        <button class="close-button" (click)="fecharModalNovaConta()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="contaForm" (ngSubmit)="salvarNovaConta()">
+          <div class="form-group">
+            <label for="titulo">Título da Conta</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Conta Principal">
+            <div class="error-message" *ngIf="hasError('titulo', 'required')">
+              Título é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="numero">Número da Conta</label>
+            <input type="text" id="numero" formControlName="numero" placeholder="Ex: 1234 5678 9012 3456">
+            <div class="error-message" *ngIf="hasError('numero', 'required')">
+              Número é obrigatório
+            </div>
+            <div class="error-message" *ngIf="hasError('numero', 'pattern')">
+              Formato inválido. Use XXXX XXXX XXXX XXXX
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="titular">Titular</label>
+            <input type="text" id="titular" formControlName="titular" placeholder="Nome do titular">
+            <div class="error-message" *ngIf="hasError('titular', 'required')">
+              Titular é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="validade">Validade</label>
+            <input type="text" id="validade" formControlName="validade" placeholder="MM/AA">
+            <div class="error-message" *ngIf="hasError('validade', 'required')">
+              Validade é obrigatória
+            </div>
+            <div class="error-message" *ngIf="hasError('validade', 'pattern')">
+              Formato inválido. Use MM/AA
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="saldo">Saldo Inicial</label>
+            <input type="number" id="saldo" formControlName="saldo" placeholder="0">
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="active">Ativa</option>
+              <option value="inactive">Inativa</option>
+              <option value="pending">Pendente</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="fecharModalNovaConta()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="contaForm.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

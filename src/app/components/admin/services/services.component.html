@@ -1,1 +1,222 @@
-<p>services works!</p>
+<!-- services.component.html -->
+<div class="services-container">
+  <div class="page-header">
+    <h1>Planos de Serviços</h1>
+    <div class="actions">
+      <button class="add-button" (click)="abrirModalNovoService()">+ Novo Plano</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar plano..." class="search-input" [(ngModel)]="searchTerm" (input)="searchServices(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterServices('all')">Todos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'design'}" (click)="filterServices('design')">Design</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'marketing'}" (click)="filterServices('marketing')">Marketing</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'web'}" (click)="filterServices('web')">Web</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'combo'}" (click)="filterServices('combo')">Combos</div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-icon design">
+        <i class="fas fa-paint-brush"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getCategoryCount('design') }}</h3>
+        <p>Planos de Design</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon marketing">
+        <i class="fas fa-bullhorn"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getCategoryCount('marketing') }}</h3>
+        <p>Planos de Marketing</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon web">
+        <i class="fas fa-code"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getCategoryCount('web') }}</h3>
+        <p>Planos de Web</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon combo">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="summary-content">
+        <h3>{{ getCategoryCount('combo') }}</h3>
+        <p>Planos Combo</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="services-grid">
+    <!-- Cards de Planos de Serviço -->
+    <div class="service-card" *ngFor="let service of filteredServices">
+      <div class="service-header" [ngClass]="service.categoria">
+        <div class="service-price">
+          <span class="price-value">{{ formatCurrency(service.preco) }}</span>
+          <span class="price-period">/{{ service.periodo }}</span>
+        </div>
+        <span class="service-highlight" *ngIf="service.destaque">Destaque</span>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">{{ service.titulo }}</h3>
+        <p class="service-subtitle">{{ service.subtitulo }}</p>
+        <ul class="service-features">
+          <li *ngFor="let feature of service.recursos"
+              [ngClass]="{'included': feature.incluido}">
+            <span class="feature-icon">{{ feature.incluido ? '✓' : '×' }}</span>
+            <span class="feature-text">{{ feature.texto }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="service-footer">
+        <button class="action-button edit" (click)="editarService(service.id)">Editar</button>
+        <button class="action-button details" (click)="verDetalhesService(service.id)">Detalhes</button>
+        <button class="action-button"
+               [ngClass]="{'activate': !service.ativo, 'deactivate': service.ativo}"
+               (click)="toggleActiveService(service.id)">
+          {{ service.ativo ? 'Desativar' : 'Ativar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há planos -->
+  <div class="no-services-message" *ngIf="filteredServices.length === 0">
+    <p>Nenhum plano de serviço encontrado para os filtros selecionados.</p>
+    <button class="add-button" (click)="abrirModalNovoService()">+ Adicionar Novo Plano</button>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination" *ngIf="filteredServices.length > 0">
+    <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+    <ng-container *ngFor="let page of getPaginationArray()">
+      <button class="pagination-button" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  </div>
+
+  <!-- Modal de Novo Plano de Serviço -->
+  <div class="modal" *ngIf="showNovoServiceModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Editar Plano' : 'Novo Plano' }}</h2>
+        <button class="close-button" (click)="fecharModalNovoService()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="serviceForm" (ngSubmit)="salvarNovoService()">
+          <div class="form-group">
+            <label for="titulo">Título do Plano</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ex: Plano Premium">
+            <div class="error-message" *ngIf="hasError('titulo', 'required')">
+              Título é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subtitulo">Subtítulo</label>
+            <input type="text" id="subtitulo" formControlName="subtitulo" placeholder="Ex: Para empresas em expansão">
+            <div class="error-message" *ngIf="hasError('subtitulo', 'required')">
+              Subtítulo é obrigatório
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label for="preco">Preço (R$)</label>
+              <input type="number" id="preco" formControlName="preco" min="0" placeholder="Ex: 299">
+              <div class="error-message" *ngIf="hasError('preco', 'required')">
+                Preço é obrigatório
+              </div>
+              <div class="error-message" *ngIf="hasError('preco', 'min')">
+                Preço deve ser maior ou igual a zero
+              </div>
+            </div>
+
+            <div class="form-group half-width">
+              <label for="periodo">Período</label>
+              <select id="periodo" formControlName="periodo">
+                <option value="mês">Mês</option>
+                <option value="trimestre">Trimestre</option>
+                <option value="semestre">Semestre</option>
+                <option value="ano">Ano</option>
+                <option value="projeto">Projeto</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" formControlName="categoria">
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="web">Web</option>
+              <option value="combo">Combo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="destaque">
+                Destacar este plano
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="ativo">
+                Plano ativo
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Recursos do Plano</label>
+            <div formArrayName="recursos">
+              <div class="feature-item-form" *ngFor="let recurso of recursos.controls; let i = index" [formGroupName]="i">
+                <div class="feature-input-group">
+                  <input type="text" formControlName="texto" placeholder="Ex: 5 posts por semana">
+                  <div class="feature-checkbox">
+                    <label class="checkbox-label small">
+                      <input type="checkbox" formControlName="incluido">
+                      Incluído
+                    </label>
+                  </div>
+                  <button type="button" class="remove-feature" (click)="removerRecurso(i)">×</button>
+                </div>
+                <div class="error-message" *ngIf="recurso.get('texto')?.touched && recurso.get('texto')?.invalid">
+                  Descrição do recurso é obrigatória
+                </div>
+              </div>
+              <button type="button" class="add-feature-button" (click)="adicionarRecurso()">
+                + Adicionar Recurso
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="fecharModalNovoService()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="serviceForm.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

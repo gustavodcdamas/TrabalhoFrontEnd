@@ -1,1 +1,492 @@
-<p>setting works!</p>
+<!-- setting.component.html -->
+<div class="settings-container">
+  <div class="page-header">
+    <h1>Configurações</h1>
+    <div class="actions">
+      <button class="save-all-button" [disabled]="!hasChanges" (click)="salvarTodasConfiguracoes()">
+        <i class="fas fa-save"></i> Salvar Alterações
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-tabs">
+    <div class="tab-navigation">
+      <button class="tab-button" [ngClass]="{'active': activeTab === 'perfil'}" (click)="changeTab('perfil')">
+        <i class="fas fa-user"></i> Perfil
+      </button>
+      <button class="tab-button" [ngClass]="{'active': activeTab === 'aparencia'}" (click)="changeTab('aparencia')">
+        <i class="fas fa-palette"></i> Aparência
+      </button>
+      <button class="tab-button" [ngClass]="{'active': activeTab === 'notificacoes'}" (click)="changeTab('notificacoes')">
+        <i class="fas fa-bell"></i> Notificações
+      </button>
+      <button class="tab-button" [ngClass]="{'active': activeTab === 'seguranca'}" (click)="changeTab('seguranca')">
+        <i class="fas fa-shield-alt"></i> Segurança
+      </button>
+      <button class="tab-button" [ngClass]="{'active': activeTab === 'sistema'}" (click)="changeTab('sistema')" *ngIf="isAdmin">
+        <i class="fas fa-cogs"></i> Sistema
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <!-- Perfil -->
+      <div class="tab-pane" *ngIf="activeTab === 'perfil'">
+        <h2 class="section-title">Informações do Perfil</h2>
+
+        <form [formGroup]="perfilForm" class="settings-form">
+          <div class="profile-picture-section">
+            <div class="profile-picture">
+              <img [src]="imagemPreview || 'assets/images/default-avatar.jpg'" alt="Imagem de perfil">
+              <div class="profile-picture-overlay">
+                <i class="fas fa-camera"></i>
+              </div>
+              <input type="file" class="file-input" accept="image/*" (change)="onImagemSelecionada($event)">
+            </div>
+            <div class="profile-picture-actions">
+              <button type="button" class="action-button upload" (click)="triggerFileInput()">Carregar Imagem</button>
+              <button type="button" class="action-button remove" *ngIf="imagemPreview" (click)="removerImagem()">Remover</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" formControlName="nome">
+            <div class="error-message" *ngIf="hasError(perfilForm, 'nome', 'required')">
+              Nome é obrigatório
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" formControlName="email">
+              <div class="error-message" *ngIf="hasError(perfilForm, 'email', 'required')">
+                E-mail é obrigatório
+              </div>
+              <div class="error-message" *ngIf="hasError(perfilForm, 'email', 'email')">
+                Informe um e-mail válido
+              </div>
+            </div>
+
+            <div class="form-group half-width">
+              <label for="cargo">Cargo</label>
+              <input type="text" id="cargo" formControlName="cargo">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="biografia">Biografia</label>
+            <textarea id="biografia" formControlName="biografia" rows="4" placeholder="Uma breve descrição sobre você"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" [disabled]="!isPerfilFormDirty" (click)="resetarPerfilForm()">Cancelar</button>
+            <button type="button" class="save-button" [disabled]="!isPerfilFormDirty || perfilForm.invalid" (click)="salvarPerfil()">Salvar Perfil</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Aparência -->
+      <div class="tab-pane" *ngIf="activeTab === 'aparencia'">
+        <h2 class="section-title">Preferências de Aparência</h2>
+
+        <div class="settings-form">
+          <div class="form-group">
+            <label>Tema</label>
+            <div class="theme-selector">
+              <div class="theme-option" [ngClass]="{'active': configuracoes.aparencia.tema === 'claro'}" (click)="selecionarTema('claro')">
+                <div class="theme-preview light-theme">
+                  <div class="theme-preview-header"></div>
+                  <div class="theme-preview-content"></div>
+                </div>
+                <div class="theme-name">Claro</div>
+              </div>
+              <div class="theme-option" [ngClass]="{'active': configuracoes.aparencia.tema === 'escuro'}" (click)="selecionarTema('escuro')">
+                <div class="theme-preview dark-theme">
+                  <div class="theme-preview-header"></div>
+                  <div class="theme-preview-content"></div>
+                </div>
+                <div class="theme-name">Escuro</div>
+              </div>
+              <div class="theme-option" [ngClass]="{'active': configuracoes.aparencia.tema === 'sistema'}" (click)="selecionarTema('sistema')">
+                <div class="theme-preview system-theme">
+                  <div class="theme-preview-header"></div>
+                  <div class="theme-preview-content"></div>
+                </div>
+                <div class="theme-name">Sistema</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Cor de Destaque</label>
+            <div class="color-selector">
+              <div class="color-option"
+                  *ngFor="let cor of coresPrimarias"
+                  [ngClass]="{'active': configuracoes.aparencia.corPrimaria === cor.valor}"
+                  [style.backgroundColor]="cor.cor"
+                  (click)="selecionarCorPrimaria(cor.valor)">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tamanho da Fonte</label>
+            <div class="font-size-selector">
+              <div class="font-size-option"
+                  *ngFor="let tamanho of tamanhosFonte"
+                  [ngClass]="{'active': configuracoes.aparencia.tamanhoFonte === tamanho.valor}"
+                  (click)="selecionarTamanhoFonte(tamanho.valor)">
+                <div class="font-size-preview" [style.fontSize]="tamanho.amostra">A</div>
+                <div class="font-size-name">{{ tamanho.nome }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="configuracoes.aparencia.animacoesReduzidas">
+              Reduzir animações
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="configuracoes.aparencia.modoCompacto">
+              Modo compacto (reduzir espaçamento)
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notificações -->
+      <div class="tab-pane" *ngIf="activeTab === 'notificacoes'">
+        <h2 class="section-title">Preferências de Notificações</h2>
+
+        <div class="settings-form">
+          <div class="form-group">
+            <label>Notificações por E-mail</label>
+            <div class="notification-options">
+              <div class="notification-option" *ngFor="let opcao of opcoesNotificacaoEmail; let i = index">
+                <label class="checkbox-label">
+                  <input type="checkbox" [(ngModel)]="configuracoes.notificacoes.email[i].ativo">
+                  {{ opcao.nome }}
+                </label>
+                <div class="notification-description">{{ opcao.descricao }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Notificações no Sistema</label>
+            <div class="notification-options">
+              <div class="notification-option" *ngFor="let opcao of opcoesNotificacaoSistema; let i = index">
+                <label class="checkbox-label">
+                  <input type="checkbox" [(ngModel)]="configuracoes.notificacoes.sistema[i].ativo">
+                  {{ opcao.nome }}
+                </label>
+                <div class="notification-description">{{ opcao.descricao }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Resumo de Atividades</label>
+            <select [(ngModel)]="configuracoes.notificacoes.frequenciaResumo">
+              <option value="diario">Diário</option>
+              <option value="semanal">Semanal</option>
+              <option value="mensal">Mensal</option>
+              <option value="nunca">Nunca</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segurança -->
+      <div class="tab-pane" *ngIf="activeTab === 'seguranca'">
+        <h2 class="section-title">Configurações de Segurança</h2>
+
+        <div class="settings-form">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Alterar Senha</h3>
+            </div>
+            <div class="setting-card-body">
+              <form [formGroup]="senhaForm">
+                <div class="form-group">
+                  <label for="senhaAtual">Senha Atual</label>
+                  <input type="password" id="senhaAtual" formControlName="senhaAtual">
+                  <div class="error-message" *ngIf="hasError(senhaForm, 'senhaAtual', 'required')">
+                    Senha atual é obrigatória
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="novaSenha">Nova Senha</label>
+                  <input type="password" id="novaSenha" formControlName="novaSenha">
+                  <div class="error-message" *ngIf="hasError(senhaForm, 'novaSenha', 'required')">
+                    Nova senha é obrigatória
+                  </div>
+                  <div class="error-message" *ngIf="hasError(senhaForm, 'novaSenha', 'minlength')">
+                    A senha deve ter pelo menos 6 caracteres
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmarSenha">Confirmar Nova Senha</label>
+                  <input type="password" id="confirmarSenha" formControlName="confirmarSenha">
+                  <div class="error-message" *ngIf="hasError(senhaForm, 'confirmarSenha', 'required')">
+                    Confirmação de senha é obrigatória
+                  </div>
+                  <div class="error-message" *ngIf="senhaForm.hasError('senhasNaoConferem')">
+                    As senhas não conferem
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="save-button" [disabled]="senhaForm.invalid" (click)="alterarSenha()">Alterar Senha</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Autenticação em Duas Etapas</h3>
+            </div>
+            <div class="setting-card-body">
+              <div class="setting-option">
+                <div class="setting-option-info">
+                  <div class="setting-option-title">Verificação em duas etapas</div>
+                  <div class="setting-option-description">
+                    Adiciona uma camada extra de segurança à sua conta. Além da senha, você precisará fornecer um código enviado para seu celular.
+                  </div>
+                </div>
+                <div class="setting-option-control">
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="configuracoes.seguranca.autenticacaoDuasEtapas">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="setting-option-details" *ngIf="configuracoes.seguranca.autenticacaoDuasEtapas">
+                <div class="info-box">
+                  <div class="info-box-title">Método de verificação</div>
+                  <div class="info-box-content">
+                    <select [(ngModel)]="configuracoes.seguranca.metodoVerificacao">
+                      <option value="sms">SMS</option>
+                      <option value="app">Aplicativo Autenticador</option>
+                      <option value="email">E-mail</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="info-box" *ngIf="configuracoes.seguranca.metodoVerificacao === 'sms'">
+                  <div class="form-group">
+                    <label for="telefone">Número de Telefone</label>
+                    <input type="tel" id="telefone" [(ngModel)]="configuracoes.seguranca.telefone">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Histórico de Sessões</h3>
+            </div>
+            <div class="setting-card-body">
+              <div class="session-list">
+                <div class="session-item" *ngFor="let sessao of sessoes">
+                  <div class="session-details">
+                    <div class="session-device">
+                      <i [class]="getDeviceIcon(sessao.dispositivo)"></i>
+                      {{ sessao.dispositivo }}
+                    </div>
+                    <div class="session-info">
+                      <div class="session-location">{{ sessao.localizacao }}</div>
+                      <div class="session-time">{{ sessao.ultimoAcesso | date:'dd/MM/yyyy HH:mm' }}</div>
+                    </div>
+                  </div>
+                  <div class="session-actions">
+                    <button class="action-button danger" *ngIf="!sessao.atual" (click)="encerrarSessao(sessao.id)">Encerrar</button>
+                    <span class="session-current" *ngIf="sessao.atual">Sessão Atual</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="danger-button" (click)="encerrarTodasSessoes()">Encerrar Todas as Sessões</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sistema (Apenas para administradores) -->
+      <div class="tab-pane" *ngIf="activeTab === 'sistema' && isAdmin">
+        <h2 class="section-title">Configurações do Sistema</h2>
+
+        <div class="settings-form">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Informações da Empresa</h3>
+            </div>
+            <div class="setting-card-body">
+              <form [formGroup]="empresaForm">
+                <div class="form-group">
+                  <label for="nomeEmpresa">Nome da Empresa</label>
+                  <input type="text" id="nomeEmpresa" formControlName="nome">
+                </div>
+
+                <div class="form-group">
+                  <label for="cnpj">CNPJ</label>
+                  <input type="text" id="cnpj" formControlName="cnpj">
+                </div>
+
+                <div class="form-group">
+                  <label for="email">E-mail de Contato</label>
+                  <input type="email" id="emailEmpresa" formControlName="email">
+                </div>
+
+                <div class="form-group">
+                  <label for="telefone">Telefone</label>
+                  <input type="tel" id="telefoneEmpresa" formControlName="telefone">
+                </div>
+
+                <div class="form-group">
+                  <label for="endereco">Endereço</label>
+                  <textarea id="endereco" formControlName="endereco" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="cancel-button" [disabled]="!isEmpresaFormDirty" (click)="resetarEmpresaForm()">Cancelar</button>
+                  <button type="button" class="save-button" [disabled]="!isEmpresaFormDirty || empresaForm.invalid" (click)="salvarEmpresa()">Salvar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Configurações Gerais</h3>
+            </div>
+            <div class="setting-card-body">
+              <div class="setting-option">
+                <div class="setting-option-info">
+                  <div class="setting-option-title">Modo de Manutenção</div>
+                  <div class="setting-option-description">
+                    Ativa o modo de manutenção do sistema. Apenas administradores poderão acessar durante este período.
+                  </div>
+                </div>
+                <div class="setting-option-control">
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="configuracoes.sistema.modoManutencao">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="setting-option">
+                <div class="setting-option-info">
+                  <div class="setting-option-title">Registros de Auditoria</div>
+                  <div class="setting-option-description">
+                    Mantém registros detalhados de todas as ações realizadas no sistema.
+                  </div>
+                </div>
+                <div class="setting-option-control">
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="configuracoes.sistema.registrosAuditoria">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="tempoSessao">Tempo Máximo de Sessão (minutos)</label>
+                <input type="number" id="tempoSessao" [(ngModel)]="configuracoes.sistema.tempoSessao" min="5" max="1440">
+              </div>
+
+              <div class="form-group">
+                <label for="backups">Frequência de Backups</label>
+                <select id="backups" [(ngModel)]="configuracoes.sistema.frequenciaBackups">
+                  <option value="diario">Diário</option>
+                  <option value="semanal">Semanal</option>
+                  <option value="mensal">Mensal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <h3>Backup e Restauração</h3>
+            </div>
+            <div class="setting-card-body">
+              <div class="backup-actions">
+                <button type="button" class="primary-button" (click)="realizarBackup()">
+                  <i class="fas fa-download"></i> Realizar Backup
+                </button>
+                <button type="button" class="secondary-button" (click)="abrirModalRestauracao()">
+                  <i class="fas fa-upload"></i> Restaurar Backup
+                </button>
+              </div>
+
+              <div class="backup-history">
+                <h4>Últimos Backups</h4>
+                <div class="backup-list">
+                  <div class="backup-item" *ngFor="let backup of backups">
+                    <div class="backup-details">
+                      <div class="backup-name">{{ backup.nome }}</div>
+                      <div class="backup-date">{{ backup.data | date:'dd/MM/yyyy HH:mm' }}</div>
+                    </div>
+                    <div class="backup-actions">
+                      <button class="icon-button download" (click)="downloadBackup(backup.id)" title="Download">
+                        <i class="fas fa-download"></i>
+                      </button>
+                      <button class="icon-button restore" (click)="restaurarBackup(backup.id)" title="Restaurar">
+                        <i class="fas fa-undo"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmação para Restauração de Backup -->
+<div class="modal" *ngIf="showRestauracaoModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Restaurar Backup</h2>
+      <button class="close-button" (click)="fecharModalRestauracao()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="warning-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Atenção! A restauração de um backup substituirá todos os dados atuais do sistema. Esta ação não pode ser desfeita.</p>
+      </div>
+
+      <div class="file-upload-area">
+        <div class="file-upload-box">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Arraste e solte o arquivo de backup ou clique para selecionar</p>
+          <input type="file" class="file-input" accept=".zip,.bkp" (change)="onBackupSelecionado($event)">
+        </div>
+        <div class="selected-file" *ngIf="backupSelecionado">
+          Arquivo selecionado: {{ backupSelecionado.name }}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="fecharModalRestauracao()">Cancelar</button>
+        <button type="button" class="danger-button" [disabled]="!backupSelecionado" (click)="confirmarRestauracao()">Confirmar Restauração</button>
+      </div>
+    </div>
+  </div>
+</div>

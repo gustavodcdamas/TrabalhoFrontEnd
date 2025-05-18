@@ -1,1 +1,289 @@
-<p>my-privileges works!</p>
+<!-- my-privileges.component.html -->
+<div class="privileges-container">
+  <div class="page-header">
+    <h1>Meus Privilégios</h1>
+    <div class="actions" *ngIf="isAdmin">
+      <button class="manage-button" (click)="abrirModalGerenciarUsuarios()">Gerenciar Usuários</button>
+    </div>
+  </div>
+
+  <div class="user-profile">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="currentUser.avatarUrl || 'assets/images/default-avatar.jpg'" [alt]="currentUser.nome">
+        <div class="user-status" [ngClass]="currentUser.status">
+          {{ getStatusLabel(currentUser.status) }}
+        </div>
+      </div>
+      <div class="profile-info">
+        <h2 class="user-name">{{ currentUser.nome }}</h2>
+        <div class="user-details">
+          <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ currentUser.email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Cargo:</span>
+            <span class="detail-value">{{ currentUser.cargo }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Nível de Acesso:</span>
+            <span class="detail-value role-badge" [ngClass]="currentUser.nivelAcesso">
+              {{ getNivelAcessoLabel(currentUser.nivelAcesso) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="privileges-section">
+    <h2 class="section-title">Permissões de Acesso</h2>
+
+    <div class="privileges-grid">
+      <div class="privilege-card" *ngFor="let modulo of modulos">
+        <div class="privilege-header" [ngClass]="{'has-access': temPermissao(modulo.id)}">
+          <span class="module-icon">
+            <i [class]="modulo.icone"></i>
+          </span>
+          <span class="module-name">{{ modulo.nome }}</span>
+          <span class="access-badge" [ngClass]="{'granted': temPermissao(modulo.id), 'denied': !temPermissao(modulo.id)}">
+            {{ temPermissao(modulo.id) ? 'Acesso Permitido' : 'Sem Acesso' }}
+          </span>
+        </div>
+        <div class="privilege-body">
+          <p class="module-description">{{ modulo.descricao }}</p>
+
+          <div class="permission-list">
+            <div *ngFor="let permissao of getPermissoesModulo(modulo.id)"
+                 class="permission-item"
+                 [ngClass]="{'granted': permissao.concedida}">
+              <span class="permission-icon">
+                <i [class]="permissao.concedida ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+              </span>
+              <div class="permission-info">
+                <div class="permission-name">{{ permissao.nome }}</div>
+                <div class="permission-description">{{ permissao.descricao }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-section" *ngIf="activityLogs.length">
+    <h2 class="section-title">Histórico de Atividades</h2>
+
+    <div class="activity-list">
+      <div class="activity-item" *ngFor="let log of activityLogs">
+        <div class="activity-icon" [ngClass]="log.tipo">
+          <i [class]="getActivityIcon(log.tipo)"></i>
+        </div>
+        <div class="activity-content">
+          <div class="activity-message">{{ log.mensagem }}</div>
+          <div class="activity-time">{{ log.data | date:'dd/MM/yyyy HH:mm' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Gerenciar Usuários (apenas para administradores) -->
+  <div class="modal" *ngIf="showGerenciarUsuariosModal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2>Gerenciar Usuários</h2>
+        <button class="close-button" (click)="fecharModalGerenciarUsuarios()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="users-header">
+          <div class="search-container">
+            <input type="text" placeholder="Buscar usuário..." class="search-input" [(ngModel)]="searchTerm" (input)="searchUsers()">
+            <span class="search-icon">🔍</span>
+          </div>
+          <button class="add-button" (click)="abrirModalNovoUsuario()">+ Novo Usuário</button>
+        </div>
+
+        <div class="users-table-container">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Usuário</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Nível de Acesso</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of filteredUsers">
+                <td class="user-cell">
+                  <img [src]="user.avatarUrl || 'assets/images/default-avatar.jpg'" class="user-avatar-small" [alt]="user.nome">
+                  <span>{{ user.nome }}</span>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.cargo }}</td>
+                <td>
+                  <span class="role-badge" [ngClass]="user.nivelAcesso">
+                    {{ getNivelAcessoLabel(user.nivelAcesso) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="status-badge" [ngClass]="user.status">
+                    {{ getStatusLabel(user.status) }}
+                  </span>
+                </td>
+                <td class="action-cell">
+                  <button class="icon-button edit" (click)="editarUsuario(user.id)" title="Editar Usuário">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="icon-button permissions" (click)="editarPermissoes(user.id)" title="Editar Permissões">
+                    <i class="fas fa-key"></i>
+                  </button>
+                  <button class="icon-button"
+                         [ngClass]="{'activate': user.status === 'inactive', 'deactivate': user.status === 'active'}"
+                         [title]="user.status === 'active' ? 'Desativar Usuário' : 'Ativar Usuário'"
+                         (click)="toggleUserStatus(user.id)">
+                    <i class="fas" [ngClass]="{'fa-user-slash': user.status === 'active', 'fa-user-check': user.status === 'inactive'}"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Permissões -->
+  <div class="modal" *ngIf="showEditarPermissoesModal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2>Editar Permissões - {{ selectedUser?.nome }}</h2>
+        <button class="close-button" (click)="fecharModalEditarPermissoes()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="permissions-list">
+          <div class="permission-module" *ngFor="let modulo of modulos">
+            <div class="module-header">
+              <div class="module-title">
+                <i [class]="modulo.icone"></i>
+                <span>{{ modulo.nome }}</span>
+              </div>
+              <div class="module-toggle">
+                <label class="switch">
+                  <input type="checkbox"
+                         [checked]="isModuleChecked(modulo.id)"
+                         (change)="toggleModulePermissions(modulo.id, $event)">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="module-permissions">
+              <div class="permission-row" *ngFor="let permissao of getPermissoesModulo(modulo.id)">
+                <div class="permission-name-description">
+                  <div class="permission-name">{{ permissao.nome }}</div>
+                  <div class="permission-description small">{{ permissao.descricao }}</div>
+                </div>
+                <div class="permission-toggle">
+                  <label class="switch small">
+                    <input type="checkbox"
+                           [checked]="permissao.concedida"
+                           (change)="togglePermission(modulo.id, permissao.id, $event)">
+                    <span class="slider round small"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="cancel-button" (click)="fecharModalEditarPermissoes()">Cancelar</button>
+          <button type="button" class="save-button" (click)="salvarPermissoes()">Salvar Permissões</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Adicionar/Editar Usuário -->
+  <div class="modal" *ngIf="showUserFormModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+        <button class="close-button" (click)="fecharModalUsuario()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="salvarUsuario()">
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" formControlName="nome" placeholder="Nome do usuário">
+            <div class="error-message" *ngIf="hasError('nome', 'required')">
+              Nome é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" placeholder="email@exemplo.com">
+            <div class="error-message" *ngIf="hasError('email', 'required')">
+              Email é obrigatório
+            </div>
+            <div class="error-message" *ngIf="hasError('email', 'email')">
+              Formato de email inválido
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="!isEditMode">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" formControlName="senha" placeholder="Senha">
+            <div class="error-message" *ngIf="hasError('senha', 'required')">
+              Senha é obrigatória
+            </div>
+            <div class="error-message" *ngIf="hasError('senha', 'minlength')">
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cargo">Cargo</label>
+            <input type="text" id="cargo" formControlName="cargo" placeholder="Ex: Designer, Gerente de Marketing">
+            <div class="error-message" *ngIf="hasError('cargo', 'required')">
+              Cargo é obrigatório
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nivelAcesso">Nível de Acesso</label>
+            <select id="nivelAcesso" formControlName="nivelAcesso">
+              <option value="user">Usuário</option>
+              <option value="editor">Editor</option>
+              <option value="manager">Gerente</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="avatarUrl">URL da Imagem de Perfil</label>
+            <input type="text" id="avatarUrl" formControlName="avatarUrl" placeholder="https://exemplo.com/foto.jpg">
+          </div>
+
+          <div class="form-group" *ngIf="isEditMode">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="active">Ativo</option>
+              <option value="inactive">Inativo</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="fecharModalUsuario()">Cancelar</button>
+            <button type="submit" class="save-button" [disabled]="userForm.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
