@@ -1,7 +1,7 @@
 /* Estilos para o Novo Footer */
 footer {
-  background-color: #121212; /* Fundo cinza escuro */
-  color: #fff; /* Define todas as letras como brancas */
+  background-color: #f2f2f2; /* Fundo cinza escuro */
+  color: #000000; /* Define todas as letras como brancas */
   padding: 30px 0;
 }
 
@@ -33,7 +33,7 @@ footer {
 }
 
 .footer-links a {
-  color: #fff; /* Links em branco */
+  color: #000000; /* Links em branco */
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
@@ -98,7 +98,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: rgb(0, 0, 0);
   text-decoration: none;
   transition: background-color 0.3s ease;
 }
@@ -155,7 +155,7 @@ footer {
 .logo-text-link {
   display: block;
   text-decoration: none;
-  color: #fff !important; /* Força a cor branca */
+  color: #000000 !important; /* Força a cor branca */
   font-weight: 700;
   font-size: 18px;
   margin: 10px 0;
@@ -169,7 +169,7 @@ a {
 
 /* Manter o destaque apenas para os links do menu */
 .footer-links ul li a {
-  color: #fff;
+  color: #000000;
   transition: color 0.3s ease;
 }
 

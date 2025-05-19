@@ -1,35 +1,34 @@
 <!-- Portfolio Section -->
- <section class="portfolio" id="projetos">
-        <h2 class="section-title">Portfólio</h2>
-
+<section class="portfolio" id="projetos">
+  <h2 class="section-title">Portfólio</h2>
+  <img src="BG.png" alt="Portfólio" class="portfolio-image" />
   <div class="container">
-      <div class="portfolio-container">
-          <!-- Botão Anterior -->
-          <button class="portfolio-nav-button prev" (click)="prevSlide()">&#8249;</button>
+    <div class="portfolio-container">
+      <!-- Botão Anterior -->
+      <button class="portfolio-nav-button prev" (click)="prevSlide()">&#8249;</button>
 
-          <!-- Carrossel -->
-          <div class="portfolio-carousel-wrapper">
-              <div class="portfolio-carousel" [style.transform]="'translateX(' + portfolioPosition + 'px)'">
-                  <div class="portfolio-item" *ngFor="let item of portfolioItems">
-                      <img [src]="item.image" alt="{{ item.title }}" class="portfolio-image" />
-                      <h3 class="portfolio-title">{{ item.title }}</h3>
-                      <p class="portfolio-description">{{ item.description }}</p>
-                  </div>
-              </div>
+      <!-- Carrossel -->
+      <div class="portfolio-carousel-wrapper">
+        <div class="portfolio-carousel" [style.transform]="'translateX(' + portfolioPosition + 'px)'">
+          <div class="portfolio-item" *ngFor="let item of portfolioItems">
+            <!-- Apenas as imagens -->
+            <img [src]="item.image" class="portfolio-image" />
           </div>
-
-          <!-- Botão Próximo -->
-          <button class="portfolio-nav-button next" (click)="nextSlide()">&#8250;</button>
+        </div>
       </div>
 
-      <!-- Indicadores -->
-      <div class="portfolio-indicators">
-          <div
-              class="portfolio-indicator"
-              *ngFor="let index of indicators"
-              [class.active]="index === activeIndex"
-              (click)="goToSlide(index)"
-          ></div>
-      </div>
+      <!-- Botão Próximo -->
+      <button class="portfolio-nav-button next" (click)="nextSlide()">&#8250;</button>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="portfolio-indicators">
+      <div
+        class="portfolio-indicator"
+        *ngFor="let index of indicators"
+        [class.active]="index === activeIndex"
+        (click)="goToSlide(index)"
+      ></div>
+    </div>
   </div>
 </section>

@@ -12,46 +12,32 @@
 }
 
 .portfolio-carousel-wrapper {
-  flex: 1;
-  overflow: hidden;
-  padding-left: 100px;
-  padding-right: 100px;
-  box-sizing: border-box;
+  overflow: hidden; /* Garante que as imagens que saem do limite não sejam visíveis */
+  width: 100%;
 }
 
 .portfolio-carousel {
-  display: flex;
-  transition: transform 0.3s ease-in-out;
+  display: flex; /* Exibe os itens lado a lado */
+  transition: transform 0.3s ease-in-out; /* Animação para o movimento do carrossel */
+    margin-left: 50px;
+  margin-right: 60px;
 }
 
 .portfolio-item {
-  width: 320px; /* Largura do item */
-  margin-right: 20px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  flex: 0 0 25%; /* 25% da largura total, pois queremos exibir 4 imagens por vez */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .portfolio-image {
-  width: 100%;
+  width: 100%; /* A imagem ocupa toda a largura do item */
   height: auto;
-  margin-bottom: 10px;
-}
-
-.portfolio-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  margin-left: 0;
-  margin-right: 0;
-  text-align: center; /* Centraliza o título */
-}
-
-.portfolio-description {
-  font-size: 14px;
-  color: #666;
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+  border-radius: 5px; /* Borda arredondada (opcional) */
+    margin-left: 50px;
+  margin-right: 50px;
 }
 
 .portfolio-nav-button {
@@ -96,10 +82,20 @@
 .portfolio .section-title {
   padding-left: 150px;
   padding-right: 40px;
-    font-size: 30px;
-
+  font-size: 30px;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Adiciona a margem de 150px acima da imagem */
+.portfolio-image {
+  margin-top: 150px; /* Margem de 150px acima da imagem */
+  width: 90%; /* A imagem ocupa toda a largura do item */
+  height: auto;
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+  border-radius: 5px; /* Borda arredondada (opcional) */
+  margin-left: 150px;
+}
+
 
 @media (min-width: 992px) {
   .portfolio .container {

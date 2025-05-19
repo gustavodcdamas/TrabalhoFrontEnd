@@ -69,8 +69,8 @@
 .solution-card {
   width: 300px; /* Largura do card */
   margin-right: 20px; /* Espaçamento entre os cards */
-  background: #ff8800;
-  color: #fff;
+  background: linear-gradient(-20deg, #FF6636, #FFAA5B); /* Degradê de laranja */
+  color: #ffffff;
   border-radius: 16px;
   padding: 24px 16px;
   margin: 16px;
@@ -85,7 +85,7 @@
 .solution-title,
 .solution-description,
 .solution-price {
-  color: #fff;
+  color: #000000;
 }
 
 .solution-title {
@@ -102,7 +102,7 @@
 .solution-price {
   font-size: 16px;
   font-weight: bold;
-  color: #fffdfc;
+  color: #000000;
   margin-top: 10px;
 }
 

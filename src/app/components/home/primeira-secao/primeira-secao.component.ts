@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 declare global {
@@ -16,7 +16,7 @@ declare global {
   imports: [FormsModule, CommonModule],
   styleUrls: ['./primeira-secao.component.css']
 })
-export class PrimeiraSecaoComponent {
+export class PrimeiraSecaoComponent  {
   telefone: string = '';
   nome: string = '';
   email: string = '';
@@ -26,6 +26,33 @@ export class PrimeiraSecaoComponent {
     window.voltaEtapa = this.voltaEtapa;
     window.toggleSelecao = this.toggleSelecao;
   }
+  // Adicione estes métodos à sua classe PrimeiraSecaoComponent
+
+aplicarEstiloHover(event: MouseEvent) {
+  const botao = event.target as HTMLElement;
+  botao.style.backgroundColor = '#FFFFFF !important';
+  botao.style.color = '#FF6B00 !important';
+  botao.style.border = '2px solid #FF6B00';
+
+  // Encontrar o span dentro do botão para estilizá-lo também
+  const span = botao.querySelector('span');
+  if (span) {
+    span.style.backgroundColor = 'rgba(255, 107, 0, 0.2) !important';
+  }
+}
+
+removerEstiloHover(event: MouseEvent) {
+  const botao = event.target as HTMLElement;
+  botao.style.backgroundColor = '#FF6B00 !important';
+  botao.style.color = '#FFFFFF !important';
+  botao.style.border = 'none';
+
+  // Restaurar o estilo do span
+  const span = botao.querySelector('span');
+  if (span) {
+    span.style.backgroundColor = 'rgba(255, 255, 255, 0.2) !important';
+  }
+}
 
   avancaEtapa(etapa: number) {
     const etapas = document.querySelectorAll('.etapa');

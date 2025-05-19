@@ -4,8 +4,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 150px; /* Aplica 150px de padding lateral */
-  background-color: #0c0c0c; /* Fundo preto ocupa toda a largura */
-  color: #fff;
+  background-color: #f4f4f4; /* Fundo preto ocupa toda a largura */
+  color: #000000;
   width: 100%;
   box-sizing: border-box;
 }
@@ -29,7 +29,7 @@ header {
 .logo-text {
   font-weight: 700;
   font-size: 14px;
-  color: #fff; /* Garante que o texto fique branco */
+  color: #000000; /* Garante que o texto fique branco */
   text-decoration: none;
   margin-bottom: 3px;
 }
@@ -37,7 +37,7 @@ header {
 .logo-subtext {
   font-weight: 400;
   font-size: 12px;
-  color: #ccc; /* Um cinza claro para o subtítulo */
+  color: #2a2a2a; /* Um cinza claro para o subtítulo */
   text-decoration: none;
 }
 
@@ -50,7 +50,7 @@ nav ul {
 }
 
 nav li a {
-  color: #fff; /* Links em branco */
+  color: #000000; /* Links em branco */
   font-size: 16px;
   font-weight: 400;
   line-height: 140%;

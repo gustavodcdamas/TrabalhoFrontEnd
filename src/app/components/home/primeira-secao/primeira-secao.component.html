@@ -1,63 +1,71 @@
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agência CUEI - Soluções Digitais</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./primeira-secao.component.css">
-</head>
-    <div class="container">
+<!-- Formulário Final Ajustado -->
+<div class="container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1 class="hero-title">Desperte o <span>potencial do seu negócio</span> no mundo digital</h1>
+      <p class="hero-description">Dos criativos às landing pages, economize tempo e dinheiro contratando uma única agência para planejar, produzir e entregar todo o visual do seu lançamento com qualidade e no prazo.</p>
+    </div>
 
-        <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1 class="hero-title">Desperte o <span>potencial do seu negócio</span> no mundo digital</h1>
-            <p class="hero-description">Dos criativos às landing pages, economize tempo e dinheiro contratando uma única agência para planejar, produzir e entregar todo o visual do seu lançamento com qualidade e no prazo.</p>
+    <div class="form-container">
+      <p class="form-title">Preencha o formulário abaixo e agende uma reunião estratégica com nosso especialista em crescimento de negócio</p>
+      <form>
+        <div class="form-group">
+          <label for="nome">Nome e sobrenome</label>
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            [(ngModel)]="nome"
+            class="form-input"
+          >
         </div>
 
-        <div class="form-container">
-            <p class="form-title">Preencha o formulário abaixo e agende uma reunião estratégica com nosso especialista em crescimento de negócio.</p>
-            <form>
-                <div class="form-group">
-                    <label for="nome">Nome e sobrenome</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" [(ngModel)]="nome">
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="Digite o seu e-mail" [(ngModel)]="email">
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone</label>
-                    <input
-                      type="tel"
-                      id="telefone"
-                      name="telefone"
-                      placeholder="(00) 00000-0000"
-                      [(ngModel)]="telefone"
-                      (input)="formatarTelefone()"
-                      (keydown)="permitirSomenteNumeros($event)"
-                      maxlength="15"
-                      autocomplete="off"
-                    />
-                </div>
-                <!-- Exemplo de uso no HTML -->
-                <div *ngIf="telefone && !telefoneValido()" class="erro">
-                  Telefone inválido. Use o formato (00) 00000-0000.
-                </div>
-                <button
-                  type="button"
-                  class="submit-button"
-                  (click)="enviarParaWhatsApp()"
-                >
-                  Solicite seu orçamento agora
-                  <span>→</span>
-                </button>
-            </form>
-            <div class="form-footer">
-                <a href="https://wa.me/5531988664718" target="_blank" rel="noopener">
-                    Fale com um atendente
-                </a>
-            </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Digite o seu e-mail"
+            [(ngModel)]="email"
+            class="form-input"
+          >
         </div>
-    </section>
 
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input
+            type="tel"
+            id="telefone"
+            name="telefone"
+            placeholder="00 99999-9999"
+            [(ngModel)]="telefone"
+            (input)="formatarTelefone()"
+            (keydown)="permitirSomenteNumeros($event)"
+            maxlength="15"
+            autocomplete="off"
+            class="form-input"
+          />
+        </div>
 
+     <button
+  type="button"
+  class="submit-button"
+  (click)="enviarParaWhatsApp()"
+  #submitButton
+  style="background-color: #FF6B00 !important; color: white !important;"
+>
+  Solicite seu orçamento agora
+  <span style="background-color: rgba(255, 255, 255, 0.2) !important;">→</span>
+</button>
+      </form>
+
+      <div class="form-footer">
+        <a href="https://wa.me/5531988664718" target="_blank" rel="noopener">
+          Fale com um atendente
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
