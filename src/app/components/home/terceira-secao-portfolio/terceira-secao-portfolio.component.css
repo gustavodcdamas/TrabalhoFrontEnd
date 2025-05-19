@@ -1,6 +1,10 @@
 /* Portfolio Section */
 .portfolio {
   padding: 50px 0;
+  background-image: url('/logo-cuei-background.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
 }
 
 .portfolio-container {
@@ -32,12 +36,9 @@
 }
 
 .portfolio-image {
-  width: 100%; /* A imagem ocupa toda a largura do item */
+  width: 80%; /* A imagem ocupa toda a largura do item */
   height: auto;
   object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-  border-radius: 5px; /* Borda arredondada (opcional) */
-    margin-left: 50px;
-  margin-right: 50px;
 }
 
 .portfolio-nav-button {
@@ -85,17 +86,6 @@
   font-size: 30px;
   font-family: Arial, Helvetica, sans-serif;
 }
-
-/* Adiciona a margem de 150px acima da imagem */
-.portfolio-image {
-  margin-top: 150px; /* Margem de 150px acima da imagem */
-  width: 90%; /* A imagem ocupa toda a largura do item */
-  height: auto;
-  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-  border-radius: 5px; /* Borda arredondada (opcional) */
-  margin-left: 150px;
-}
-
 
 @media (min-width: 992px) {
   .portfolio .container {
