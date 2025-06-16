@@ -5,19 +5,30 @@ import { Environment } from './environment.interface';
 
 // Função para detectar o contexto de execução
 function detectEnvironment() {
-  // Verificar se está rodando em container
-  const isDocker = window.location.hostname !== 'localhost' && 
-                   window.location.hostname !== '127.0.0.1';
+  const hostname = window.location.hostname;
+  const port = window.location.port;
+  
+  console.log('🔍 Detectando ambiente:', { hostname, port, location: window.location.href });
+  
+  // Verificar se está rodando em container (acessado via nome do container)
+  const isContainerAccess = hostname !== 'localhost' && hostname !== '127.0.0.1' && !hostname.includes('.');
   
   // Verificar se é produção baseado no hostname
-  const isProduction = window.location.hostname.includes('gustavodcdamas.com.br');
+  const isProduction = hostname.includes('gustavodcdamas.com.br');
+  
+  // Verificar se é desenvolvimento local (acessado via localhost)
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
   
   // Detectar se o backend está no Docker
-  const backendHost = isDocker ? 'agencia-backend' : getBackendHost();
+  const backendHost = isLocalhost ? 'localhost' : getBackendHost();
   
+  console.log('🎯 Contexto detectado:', { isContainerAccess, isProduction, isLocalhost, backendHost });
+  
+  // ✅ CORRIGIDO: Retornar isLocalhost também
   return {
-    isDocker,
+    isDocker: !isLocalhost,
     isProduction,
+    isLocalhost,        // ← Adicionar esta propriedade
     backendHost,
     frontendUrl: window.location.origin
   };
@@ -49,12 +60,12 @@ const context = detectEnvironment();
 export const environment: Environment = {
   production: context.isProduction,
   
-  // URL da API - lógica universal
-  apiUrl: context.isDocker && context.isProduction 
+  // ✅ CORRIGIDO: URL da API - lógica simplificada
+  apiUrl: context.isLocalhost 
+    ? 'http://localhost:3333'        // Dev local: backend exposto no host
+    : context.isProduction 
     ? 'http://agencia-backend:3333'  // Produção: comunicação interna Docker
-    : context.isDocker 
-    ? 'http://agencia-backend:3333'  // Dev Docker: comunicação interna
-    : `http://${context.backendHost}:3333`, // Dev local: host detection
+    : 'http://agencia-backend:3333', // Dev Docker: comunicação interna
   
   // URL da aplicação
   appUrl: context.frontendUrl,
@@ -87,14 +98,14 @@ export const environment: Environment = {
   enableHttps: context.isProduction,
   corsEnabled: true,
   
-  // URLs de serviços - detecção automática
-  whatsappApiUrl: context.isDocker && context.isProduction
-    ? 'http://agencia-backend:3333/api/whatsapp'
-    : `http://${context.backendHost}:3333/api/whatsapp`,
+  // ✅ CORRIGIDO: URLs de serviços - lógica simplificada
+  whatsappApiUrl: context.isLocalhost
+    ? 'http://localhost:3333/api/whatsapp'
+    : 'http://agencia-backend:3333/api/whatsapp',
     
-  emailServiceUrl: context.isDocker && context.isProduction
-    ? 'http://agencia-backend:3333/api/email'
-    : `http://${context.backendHost}:3333/api/email`,
+  emailServiceUrl: context.isLocalhost
+    ? 'http://localhost:3333/api/email'
+    : 'http://agencia-backend:3333/api/email',
   
   // Logging
   enableConsoleLog: !context.isProduction,

@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { provideClientHydration } from '@angular/platform-browser';
-import { ApiUrlInterceptor } from './core/interceptors/http.interceptor';
+import { ApiUrlInterceptor } from './core/interceptors/api-url.interceptor';
 
 @Injectable()
 export class WithCredentialsInterceptor implements HttpInterceptor {
@@ -41,9 +41,9 @@ export class WithCredentialsInterceptor implements HttpInterceptor {
   })],
     providers: [
       {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ApiUrlInterceptor,
-      multi: true
+        provide: HTTP_INTERCEPTORS,
+        useClass: ApiUrlInterceptor,
+        multi: true
       },
       { provide: HTTP_INTERCEPTORS, useClass: WithCredentialsInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

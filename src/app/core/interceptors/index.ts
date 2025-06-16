@@ -1,1 +1,1 @@
-export { ApiUrlInterceptor } from '../interceptors/http.interceptor';
+export { ApiUrlInterceptor } from './api-url.interceptor';

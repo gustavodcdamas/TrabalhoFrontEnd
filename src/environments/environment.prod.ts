@@ -1,40 +1,51 @@
+// src/environments/environment.prod.ts
+// Environment de produção com detecção localhost
+
 import { Environment } from './environment.interface';
 
+// ✅ LOG PARA VERIFICAR SE ESTÁ SENDO USADO
+console.log('🚨 ENVIRONMENT.PROD.TS CARREGADO!');
+console.log('🚨 Hostname:', window.location.hostname);
+
+// ✅ DETECÇÃO: Se for localhost, usar localhost:3333
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const apiUrl = isLocalhost ? 'http://localhost:3333' : 'http://agencia-backend:3333';
+
+console.log('🚨 API URL ESCOLHIDA:', apiUrl);
+
 export const environment: Environment = {
-  production: true,
-  apiUrl: 'http://agencia-backend:3333',
-  appUrl: 'https://gustavodcdamas.com.br',
+  production: false, // ✅ False para desenvolvimento dockerizado
+  
+  // ✅ DETECÇÃO AUTOMÁTICA
+  apiUrl: apiUrl,
+  
+  appUrl: window.location.origin,
   viaCepUrl: 'https://viacep.com.br/ws',
-  enableDevTools: false,
-  logLevel: 'error',
+  enableDevTools: true,
+  logLevel: 'debug',
   
-  // ✅ Configurações HTTP para produção
-  requestTimeout: 60000, // 45 segundos para produção
-  retryCount: 2, // Menos tentativas em produção
+  requestTimeout: 30000,
+  retryCount: 3,
   enableCsrf: true,
-  timeout: 60000,        // Timeout em ms
-  retryAttempts: 2,   
+  timeout: 30000,
+  retryAttempts: 3,
   
-  // ✅ Configurações para produção
-  dockerMode: true,
-  backendHost: 'backend', // Nome do serviço Docker
+  dockerMode: !isLocalhost,
+  backendHost: isLocalhost ? 'localhost' : 'agencia-backend',
   backendPort: 3333,
   
-  // ✅ Configurações de cache e performance
-  cacheTimeout: 600000, // 10 minutos em produção
-  enableServiceWorker: true,
-  cacheDuration: 86400000, // 24horas
+  cacheTimeout: 300000,
+  enableServiceWorker: false,
+  cacheDuration: 1800000,
   
-  // ✅ Configurações de segurança
-  enableHttps: true,
+  enableHttps: false,
   corsEnabled: true,
   
-  // ✅ URLs de serviços externos
-  whatsappApiUrl: 'https://api.seudominio.com.br/api/whatsapp',
-  emailServiceUrl: 'https://api.seudominio.com.br/api/email',
+  whatsappApiUrl: isLocalhost ? 'http://localhost:3333/api/whatsapp' : 'http://agencia-backend:3333/api/whatsapp',
+  emailServiceUrl: isLocalhost ? 'http://localhost:3333/api/email' : 'http://agencia-backend:3333/api/email',
   
-  // ✅ Configurações de logging
-  enableConsoleLog: false,
-  enableErrorReporting: true,
-  version: 'string',
+  enableConsoleLog: true,
+  enableErrorReporting: false,
+  
+  version: '1.0.0',
 };
