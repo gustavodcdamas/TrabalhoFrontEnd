@@ -1,0 +1,295 @@
+<!-- administradores.component.html -->
+<div class="page-content">
+  <header class="header">
+    <div class="greeting">
+      <h1>
+        <fa-icon [icon]="['fas', 'user-shield']" class="title-icon"></fa-icon>
+        Gerenciamento de Administradores
+      </h1>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-bar">
+        <fa-icon [icon]="['fas', 'magnifying-glass']" class="icon"></fa-icon>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchInput()" 
+          placeholder="Buscar administradores..."
+          [disabled]="loading">
+      </div>
+
+      <button 
+        class="add-button" 
+        (click)="openAddModal()"
+        [disabled]="loading">
+        + Novo Administrador
+      </button>
+
+      <button 
+        class="refresh-button" 
+        (click)="refreshData()"
+        [disabled]="loading"
+        title="Atualizar dados">
+        <fa-icon [icon]="['fas', 'refresh']" [spin]="loading"></fa-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- Indicador de erro -->
+  <div class="error-banner" *ngIf="error">
+    <div class="error-content">
+      <fa-icon [icon]="['fas', 'exclamation-triangle']"></fa-icon>
+      <span>{{ error }}</span>
+      <button (click)="error = null" class="close-error">×</button>
+    </div>
+  </div>
+
+  <!-- Indicador de carregamento -->
+  <div class="loading-banner" *ngIf="loading">
+    <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+    <span>Carregando administradores...</span>
+  </div>
+
+  <div class="content-card">
+    <div class="card-header">
+      <h2>Lista de Administradores</h2>
+      <div class="card-actions">
+        <span class="total-count">
+          Total: {{ filteredAdministrators.length }} administrador(es)
+        </span>
+        <button class="filter-button">
+          <fa-icon [icon]="['fas', 'filter']" class="icon"></fa-icon> Filtrar
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-table">
+      <div class="table-header">
+        <div class="header-name">Nome Completo</div>
+        <div class="header-email">Email</div>
+        <div class="header-role">Função</div>
+        <div class="header-status">Status</div>
+        <div class="header-actions">Ações</div>
+      </div>
+
+      <div class="table-rows" *ngIf="filteredAdministrators.length > 0 && !loading">
+        <div class="table-row" *ngFor="let admin of getPaginatedAdministrators()">
+          <div class="cell-name">
+            <div class="name-container">
+              <span class="full-name">{{ getFullName(admin) }}</span>
+              <fa-icon 
+                *ngIf="admin.role === 'super_admin'" 
+                [icon]="['fas', 'crown']" 
+                class="crown-icon"
+                title="Super Administrador">
+              </fa-icon>
+            </div>
+          </div>
+          <div class="cell-email">{{ admin.email }}</div>
+          <div class="cell-role">
+            <span class="role-badge" [ngClass]="'role-' + admin.role">
+              {{ getRoleDisplayName(admin.role) }}
+            </span>
+          </div>
+          <div class="cell-status">
+            <span [ngClass]="getStatusBadgeClass(admin)">
+              {{ getStatusText(admin) }}
+            </span>
+          </div>
+          <div class="cell-actions">
+            <button 
+              class="action-button view-button" 
+              (click)="openEditModal(admin)"
+              *ngIf="canEditAdmin(admin.role)"
+              title="Visualizar/Editar">
+              <fa-icon [icon]="['fas', 'eye']" class="icon"></fa-icon>
+            </button>
+            <button 
+              class="action-button edit-button" 
+              (click)="openEditModal(admin)"
+              *ngIf="canEditAdmin(admin.role)"
+              title="Editar">
+              <fa-icon [icon]="['fas', 'pen']" class="icon"></fa-icon>
+            </button>
+            <button 
+              class="action-button delete-button" 
+              (click)="deleteAdministrator(admin)"
+              *ngIf="canDeleteAdmin(admin.role)"
+              title="Excluir">
+              <fa-icon [icon]="['fas', 'trash']" class="icon"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredAdministrators.length === 0 && !loading">
+        <div class="empty-icon">
+          <fa-icon [icon]="['fas', 'user-shield']"></fa-icon>
+        </div>
+        <p>{{ searchTerm ? 'Nenhum administrador encontrado.' : 'Nenhum administrador cadastrado.' }}</p>
+        <button class="add-button" (click)="openAddModal()">+ Novo Administrador</button>
+      </div>
+
+      <!-- Paginação -->
+      <div class="table-pagination" *ngIf="filteredAdministrators.length > 0 && !loading">
+        <div class="pagination-info">
+          Página {{ currentPage }} de {{ totalPages }} 
+          ({{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, filteredAdministrators.length) }} 
+          de {{ filteredAdministrators.length }})
+        </div>
+        
+        <div class="pagination-controls">
+          <button class="pagination-button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">&lt;</button>
+
+          <ng-container *ngIf="totalPages <= 5">
+            <button *ngFor="let page of getPages()"
+                    class="pagination-button"
+                    [ngClass]="{'active': page === currentPage}"
+                    (click)="goToPage(page)">
+              {{page}}
+            </button>
+          </ng-container>
+
+          <ng-container *ngIf="totalPages > 5">
+            <button class="pagination-button" [ngClass]="{'active': currentPage === 1}" (click)="goToPage(1)">1</button>
+
+            <button *ngIf="currentPage > 3" class="pagination-ellipsis">...</button>
+
+            <ng-container *ngFor="let page of getPages()">
+              <button *ngIf="page !== 1 && page !== totalPages && page >= currentPage - 1 && page <= currentPage + 1"
+                      class="pagination-button"
+                      [ngClass]="{'active': page === currentPage}"
+                      (click)="goToPage(page)">
+                {{page}}
+              </button>
+            </ng-container>
+
+            <button *ngIf="currentPage < totalPages - 2" class="pagination-ellipsis">...</button>
+
+            <button class="pagination-button" [ngClass]="{'active': currentPage === totalPages}" (click)="goToPage(totalPages)">
+              {{totalPages}}
+            </button>
+          </ng-container>
+
+          <button class="pagination-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para adicionar/editar administrador -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>
+          <fa-icon [icon]="['fas', 'user-shield']" class="modal-icon"></fa-icon>
+          {{ isEditing ? 'Editar Administrador' : 'Novo Administrador' }}
+        </h2>
+        <button class="close-button" (click)="closeModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="adminForm" (ngSubmit)="saveAdministrator()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">Nome *</label>
+              <input 
+                type="text" 
+                id="firstName" 
+                formControlName="firstName" 
+                placeholder="Digite o nome"
+                [class.error]="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched">
+              <div class="error-message" *ngIf="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched">
+                <span *ngIf="adminForm.get('firstName')?.errors?.['required']">Nome é obrigatório</span>
+                <span *ngIf="adminForm.get('firstName')?.errors?.['minlength']">Nome deve ter pelo menos 2 caracteres</span>
+                <span *ngIf="adminForm.get('firstName')?.errors?.['maxlength']">Nome não pode ter mais de 50 caracteres</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Sobrenome *</label>
+              <input 
+                type="text" 
+                id="lastName" 
+                formControlName="lastName" 
+                placeholder="Digite o sobrenome"
+                [class.error]="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched">
+              <div class="error-message" *ngIf="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched">
+                <span *ngIf="adminForm.get('lastName')?.errors?.['required']">Sobrenome é obrigatório</span>
+                <span *ngIf="adminForm.get('lastName')?.errors?.['minlength']">Sobrenome deve ter pelo menos 2 caracteres</span>
+                <span *ngIf="adminForm.get('lastName')?.errors?.['maxlength']">Sobrenome não pode ter mais de 50 caracteres</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              placeholder="Digite o email"
+              [class.error]="adminForm.get('email')?.invalid && adminForm.get('email')?.touched">
+            <div class="error-message" *ngIf="adminForm.get('email')?.invalid && adminForm.get('email')?.touched">
+              <span *ngIf="adminForm.get('email')?.errors?.['required']">Email é obrigatório</span>
+              <span *ngIf="adminForm.get('email')?.errors?.['email']">Email inválido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              Senha {{ isEditing ? '(deixe em branco para manter a atual)' : '*' }}
+            </label>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              placeholder="{{ isEditing ? 'Nova senha (opcional)' : 'Digite a senha' }}"
+              [class.error]="adminForm.get('password')?.invalid && adminForm.get('password')?.touched">
+            <div class="password-requirements">
+              <small>A senha deve conter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e símbolo especial</small>
+            </div>
+            <div class="error-message" *ngIf="adminForm.get('password')?.invalid && adminForm.get('password')?.touched">
+              <span *ngIf="adminForm.get('password')?.errors?.['required']">Senha é obrigatória</span>
+              <span *ngIf="adminForm.get('password')?.errors?.['minlength']">Senha deve ter pelo menos 8 caracteres</span>
+              <span *ngIf="adminForm.get('password')?.errors?.['pattern']">Senha deve conter maiúscula, minúscula, número e símbolo especial</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="role">Função *</label>
+            <select 
+              id="role" 
+              formControlName="role"
+              [disabled]="isEditing">
+              <option value="admin">Administrador</option>
+              <option value="super_admin" *ngIf="currentUser?.role === 'super_admin'">Super Administrador</option>
+            </select>
+            <div class="help-text" *ngIf="isEditing">
+              <small>A função não pode ser alterada após a criação</small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="closeModal()">
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              class="save-button" 
+              [disabled]="adminForm.invalid || loading">
+              <fa-icon 
+                *ngIf="loading" 
+                [icon]="['fas', 'spinner']" 
+                [spin]="true" 
+                class="button-icon">
+              </fa-icon>
+              {{ isEditing ? 'Atualizar' : 'Criar' }} Administrador
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

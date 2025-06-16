@@ -1,0 +1,174 @@
+/* login.component.css */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #EDEDED;
+  padding: 20px;
+}
+
+.login-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 500;
+}
+
+.alert.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #EDEDED;
+  font-size: 16px;
+  outline: none;
+  transition: color 0.3s ease;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+input:focus {
+  background-color: #e8e8e8;
+  box-shadow: 0 0 0 2px rgba(255, 105, 0, 0.2);
+}
+
+input.invalid {
+  background-color: #fff0f0;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.error-message {
+  color: #ff3e3e;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+/* Botão principal - ENTRAR */
+.login-button.primary {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: var(--laranja-cuei);
+  color: white; /* Garantir que seja branco */
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  margin-bottom: 15px; /* Espaçamento entre o botão principal e os secundários */
+}
+
+.login-button.primary:hover {
+  background-color: #e66000;
+  transform: translateY(-4px) scale(1.05);
+}
+
+.login-button.primary:active {
+  transform: translateY(1px);
+}
+
+.login-button.primary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Container para botões secundários */
+.secondary-buttons {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os botões */
+  width: 100%;
+}
+
+/* Botões secundários - lado a lado */
+.login-button.secondary {
+  flex: 1; /* Cada botão ocupa 50% do espaço disponível */
+  padding: 12px 8px; /* Padding menor para caber no espaço */
+  border-radius: 30px;
+  border: none;
+  background-color: var(--laranja-cuei);
+  color: white;
+  font-size: 14px; /* Fonte ligeiramente menor */
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.login-button.secondary:hover {
+  background-color: #e66000;
+  transform: translateY(-2px) scale(1.02); /* Efeito mais sutil */
+}
+
+.login-button.secondary:active {
+  transform: translateY(1px);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 20px;
+  }
+
+  input {
+    padding: 12px;
+  }
+
+  .login-button.primary {
+    padding: 12px;
+  }
+
+  .login-button.secondary {
+    padding: 10px 6px;
+    font-size: 12px; /* Fonte ainda menor em telas pequenas */
+  }
+
+  .secondary-buttons {
+    gap: 8px; /* Espaçamento menor em mobile */
+  }
+}
+
+/* Para telas muito pequenas, empilhar os botões secundários */
+@media (max-width: 360px) {
+  .secondary-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .login-button.secondary {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+}

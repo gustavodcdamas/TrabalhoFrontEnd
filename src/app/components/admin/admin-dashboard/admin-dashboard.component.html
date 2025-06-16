@@ -1,0 +1,265 @@
+<div class="dashboard-wrapper">  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary nav-custom-bg">
+    <div class="container-fluid">
+      <!-- Logo sempre à esquerda -->
+      <a class="navbar-brand" routerLink="/">
+        <img src="/assets/Vector.svg" alt="Logo CUEI" class="logo">
+      </a>
+
+      <!-- Botão hamburger - aparece só em mobile, posicionado à direita -->
+      <button class="navbar-toggler" 
+              type="button" 
+              (click)="toggleMenu()"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Área do usuário sempre à direita -->
+      <span class="navbar-text">
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle d-flex align-items-center" 
+                  type="button" 
+                  id="userDropdown" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                  (click)="preventRedirect($event)">
+            <fa-icon [icon]="['far', 'circle-user']" class="icon-user me-2"></fa-icon>
+            {{authService.currentUserValue?.firstName}}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li class="dropdown-header">
+              <div class="user-info">
+                <img [src]="userPhoto" alt="Foto do usuário" class="user-photo rounded-circle me-2">
+                <div>
+                  <div class="fw-bold">{{authService.currentUserValue?.firstName}} {{authService.currentUserValue?.lastName}}</div>
+                  <small class="text-muted">{{authService.currentUserValue?.email}}</small>
+                </div>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="editProfile()">
+                <fa-icon [icon]="['fas', 'user-edit']" class="me-2"></fa-icon>
+                Editar Conta
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="logout()">
+                <fa-icon [icon]="['fas', 'sign-out-alt']" class="me-2"></fa-icon>
+                Sair
+              </a>
+            </li>
+          </ul>
+        </div>
+      </span>
+    </div>
+  </nav>
+  <div class="sidebar-overlay" [class.active]="isMenuOpen" (click)="closeMenu()"></div>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar" [class.active]="isMenuOpen">
+      <nav class="sidebar-nav">
+        <ul>
+          <!-- Menu comum a todos os usuários logados -->
+          <li *ngIf="authService.isLoggedIn()" [class.active]="isActiveRoute('/admin/dashboard')">
+            <a routerLink="/admin/dashboard">
+              <fa-icon [icon]="['fas', 'chart-column']" class="icon"></fa-icon>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <!-- ✅ MENU DE MONITORAMENTO - Para Admins e Super Admins -->
+          <ng-container *ngIf="authService.hasRole(UserRole.ADMIN) || authService.hasRole(UserRole.SUPER_ADMIN)">
+            <li [class.active]="isActiveRoute('/admin/monitoring')" class="monitoring-menu">
+              <a routerLink="/admin/monitoring">
+                <fa-icon [icon]="['fas', 'heartbeat']" class="icon"></fa-icon>
+                <span>Monitoramento</span>
+                <!-- ✅ Badge de Status do Sistema -->
+                <span class="status-badge" [class]="systemStatus" *ngIf="systemStatus">
+                  {{ getSystemStatusText() }}
+                </span>
+              </a>
+            </li>
+            
+            <!-- ✅ Submenus de Monitoramento (apenas para Super Admin) -->
+            <ng-container *ngIf="authService.hasRole(UserRole.SUPER_ADMIN)">
+              <li [class.active]="isActiveRoute('/admin/monitoring') && getCurrentTab() === 'ping'" class="submenu-item">
+                <a routerLink="/admin/monitoring" [queryParams]="{tab: 'ping'}">
+                  <fa-icon [icon]="['fas', 'wifi']" class="icon"></fa-icon>
+                  <span>Ping Status</span>
+                </a>
+              </li>
+              <li [class.active]="isActiveRoute('/admin/monitoring') && getCurrentTab() === 'logs'" class="submenu-item">
+                <a routerLink="/admin/monitoring" [queryParams]="{tab: 'logs'}">
+                  <fa-icon [icon]="['fas', 'file-lines']" class="icon"></fa-icon>
+                  <span>Logs do Sistema</span>
+                </a>
+              </li>
+              <li [class.active]="isActiveRoute('/admin/monitoring') && getCurrentTab() === 'health'" class="submenu-item">
+                <a routerLink="/admin/monitoring" [queryParams]="{tab: 'health'}">
+                  <fa-icon [icon]="['fas', 'heart-pulse']" class="icon"></fa-icon>
+                  <span>Health Check</span>
+                </a>
+              </li>
+              <li [class.active]="isActiveRoute('/admin/monitoring') && getCurrentTab() === 'system'" class="submenu-item">
+                <a routerLink="/admin/monitoring" [queryParams]="{tab: 'system'}">
+                  <fa-icon [icon]="['fas', 'server']" class="icon"></fa-icon>
+                  <span>Sistema</span>
+                </a>
+              </li>
+            </ng-container>
+          </ng-container>
+
+          <!-- Menu para Clientes -->
+          <ng-container *ngIf="authService.hasRole(UserRole.CLIENT)">
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'store']" class="icon"></fa-icon>
+                <span>Pedidos</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'xmark']" class="icon"></fa-icon>
+                <span>Cancelar Pedido</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/cliente/area-cliente')">
+              <a routerLink="/cliente/area-cliente">
+                <fa-icon [icon]="['fas', 'user']" class="icon"></fa-icon>
+                <span>Área do Cliente</span>
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Menu para Administradores -->
+          <ng-container *ngIf="authService.hasRole(UserRole.ADMIN)">
+            <li [class.active]="isActiveRoute('/admin/clientes')">
+              <a routerLink="/admin/clientes">
+                <fa-icon [icon]="['fas', 'users']" class="icon"></fa-icon>
+                <span>Clientes</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/servicos')">
+              <a routerLink="/admin/servicos">
+                <fa-icon [icon]="['fas', 'tag']" class="icon"></fa-icon>
+                <span>Adicionar Serviço</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/criativos')">
+              <a routerLink="/admin/criativos">
+                <fa-icon [icon]="['fas', 'lightbulb']" class="icon"></fa-icon>
+                <span>Adicionar Criativo</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/idvs')">
+              <a routerLink="/admin/idvs">
+                <fa-icon [icon]="['fas', 'palette']" class="icon"></fa-icon>
+                <span>Adicionar Id. Visual</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/landing')">
+              <a routerLink="/admin/landing">
+                <fa-icon [icon]="['fas', 'plane-arrival']" class="icon"></fa-icon>
+                <span>Adicionar Landing Page</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/institucional')">
+              <a routerLink="/admin/institucional">
+                <fa-icon [icon]="['fas', 'building']" class="icon"></fa-icon>
+                <span>Adicionar Institucional</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'store']" class="icon"></fa-icon>
+                <span>Pedidos</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'xmark']" class="icon"></fa-icon>
+                <span>Cancelar Pedido</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/cliente/area-cliente')">
+              <a routerLink="/cliente/area-cliente">
+                <fa-icon [icon]="['fas', 'user']" class="icon"></fa-icon>
+                <span>Área do Cliente</span>
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Menu para Super Administradores -->
+          <ng-container *ngIf="authService.hasRole(UserRole.SUPER_ADMIN)">
+            <li [class.active]="isActiveRoute('/super-admin/administradores')">
+              <a routerLink="/super-admin/administradores">
+                <fa-icon [icon]="['fas', 'lock']" class="icon"></fa-icon>
+                <span>Administradores</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/clientes')">
+              <a routerLink="/admin/clientes">
+                <fa-icon [icon]="['fas', 'users']" class="icon"></fa-icon>
+                <span>Clientes</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/servicos')">
+              <a routerLink="/admin/servicos">
+                <fa-icon [icon]="['fas', 'tag']" class="icon"></fa-icon>
+                <span>Adicionar Serviço</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/criativos')">
+              <a routerLink="/admin/criativos">
+                <fa-icon [icon]="['fas', 'lightbulb']" class="icon"></fa-icon>
+                <span>Adicionar Criativo</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/idvs')">
+              <a routerLink="/admin/idvs">
+                <fa-icon [icon]="['fas', 'palette']" class="icon"></fa-icon>
+                <span>Adicionar Id. Visual</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/landing')">
+              <a routerLink="/admin/landing">
+                <fa-icon [icon]="['fas', 'plane-arrival']" class="icon"></fa-icon>
+                <span>Adicionar Landing Page</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/institucional')">
+              <a routerLink="/admin/institucional">
+                <fa-icon [icon]="['fas', 'building']" class="icon"></fa-icon>
+                <span>Adicionar Institucional</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'store']" class="icon"></fa-icon>
+                <span>Pedidos</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/admin/compras')">
+              <a routerLink="/admin/compras">
+                <fa-icon [icon]="['fas', 'xmark']" class="icon"></fa-icon>
+                <span>Cancelar Pedido</span>
+              </a>
+            </li>
+            <li [class.active]="isActiveRoute('/cliente/area-cliente')">
+              <a routerLink="/cliente/area-cliente">
+                <fa-icon [icon]="['fas', 'user']" class="icon"></fa-icon>
+                <span>Área do Cliente</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main Content - Apenas o router-outlet -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

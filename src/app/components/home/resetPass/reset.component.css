@@ -1,0 +1,148 @@
+/* cadastro.component.css */
+.cadastro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: var(--fundo-site);
+  padding: 20px;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 5px;
+}
+
+.invalid {
+  border-color: #dc3545 !important;
+}
+
+.cadastrar-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.cadastro-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.cadastro-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #f0f0f0;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+input:focus {
+  background-color: #e8e8e8;
+  box-shadow: 0 0 0 2px rgba(255, 105, 0, 0.2);
+}
+
+input.invalid {
+  background-color: #fff0f0;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.error-message {
+  color: #ff3e3e;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.cadastrar-button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ff6a00;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cadastrar-button:hover {
+  background-color: #e66000;
+}
+
+.cadastrar-button:active {
+  transform: translateY(1px);
+}
+
+.voltar-button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ff6a00;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}
+
+.voltar-button:hover {
+  background-color: #e66000;
+}
+
+.voltar-button:active {
+  transform: translateY(1px);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .cadastro-card {
+    padding: 20px;
+  }
+
+  input, .cadastrar-button, .voltar-button {
+    padding: 12px;
+  }
+}

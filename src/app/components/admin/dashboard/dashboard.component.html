@@ -1,0 +1,247 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <h1 class="welcome-title">Olá, {{ userName }}!</h1>
+        <p class="welcome-subtitle">Aqui está o resumo dos seus serviços</p>
+      </div>
+      <div class="header-actions">
+        <button class="refresh-btn" (click)="refreshData()" [disabled]="loading">
+          <fa-icon [icon]="['fas', 'chart-column']"></fa-icon>
+          Atualizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Carregando dados do dashboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <fa-icon [icon]="['fas', 'xmark']" class="error-icon"></fa-icon>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="refreshData()">Tentar Novamente</button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error" class="main-content">
+    
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <!-- Total Users Card -->
+      <div class="stat-card users-card">
+        <div class="stat-icon">
+          <fa-icon [icon]="['fas', 'users']"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ stats.totalUsers }}</h3>
+          <p class="stat-label">Total de Usuários</p>
+          <div class="stat-breakdown">
+            <span class="breakdown-item">
+              <fa-icon [icon]="['far', 'circle-user']"></fa-icon>
+              {{ stats.totalClients }} Clientes
+            </span>
+            <span class="breakdown-item">
+              <fa-icon [icon]="['fas', 'building']"></fa-icon>
+              {{ stats.totalAdmins + stats.totalSuperAdmins }} Admins
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Card -->
+      <div class="stat-card services-card">
+        <div class="stat-icon">
+          <fa-icon [icon]="['fas', 'store']"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ stats.totalServices }}</h3>
+          <p class="stat-label">Serviços Ativos</p>
+          <div class="stat-trend positive">
+            <span>+12% este mês</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Creative Projects Card -->
+      <div class="stat-card projects-card">
+        <div class="stat-icon">
+          <fa-icon [icon]="['fas', 'palette']"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getTotalProjects() }}</h3>
+          <p class="stat-label">Projetos Criativos</p>
+          <div class="stat-breakdown">
+            <span class="breakdown-item">{{ stats.totalIdv }} IDV</span>
+            <span class="breakdown-item">{{ stats.totalCreatives }} Criativos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion Rate Card -->
+      <div class="stat-card completion-card">
+        <div class="stat-icon">
+          <fa-icon [icon]="['fas', 'chart-diagram']"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getCompletionRate() }}%</h3>
+          <p class="stat-label">Taxa de Conclusão</p>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getCompletionRate()"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      
+      <!-- Users Distribution Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <fa-icon [icon]="['fas', 'users']"></fa-icon>
+            Distribuição de Usuários
+          </h3>
+          <p class="chart-subtitle">Breakdown por tipo de usuário</p>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="usersPieChart" width="400" height="400"></canvas>
+        </div>
+      </div>
+
+      <!-- Services Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <fa-icon [icon]="['fas', 'chart-column']"></fa-icon>
+            Serviços por Categoria
+          </h3>
+          <p class="chart-subtitle">Quantidade de projetos em cada categoria</p>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="servicesBarChart" width="400" height="400"></canvas>
+        </div>
+      </div>
+
+      <!-- Monthly Growth Chart -->
+      <div class="chart-container full-width">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <fa-icon [icon]="['fas', 'chart-diagram']"></fa-icon>
+            Crescimento Mensal
+          </h3>
+          <p class="chart-subtitle">Evolução de clientes e serviços ao longo do tempo</p>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="monthlyChart" width="800" height="400"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Services Grid -->
+    <div class="services-grid">
+      <h2 class="section-title">
+        <fa-icon [icon]="['fas', 'building-columns']"></fa-icon>
+        Detalhamento dos Serviços
+      </h2>
+      
+      <!-- DEBUG: Mostrar valores no console -->
+      <div style="display: none;">
+        Debug: IDV={{ stats.totalIdv }}, Criativos={{ stats.totalCreatives }}, 
+        Institucional={{ stats.totalInstitutional }}, Landing={{ stats.totalLandings }}
+      </div>
+      
+      <div class="service-cards">
+        <!-- IDV Card -->
+        <div class="service-card idv-card">
+          <div class="service-header">
+            <fa-icon [icon]="['fas', 'tag']"></fa-icon>
+            <h4>Identidades Visuais</h4>
+          </div>
+          <div class="service-stats">
+            <span class="service-count">{{ stats.totalIdv || 0 }}</span>
+            <span class="service-label">Projetos IDV</span>
+          </div>
+        </div>
+
+        <!-- Criativos Card -->
+        <div class="service-card creative-card">
+          <div class="service-header">
+            <fa-icon [icon]="['fas', 'lightbulb']"></fa-icon>
+            <h4>Criativos</h4>
+          </div>
+          <div class="service-stats">
+            <span class="service-count">{{ stats.totalCreatives || 0 }}</span>
+            <span class="service-label">Peças Criativas</span>
+          </div>
+        </div>
+
+        <!-- Institucional Card -->
+        <div class="service-card institutional-card">
+          <div class="service-header">
+            <fa-icon [icon]="['fas', 'building']"></fa-icon>
+            <h4>Institucional</h4>
+          </div>
+          <div class="service-stats">
+            <span class="service-count">{{ stats.totalInstitutional || 0 }}</span>
+            <span class="service-label">Materiais Institucionais</span>
+          </div>
+        </div>
+
+        <!-- Landing Pages Card -->
+        <div class="service-card landing-card">
+          <div class="service-header">
+            <fa-icon [icon]="['fas', 'plane-arrival']"></fa-icon>
+            <h4>Landing Pages</h4>
+          </div>
+          <div class="service-stats">
+            <span class="service-count">{{ stats.totalLandings || 0 }}</span>
+            <span class="service-label">Páginas de Conversão</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="activity-section">
+      <h2 class="section-title">
+        <fa-icon [icon]="['fas', 'chart-diagram']"></fa-icon>
+        Resumo Geral
+      </h2>
+      
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label">Total de Contas</div>
+          <div class="summary-value">{{ stats.totalUsers }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Administradores</div>
+          <div class="summary-value">{{ stats.totalAdmins }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Super Admins</div>
+          <div class="summary-value">{{ stats.totalSuperAdmins }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Clientes Ativos</div>
+          <div class="summary-value">{{ stats.totalClients }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Projetos Totais</div>
+          <div class="summary-value">{{ getTotalProjects() }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Serviços Disponíveis</div>
+          <div class="summary-value">{{ stats.totalServices }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

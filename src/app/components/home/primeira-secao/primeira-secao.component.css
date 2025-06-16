@@ -1,0 +1,223 @@
+:root {
+  --branco: #FFFFFF;
+  --fundo-site: #EDEDED;
+  --cinza-medio: #C3C3C3;
+  --cinza-normal: #565656;
+  --cinza-escuro: #1D1D1F;
+  --preto: #09070B;
+  --laranja-cuei: #FF6D00;
+  --laranja-contraste: #e45e00;
+  --contraste-btn: rgba(255, 255, 255, 0.2);
+  --sombra: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  --webkit-box-shadow: var(--sombra);
+}
+
+section {
+  background-color: var(--fundo-site);
+  width: 100%;
+}
+
+body, html, #app, .app-container, main, section {
+  background-color: var(--fundo-site);
+}
+
+html, body {
+  background-color: var(--fundo-site); /* Fundo cinza claro */
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* Previne rolagem horizontal */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  background-color: var(--fundo-site);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+  background-color: var(--fundo-site);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 0;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  background-color: var(--fundo-site);
+  transform: translateX(-50%);
+  z-index: -1;
+}
+.hero-text {
+  width: 50%;
+}
+
+.hero-title {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 119%;
+  letter-spacing: 0.6px;
+  color: var(--preto);
+  margin-bottom: 20px;
+}
+
+.hero-title span {
+  font-weight: 500;
+}
+
+.hero-description {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: var(--cinza-escuro);
+  margin-bottom: 30px;
+}
+
+/* Form Section - Estilizado para corresponder exatamente à imagem */
+.form-container {
+  width: 47%;
+  background-color: var(--branco);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  color: var(--preto);
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: var(--preto);
+}
+
+input .nome{
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--sombra);
+}
+
+.form-input {
+  width: 100%;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--sombra);
+  padding: 16px;
+  border: none;
+  border-radius: 30px; /* Ainda mais arredondado */
+  font-size: 16px;
+  background-color: var(--fundo-site);
+  color: var(--preto);
+  outline: none; /* Remove o contorno ao focar */
+}
+
+.form-input::placeholder {
+  color: var(--cinza-medio);
+}
+
+.submit-button {
+  width: 100%;
+  padding: 16px 24px;
+  background-color: var(--laranja-cuei);
+  color: var(--branco);
+  border: none;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: var(--laranja-contraste); /* Mantém a cor laranja no hover */
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.submit-button span {
+  background-color: var(--contraste-btn);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--branco);
+  font-size: 20px;
+  margin-left: 15px;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover span {
+  transform: translateX(3px); /* Apenas move a seta, sem mudar a cor */
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.form-footer a {
+  color: var(--preto);
+  text-decoration: underline;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.form-footer a:hover {
+  color: var(--laranja-cuei);
+  text-decoration: none;
+}
+
+/* Media query para dispositivos menores */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-text, .form-container {
+    width: 100%;
+  }
+
+  .hero-text {
+    margin-bottom: 30px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+}

@@ -1,0 +1,112 @@
+<app-header></app-header>
+
+<!-- ✅ Sistema de Notificações -->
+<div *ngIf="notification.show" class="notification-overlay" (click)="hideNotification()">
+  <div class="notification-container" [ngClass]="'notification-' + notification.type" (click)="$event.stopPropagation()">
+    <div class="notification-content">
+      <div class="notification-icon">
+        <span *ngIf="notification.type === 'success'">✅</span>
+        <span *ngIf="notification.type === 'error'">❌</span>
+        <span *ngIf="notification.type === 'info'">⏳</span>
+      </div>
+      <div class="notification-message">
+        {{ notification.message }}
+      </div>
+      <button class="notification-close" (click)="hideNotification()" *ngIf="notification.type !== 'info'">
+        ×
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="cadastro-container">
+  <div class="cadastro-card">
+    <h2 class="cadastro-title">Cadastro</h2>
+
+    <!-- Mensagem de erro geral (mantida para compatibilidade) -->
+    <div *ngIf="error && !notification.show" class="alert alert-danger">
+      {{error}}
+      <div *ngIf="error.includes('e-mail')">
+        <a routerLink="/auth/resend-verification" class="alert-link">Reenviar e-mail de verificação</a>
+      </div>
+    </div>
+
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+      <!-- Campo First Name -->
+      <div class="form-group">
+        <input type="text" formControlName="firstName" placeholder="Primeiro nome"
+          [ngClass]="{'invalid': hasError('firstName', 'required') || hasError('firstName', 'minlength')}">
+        <div *ngIf="hasError('firstName', 'required')" class="error-message">
+          Primeiro nome é obrigatório
+        </div>
+        <div *ngIf="hasError('firstName', 'minlength')" class="error-message">
+          Mínimo de 2 caracteres
+        </div>
+      </div>
+
+      <!-- Campo Last Name -->
+      <div class="form-group">
+        <input type="text" formControlName="lastName" placeholder="Sobrenome"
+          [ngClass]="{'invalid': hasError('lastName', 'required') || hasError('lastName', 'minlength')}">
+        <div *ngIf="hasError('lastName', 'required')" class="error-message">
+          Sobrenome é obrigatório
+        </div>
+        <div *ngIf="hasError('lastName', 'minlength')" class="error-message">
+          Mínimo de 2 caracteres
+        </div>
+      </div>
+
+      <!-- Campo Email -->
+      <div class="form-group">
+        <input type="email" formControlName="email" placeholder="Digite o seu e-mail"
+          [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email') || hasError('email', 'emailExists')}"
+          (blur)="checkEmail()">
+        <div *ngIf="hasError('email', 'required')" class="error-message">
+          E-mail é obrigatório
+        </div>
+        <div *ngIf="hasError('email', 'email')" class="error-message">
+          Informe um e-mail válido
+        </div>
+        <div *ngIf="hasError('email', 'emailExists')" class="error-message">
+          Este e-mail já está cadastrado
+        </div>
+      </div>
+
+      <!-- Campo Password -->
+      <div class="form-group">
+        <input type="password" formControlName="password" 
+          placeholder="Senha (mínimo 8 caracteres com maiúsculas, minúsculas, números e símbolos)"
+          [ngClass]="{'invalid': hasError('password', 'required') || hasError('password', 'minlength') || hasError('password', 'pattern')}">
+        <div *ngIf="hasError('password', 'required')" class="error-message">
+          Senha é obrigatória
+        </div>
+        <div *ngIf="hasError('password', 'minlength')" class="error-message">
+          Mínimo de 8 caracteres
+        </div>
+        <div *ngIf="hasError('password', 'pattern')" class="error-message">
+          Deve conter maiúsculas, minúsculas, números e símbolos
+        </div>
+      </div>
+
+      <!-- Campo Confirm Password -->
+      <div class="form-group">
+        <input type="password" formControlName="confirmPassword" placeholder="Confirme sua senha"
+          [ngClass]="{'invalid': hasError('confirmPassword', 'required') || hasError('confirmPassword', 'passwordsMismatch')}">
+        <div *ngIf="hasError('confirmPassword', 'required')" class="error-message">
+          Confirmação de senha é obrigatória
+        </div>
+        <div *ngIf="hasError('confirmPassword', 'passwordsMismatch')" class="error-message">
+          As senhas não conferem
+        </div>
+      </div>
+
+      <button type="submit" class="cadastrar-button" [disabled]="loading || notification.show">
+        {{ loading ? 'CRIANDO CONTA...' : 'CADASTRAR' }}
+      </button>
+      <button type="button" class="voltar-button" (click)="navegarParaLogin()" [disabled]="loading">
+        VOLTAR PARA LOGIN
+      </button>
+    </form>
+  </div>
+</div>
+<app-footer></app-footer>

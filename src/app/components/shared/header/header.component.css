@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --branco: #FFFFFF;
+  --fundo-site: #EDEDED;
+  --cinza-medio: #C3C3C3;
+  --cinza-normal: #565656;
+  --cinza-escuro: #1D1D1F;
+  --preto: #09070B;
+  --laranja-cuei: #FF6D00;
+  --laranja-contraste: #e45e00;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif !important;
+    background-color: var(--fundo-site);
+    color: var(--preto);    
+}
+
+body {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0.9;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  will-change: box-shadow !important;
+  height: 100px !important;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15) !important;
+  animation: fadeInDown 0.3s ease-out !important;
+  background-color: var(--fundo-site) !important;
+}
+
+.container-fluid.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  will-change: box-shadow !important;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15) !important;
+  animation: fadeInDown 0.3s ease-out !important;
+  background-color: var(--fundo-site) !important;
+}
+
+
+nav{
+  background-color: #EDEDED;
+  height: 10%;
+  z-index: 1030;
+  transition: box-shadow 0.3s ease;
+}
+
+.container-fluid {
+  padding-left: 15%;
+  padding-right: 15%;
+  z-index: -5 !important;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.solucoes{
+  margin-bottom: 15%;
+}
+
+.logo {
+  margin-top: 15%;
+  width: 6rem;
+  height: 4.5rem;
+}
+
+.logo-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 14px;
+  color: #000000; /* Garante que o texto fique branco */
+  text-decoration: none;
+  margin-bottom: 3px;
+}
+
+.logo-subtext {
+  font-weight: 400;
+  font-size: 12px;
+  color: #EDEDED; /* Um cinza claro para o subtítulo */
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+nav li a {
+  color: #000000; /* Links em branco */
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+nav li a:hover {
+  color: #ff6a00;
+  text-decoration: underline;
+}
+
+nav ul li a.active {
+  color: #ff6a00; /* Cor laranja usada em seu design */
+  font-weight: 600;
+  position: relative;
+}
+
+nav ul li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ff6a00;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+  header {
+    padding: 15px 50px;
+  }
+
+  nav ul {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 15px 30px;
+  }
+
+  .logo-container {
+    margin-bottom: 15px;
+  }
+
+  nav ul {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px 25px;
+  }
+
+  nav li {
+    margin-bottom: 5px;
+  }
+}

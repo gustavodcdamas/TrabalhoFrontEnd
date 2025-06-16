@@ -1,0 +1,221 @@
+<section class="briefing-form" id="briefing-form">
+  <div class="container">
+      <h2 class="section-title">Briefing de Orçamento</h2>
+      <div id="formulario-passos" class="formulario-passos">
+          <!-- Header comum para todas as etapas -->
+          <div id="form-header" class="form-header">
+              <div class="form-step">
+                  <div id="step1" class="step-number" [class.ativo]="activeStep === 1">1</div>
+                  <p>Informações Básicas</p>
+              </div>
+              <div class="form-step">
+                  <div id="step2" class="step-number" [class.ativo]="activeStep === 2">2</div>
+                  <p>Tipo de Projeto</p>
+              </div>
+              <div class="form-step">
+                  <div id="step3" class="step-number" [class.ativo]="activeStep === 3">3</div>
+                  <p>Especificações</p>
+              </div>
+              <div class="form-step">
+                  <div id="step4" class="step-number" [class.ativo]="activeStep === 4">4</div>
+                  <p>Detalhes</p>
+              </div>
+              <div class="form-step">
+                  <div id="step5" class="step-number" [class.ativo]="activeStep === 5">5</div>
+                  <p>Finalização</p>
+              </div>
+          </div>
+
+          <!-- Etapa 1 -->
+          <div *ngIf="activeStep === 1" id="passo-1" class="form-content">
+              <div class="form-group">
+                  <label for="nome-empresa">Nome da Empresa?</label>
+                  <input type="text" id="nome-empresa" placeholder="Digite o nome da empresa">
+              </div>
+
+              <div class="form-group">
+                  <label for="faturamento">Faturamento mensal</label>
+                    <div class="currency-input-group">
+                    <select [(ngModel)]="moedaSelecionada" (change)="formatarFaturamento()">
+                        <option value="BRL">R$ (Real)</option>
+                        <option value="USD">US$ (Dólar)</option>
+                        <option value="EUR">€ (Euro)</option>
+                    </select>
+                    <input
+                        type="text"
+                        id="faturamento"
+                        placeholder="0,00"
+                        [(ngModel)]="faturamentoMensalStr"
+                        (input)="formatarFaturamento()"
+                        (keydown)="permitirSomenteNumeros($event)"
+                        required
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        autocomplete="off"
+                    >
+                    </div>
+                  <div *ngIf="faturamentoMensalStr && !faturamentoValido()" class="erro">
+                    Digite apenas números válidos para o faturamento.
+                  </div>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" disabled>Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(2)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Etapa 2 -->
+          <div *ngIf="activeStep === 2" id="passo-2" class="form-content">
+              <div class="form-question">
+                  <p>Por que, e qual o propósito da criação deste site? O que se espera realizar?</p>
+                  <textarea placeholder="Digite o"></textarea>
+              </div>
+
+              <div class="form-question">
+                  <p>Quais tipos de páginas você precisa?</p>
+                  <!-- Exemplo para etapa 2: seleção de tipos de página -->
+                  <div class="form-options">
+                    <div
+                      class="form-option"
+                      *ngFor="let tipo of tiposPagina"
+                      [class.selected]="isSelecionado(tipo)"
+                      (click)="toggleSelecao(tipo)"
+                    >
+                      {{ tipo }}
+                    </div>
+                  </div>
+                  <div *ngIf="isSelecionado('Outros')" style="margin-top:10px;">
+                    <input
+                      type="text"
+                      [(ngModel)]="outrosTipo"
+                      placeholder="Descreva o tipo de página"
+                      class="input-outros"
+                    />
+                  </div>
+                </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" (click)="voltaEtapa(1)">Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(3)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 3 -->
+          <div *ngIf="activeStep === 3" id="passo-3" class="form-content">
+              <div class="form-question">
+                  <p>O site demanda atualizações periódicas, se sim, qual frequência?</p>
+                  <div class="form-options">
+                      <div
+                          class="form-option"
+                          *ngFor="let freq of frequenciasAtualizacao"
+                          [class.selected]="isFrequenciaSelecionada(freq)"
+                          (click)="selecionaFrequencia(freq)">
+                          {{ freq }}
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-question">
+                  <p>O que você quer que os usuários façam no site?</p>
+                  <textarea placeholder="Digite o"></textarea>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" (click)="voltaEtapa(2)">Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(4)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 4 -->
+          <div *ngIf="activeStep === 4" id="passo-4" class="form-content">
+              <div class="form-question">
+                  <p>Existem outras demandas que a Agência Cuei pode te ajudar?</p>
+                  <div class="form-options">
+                      <div
+                          class="form-option"
+                          *ngFor="let demanda of demandas"
+                          [class.selected]="isDemandaSelecionada(demanda)"
+                          (click)="toggleDemanda(demanda)">
+                          {{ demanda }}
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-question">
+                  <p>Você já possui uma Identidade Visual?</p>
+                  <p class="form-subtitle">Estética definida da marca, exemplo, logo, cartões de visita, instagram profissional, etc</p>
+                  <div class="form-options">
+                      <div
+                          class="form-option"
+                          *ngFor="let opcao of identidadeVisualOpcoes"
+                          [class.selected]="isIdentidadeVisualSelecionada(opcao)"
+                          (click)="selecionaIdentidadeVisual(opcao)">
+                          {{ opcao }}
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" (click)="voltaEtapa(3)">Voltar</button>
+                  <button class="nav-button next-button" (click)="avancaEtapa(5)">Avançar</button>
+              </div>
+          </div>
+
+          <!-- Conteúdo da etapa 5 -->
+          <div *ngIf="activeStep === 5" id="passo-5" class="form-content">
+              <p class="form-subtitle">Vamos encaminhar seu orçamento personalizado nesse telefone e email</p>
+
+              <div class="form-group">
+                  <label for="nome-final">Nome</label>
+                  <input type="text" id="nome-final" placeholder="Digite o seu nome e sobrenome" [(ngModel)]="nomeFinal">
+              </div>
+
+              <div class="form-group">
+                  <label for="telefone-final">Telefone</label>
+                  <input
+                      type="tel"
+                      id="telefone-final"
+                      placeholder="(00) 00000-0000"
+                      [(ngModel)]="telefoneFinal"
+                      (input)="formatarTelefone()"
+                      maxlength="15"
+                      required
+                  >
+                  <div *ngIf="telefoneFinal && !telefoneValido()" class="erro">
+                      Telefone inválido.
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="email-final">E-mail</label>
+                  <input
+                      type="email"
+                      id="email-final"
+                      placeholder="Digite o seu e-mail"
+                      [(ngModel)]="emailFinal"
+                      (input)="formatarEmail()"
+                      required
+                  >
+                  <div *ngIf="emailFinal && !emailValido()" class="erro">
+                      E-mail inválido.
+                  </div>
+              </div>
+
+              <div *ngIf="mensagemSucesso" class="mensagem-sucesso">
+                {{ mensagemSucesso }}
+              </div>
+
+              <div class="form-nav">
+                  <button class="nav-button back-button" (click)="voltaEtapa(4)">Voltar</button>
+                  <button
+                      type="button"
+                      class="nav-button next-button"
+                      [disabled]="!telefoneValido() || !emailValido()"
+                      (click)="enviarViaWhatsApp()"
+                  >Enviar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>

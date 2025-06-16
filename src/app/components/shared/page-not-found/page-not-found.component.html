@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="container-fluid bg" id="bg">
+  <div class="not-found">
+    <h1>Ops...</h1>
+    <p>Página não encontrada.</p>
+    <a routerLink="/">
+      <img href="#" src="/assets/favicon.svg" alt="Logo CUEI" class="logo">
+    </a>
+    <p>Nos acompanhe nas redes sociais!</p>
+    <div class="social-links">
+      <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'facebook']" class="icon-facebook"></fa-icon></a>
+      <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'instagram']" class="icon-instagram"></fa-icon></a>
+      <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'linkedin-in']" class="icon-linkedin"></fa-icon></a>
+      <a href="https://wa.me/5531988664718" target="_blank" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'whatsapp']" class="icon-whatsapp"></fa-icon></a>
+    </div>
+    <button id="button" class="button" href="/" routerLink="/">Voltar para página inicial</button>
+  </div>
+</div>
+<app-footer></app-footer>

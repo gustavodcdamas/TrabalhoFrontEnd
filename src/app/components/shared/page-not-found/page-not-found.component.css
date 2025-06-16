@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Garantir que html e body tenham a cor de fundo correta */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--fundo-site);
+  height: 100%;
+  min-height: 100vh;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif !important;
+  text-align: center;
+  justify-content: center; 
+}
+
+.container-fluid{
+  background-color: var(--fundo-site);
+  max-width: 100%;
+  min-height: 100vh; /* Garantir altura mínima da viewport */
+  display: flex;
+  align-items: center; /* Centralizar verticalmente */
+  justify-content: center; /* Centralizar horizontalmente */
+}
+
+.bg {
+  background-color: var(--fundo-site);
+}
+
+.not-found {
+  background-color: #FFFFFF; /* Manter o card branco */
+  justify-content: center; 
+  border-radius: 33px;
+  padding: 2rem;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  max-width: 425px;
+  margin: 2rem auto; /* Reduzir margem já que estamos centralizando com flexbox */
+  text-align: center;
+}
+
+.button {
+  margin-top: 2rem;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 18px;
+  border: none;
+  background-color: #FF6D00;
+  color: white;
+  font-size: 1rem;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; /* Corrigir sintaxe */
+  transform: translateY(-4px) scale(1.05);
+  background-color: #e66000;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.not-found h1 {
+  background-color: transparent; /* Remover fundo específico */
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.not-found p {
+  background-color: transparent; /* Remover fundo específico */
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.not-found .logo {
+  background-color: transparent; /* Remover fundo específico */
+  max-width: 150px;
+  margin-bottom: 1rem;
+}
+
+.social-links {
+  background-color: transparent;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.social-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #FF6D00;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  align-items: center;
+  color: #1D1D1F;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon .fa-icon {
+  background-color: transparent; /* Corrigir valor */
+  font-size: 2rem;
+  transition: all 0.3s ease;
+}
+
+/* Efeitos de hover */
+.social-icon:hover {
+  color: white !important;
+  transform: translateY(-4px) scale(1.05);
+  background-color: #e45e00;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+}

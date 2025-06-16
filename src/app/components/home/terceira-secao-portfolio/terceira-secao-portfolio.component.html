@@ -1,0 +1,165 @@
+<section class="portfolio" id="projetos">
+  <div class="container">
+    <h2 class="section-title">Portfólio</h2>
+    <img src="/assets/Cuei Digital.png" alt="Portfólio" class="cuei-logo" />
+
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading()" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Carregando portfolio...</p>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error()" class="error-container">
+      <p class="error-message">{{ error() }}</p>
+      <button (click)="reloadData()" class="retry-button">Tentar novamente</button>
+    </div>
+
+    <!-- Portfolio content -->
+    <div *ngIf="!isLoading() && !error()">
+      
+      <!-- Identidades Visuais -->
+      <div *ngIf="identidadesItems().length > 0">
+        <h3 class="sub-title first-subtitle">Identidades Visuais</h3>
+        <swiper
+          [slidesPerView]="getSlidesPerView()"
+          [spaceBetween]="24"
+          [loop]="identidadesItems().length > getSlidesPerView()"
+          [navigation]="false"
+          [pagination]="true"
+          [autoplay]="true"
+          [autoplay]="{delay: 3000}"
+          class="portfolio-swiper"
+        >
+          <ng-template swiperSlide *ngFor="let item of identidadesItems()">
+            <div class="portfolio-item">
+              <img 
+                [src]="getImageUrl(item)" 
+                [alt]="item?.titulo || 'Identidade visual'"
+                class="portfolio-image"
+                (error)="onImageError($event)"
+                loading="lazy"
+              />
+              <div class="portfolio-overlay">
+                <h4 class="portfolio-title">{{ item?.titulo || 'Sem título' }}</h4>
+                <p class="portfolio-description" *ngIf="item?.descricao">
+                  {{ item?.descricao }}
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+
+      <!-- Sites Institucionais -->
+      <div *ngIf="sitesInstitucionaisItems().length > 0">
+        <h3 class="sub-title">Sites Institucionais</h3>
+        <swiper
+          [slidesPerView]="getSlidesPerView()"
+          [spaceBetween]="24"
+          [loop]="sitesInstitucionaisItems().length > getSlidesPerView()"
+          [navigation]="false"
+          [pagination]="true"
+          [autoplay]="true"
+          [autoplay]="{delay: 3000}"
+          class="portfolio-swiper"
+        >
+          <ng-template swiperSlide *ngFor="let item of sitesInstitucionaisItems()">
+            <div class="portfolio-item">
+              <img 
+                [src]="getImageUrl(item)" 
+                [alt]="item?.titulo || 'Site institucional'"
+                class="portfolio-image"
+                (error)="onImageError($event)"
+                loading="lazy"
+              />
+              <div class="portfolio-overlay">
+                <h4 class="portfolio-title">{{ item?.titulo || 'Sem título' }}</h4>
+                <p class="portfolio-description" *ngIf="item?.descricao">
+                  {{ item?.descricao }}
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+
+      <div *ngIf="landingPagesItems().length > 0">
+        <h3 class="sub-title">Landing Pages</h3>
+        <swiper
+          [slidesPerView]="getSlidesPerView()"
+          [spaceBetween]="24"
+          [loop]="landingPagesItems().length > getSlidesPerView()"
+          [navigation]="false"
+          [pagination]="true"
+          [autoplay]="true"
+          [autoplay]="{delay: 3000}"
+          class="portfolio-swiper"
+        >
+          <ng-template swiperSlide *ngFor="let item of landingPagesItems()">
+            <div class="portfolio-item">
+              <img 
+                [src]="getImageUrl(item)" 
+                [alt]="item?.titulo || 'Landing page'"
+                class="portfolio-image"
+                (error)="onImageError($event)"
+                loading="lazy"
+              />
+              <div class="portfolio-overlay">
+                <h4 class="portfolio-title">{{ item?.titulo || 'Sem título' }}</h4>
+                <p class="portfolio-description" *ngIf="item?.descricao">
+                  {{ item?.descricao }}
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+
+      <!-- Criativos -->
+      <div *ngIf="creativosItems().length > 0">
+        <h3 class="sub-title">Criativos</h3>
+        <swiper
+          [slidesPerView]="getSlidesPerView()"
+          [spaceBetween]="24"
+          [loop]="creativosItems().length > getSlidesPerView()"
+          [navigation]="false"
+          [pagination]="true"
+          [autoplay]="true"
+          [autoplay]="{delay: 3000}"
+          class="portfolio-swiper"
+        >
+          <ng-template swiperSlide *ngFor="let item of creativosItems()">
+            <div class="portfolio-item">
+              <img 
+                [src]="getImageUrl(item)" 
+                [alt]="item?.titulo || 'Projeto criativo'"
+                class="portfolio-image"
+                (error)="onImageError($event)"
+                loading="lazy"
+              />
+              <div class="portfolio-overlay">
+                <h4 class="portfolio-title">{{ item?.titulo || 'Sem título' }}</h4>
+                <p class="portfolio-description" *ngIf="item?.descricao">
+                  {{ item?.descricao }}
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+
+      <!-- Mensagem quando não há itens -->
+      <div *ngIf="portfolioItems().length === 0" class="empty-state">
+        <p>Nenhum item encontrado no portfolio.</p>
+        <small>
+          Estatísticas: {{ getPortfolioStats().total }} itens total
+          ({{ getPortfolioStats().criativos }} criativos, 
+          {{ getPortfolioStats().identidades }} identidades, 
+          {{ getPortfolioStats().landingPages }} landing pages, 
+          {{ getPortfolioStats().institucionais }} institucionais)
+        </small>
+      </div>
+    </div>
+  </div>
+</section>

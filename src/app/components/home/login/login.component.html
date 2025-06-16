@@ -1,0 +1,54 @@
+<!-- login.component.html -->
+<app-header></app-header>
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Digite o seu e-mail"
+          [ngClass]="{'invalid': (loginForm.get('email')?.touched && loginForm.get('email')?.invalid)}"
+        >
+        <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors" class="error-message">
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">E-mail é obrigatório</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">Informe um e-mail válido</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="Digite sua senha"
+          [ngClass]="{'invalid': (loginForm.get('senha')?.touched && loginForm.get('senha')?.invalid)}"
+        >
+        <div *ngIf="loginForm.get('senha')?.touched && loginForm.get('senha')?.errors" class="error-message">
+          <div *ngIf="loginForm.get('senha')?.errors?.['required']">Senha é obrigatória</div>
+          <div *ngIf="loginForm.get('senha')?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres</div>
+        </div>
+      </div>
+
+      <!-- Botão principal de login -->
+      <button type="submit" class="login-button primary" [disabled]="loading">
+        <span *ngIf="!loading">ENTRAR</span>
+        <span *ngIf="loading">CARREGANDO...</span>
+      </button>
+      
+      <!-- Botões secundários lado a lado -->
+      <div class="secondary-buttons">
+        <button type="button" class="login-button secondary" (click)="navegarParaCadastro()">
+          CRIAR CONTA
+        </button>
+        <button type="button" class="login-button secondary" (click)="navegarParaRecuperarSenha()">
+          ESQUECI A SENHA
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<app-footer></app-footer>

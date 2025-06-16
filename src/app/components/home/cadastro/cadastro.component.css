@@ -1,0 +1,286 @@
+/* cadastro.component.css */
+.cadastro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: var(--fundo-site);
+  padding: 20px;
+}
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.notification-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  margin: 20px;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.notification-content {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.notification-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.notification-message {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.notification-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.notification-close:hover {
+  background-color: #f0f0f0;
+}
+
+/* Variações por tipo */
+.notification-success {
+  border-left: 4px solid #22c55e;
+}
+
+.notification-error {
+  border-left: 4px solid #ef4444;
+}
+
+.notification-info {
+  border-left: 4px solid #3b82f6;
+}
+
+.notification-success .notification-icon {
+  color: #22c55e;
+}
+
+.notification-error .notification-icon {
+  color: #ef4444;
+}
+
+.notification-info .notification-icon {
+  color: #3b82f6;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Desabilitar botões durante carregamento */
+.cadastrar-button:disabled,
+.voltar-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .notification-container {
+    margin: 10px;
+    max-width: 350px;
+  }
+  
+  .notification-content {
+    padding: 20px;
+    gap: 12px;
+  }
+  
+  .notification-icon {
+    font-size: 28px;
+  }
+  
+  .notification-message {
+    font-size: 14px;
+  }
+}
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 5px;
+}
+
+.invalid {
+  border-color: #dc3545 !important;
+}
+
+.cadastrar-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.cadastro-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.cadastro-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #f0f0f0;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+input:focus {
+  background-color: #e8e8e8;
+  box-shadow: 0 0 0 2px rgba(255, 105, 0, 0.2);
+}
+
+input.invalid {
+  background-color: #fff0f0;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.error-message {
+  color: #ff3e3e;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.cadastrar-button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ff6a00;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cadastrar-button:hover {
+  background-color: #e66000;
+}
+
+.cadastrar-button:active {
+  transform: translateY(1px);
+}
+
+.voltar-button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ff6a00;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}
+
+.voltar-button:hover {
+  background-color: #e66000;
+}
+
+.voltar-button:active {
+  transform: translateY(1px);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .cadastro-card {
+    padding: 20px;
+  }
+
+  input, .cadastrar-button, .voltar-button {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,33 @@
+<!-- AreaCliente.component.html -->
+<div class="AreaCliente-container">
+  <div class="page-header">
+    <h1>Área do Cliente</h1>
+    <div class="actions">
+      <button class="add-button">+ Nova Compra</button>
+      <div class="search-container">
+        <input type="text" placeholder="Buscar compra..." class="search-input" [(ngModel)]="searchTerm" (input)="searchAreaCliente(searchTerm)">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterAreaCliente('all')">Todas</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'pending'}" (click)="filterAreaCliente('pending')">Pendentes</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'processing'}" (click)="filterAreaCliente('processing')">Em Processamento</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'completed'}" (click)="filterAreaCliente('completed')">Concluídas</div>
+  </div>
+
+  <div class="table-container">
+    <h1>Em Desenvolvimento...</h1>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination">
+    <button class="pagination-button">&lt;</button>
+    <button class="pagination-button active">1</button>
+    <button class="pagination-button">2</button>
+    <button class="pagination-button">3</button>
+    <button class="pagination-button">&gt;</button>
+  </div>
+</div>

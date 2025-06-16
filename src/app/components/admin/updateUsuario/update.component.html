@@ -1,0 +1,192 @@
+<div class="update-container">
+  <div class="update-card">
+    <h2 class="update-title">Atualizar Conta</h2>
+
+<div class="messages-container" style="margin-bottom: 2rem;">
+  
+  <!-- Mensagem de erro -->
+  <div *ngIf="error" 
+       class="alert alert-danger" 
+       style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 6px; border-left: 4px solid #dc3545; margin-bottom: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-size: 1.2rem;">❌</span>
+      <strong>Erro:</strong>
+      <span>{{error}}</span>
+    </div>
+  </div>
+
+  <!-- Mensagem de sucesso -->
+  <div *ngIf="successMessage" 
+       class="alert alert-success" 
+       style="background: #d1e7dd; color: #0f5132; padding: 1rem; border-radius: 6px; border-left: 4px solid #28a745; margin-bottom: 1rem; animation: slideInDown 0.5s ease-out;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-size: 1.2rem;">✅</span>
+      <strong>Sucesso:</strong>
+      <span>{{successMessage}}</span>
+    </div>
+  </div>
+
+  <!-- Mensagem de loading -->
+  <div *ngIf="loading" 
+       class="alert alert-info" 
+       style="background: #cce7f8; color: #055160; padding: 1rem; border-radius: 6px; border-left: 4px solid #17a2b8; margin-bottom: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-size: 1.2rem; animation: spin 1s linear infinite;">⏳</span>
+      <strong>Aguarde:</strong>
+      <span>Atualizando seus dados...</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- CSS para animações -->
+<style>
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.alert {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.alert:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+</style>
+
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+      <!-- Grid de campos -->
+      <div class="form-grid">
+        
+        <!-- Campos básicos - Linha 1 -->
+        <div class="form-group field-large">
+          <input type="text" formControlName="firstName" placeholder="Primeiro nome (opcional)" 
+                 [class.invalid]="hasError('firstName', 'required')">
+          <small class="field-help">Deixe vazio para não alterar</small>
+        </div>
+
+        <div class="form-group field-large">
+          <input type="text" formControlName="lastName" placeholder="Sobrenome (opcional)"
+                 [class.invalid]="hasError('lastName', 'required')">
+          <small class="field-help">Deixe vazio para não alterar</small>
+        </div>
+
+        <!-- Linha 2 -->
+        <div class="form-group field-large">
+          <input type="text" formControlName="username" placeholder="Username (opcional)"
+                 [class.invalid]="hasError('username', 'required')">
+          <small class="field-help">Deixe vazio para não alterar</small>
+        </div>
+
+        <div class="form-group field-medium">
+          <input type="text" formControlName="cpf" placeholder="CPF (opcional)" 
+                 (input)="formatCpf()"
+                 [class.invalid]="hasError('cpf', 'invalidCpf')">
+          <div *ngIf="hasError('cpf', 'invalidCpf')" class="error-message">CPF inválido</div>
+          <small class="field-help">Formato: 000.000.000-00</small>
+        </div>
+
+        <!-- Endereço - Linha 3 -->
+        <div class="form-group field-small">
+          <input type="text" 
+                formControlName="cep" 
+                placeholder="CEP (opcional)" 
+                maxlength="9"
+                (input)="formatCep($event)"
+                [class.invalid]="hasError('cep', 'invalidCep')">
+          <div *ngIf="hasError('cep', 'invalidCep')" class="error-message">
+            CEP inválido - deve ter 8 dígitos
+          </div>
+          <small class="field-help">Formato: 12345-678</small>
+        </div>
+
+        <div class="form-group field-large">
+          <input type="text" formControlName="logradouro" placeholder="Logradouro (preenchido automaticamente)" readonly>
+          <small class="field-help">Preenchido automaticamente pelo CEP</small>
+        </div>
+
+        <!-- Linha 4 -->
+        <div class="form-group field-medium">
+          <input type="text" formControlName="bairro" placeholder="Bairro (preenchido automaticamente)" readonly>
+        </div>
+
+        <div class="form-group field-medium">
+          <input type="text" formControlName="cidade" placeholder="Cidade (preenchido automaticamente)" readonly>
+        </div>
+
+        <div class="form-group field-small">
+          <input type="text" formControlName="estado" placeholder="Estado (preenchido automaticamente)" readonly>
+        </div>
+
+        <!-- Linha 5 -->
+        <div class="form-group field-small">
+          <input type="text" formControlName="numero" placeholder="Número (opcional)">
+          <small class="field-help">Número da residência</small>
+        </div>
+
+        <div class="form-group field-large">
+          <input type="text" formControlName="complemento" placeholder="Complemento (opcional)">
+          <small class="field-help">Apartamento, bloco, etc.</small>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="button-group">
+        <button type="submit" class="update-button" [disabled]="!canSubmit()">
+          {{ loading ? 'ATUALIZANDO...' : 'ATUALIZAR DADOS' }}
+        </button>
+
+        <button type="button" class="delete-button" (click)="onDeleteAccount()" 
+                [disabled]="loading">
+          {{ deleting ? 'DELETANDO...' : 'DELETAR CONTA' }}
+        </button>
+      </div>
+
+      <!-- Contador de campos preenchidos -->
+      <div class="form-status">
+        <small>
+          <strong>Status:</strong> 
+          <span *ngIf="canSubmit()" class="text-success">✅ Pronto para salvar</span>
+          <span *ngIf="!canSubmit()" class="text-muted">ℹ️ Preencha pelo menos um campo para atualizar</span>
+        </small>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmação para deletar conta -->
+<div *ngIf="showDeleteModal" class="modal-overlay" (click)="cancelDelete()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Confirmar Exclusão de Conta</h3>
+    <p>Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.</p>
+    <p><strong>Digite seu email para confirmar:</strong></p>
+    
+    <input type="email" [(ngModel)]="confirmEmailInput" placeholder="Seu email" 
+           class="confirm-input">
+    
+    <div class="modal-buttons">
+      <button class="cancel-button" (click)="cancelDelete()">Cancelar</button>
+      <button class="confirm-delete-button" (click)="confirmDelete()" 
+              [disabled]="!isEmailConfirmed()">
+        Deletar Conta
+      </button>
+    </div>
+  </div>
+</div>

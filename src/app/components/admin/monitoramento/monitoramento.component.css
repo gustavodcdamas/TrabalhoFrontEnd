@@ -1,0 +1,907 @@
+:root {
+  --branco: #FFFFFF;
+  --fundo-site: #EDEDED;
+  --cinza-medio: #C3C3C3;
+  --cinza-normal: #565656;
+  --cinza-escuro: #1D1D1F;
+  --preto: #09070B;
+  --laranja-cuei: #FF6D00;
+  --laranja-contraste: #e45e00;
+  --contraste-btn: rgba(255, 255, 255, 0.2);
+  --sombra: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  --webkit-box-shadow: var(--sombra);
+  
+  /* Cores de status */
+  --verde-sucesso: #28a745;
+  --vermelho-erro: #dc3545;
+  --amarelo-aviso: #ffc107;
+  --azul-info: #17a2b8;
+}
+
+/* =================================
+   RESET E BASE
+   ================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =================================
+   CONTAINER PRINCIPAL
+   ================================= */
+.monitoring-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--fundo-site);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =================================
+   HEADER DO MONITORAMENTO
+   ================================= */
+.monitoring-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--cinza-medio);
+}
+
+.monitoring-header h1 {
+  margin: 0;
+  color: var(--preto);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.refresh-btn {
+  background: var(--laranja-cuei);
+  color: var(--branco);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: var(--laranja-contraste);
+  transform: translateY(-2px);
+}
+
+.refresh-btn:disabled {
+  background: var(--cinza-medio);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.refresh-btn .icon-refresh.spinning {
+  animation: spin 1s linear infinite;
+}
+
+.last-update {
+  color: var(--cinza-normal);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* =================================
+   SISTEMA DE ABAS
+   ================================= */
+.tabs-container {
+  margin-bottom: 30px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--cinza-medio);
+  gap: 0;
+  background-color: var(--branco);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 20px 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cinza-normal);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.tab-button:hover {
+  color: var(--laranja-cuei);
+  background-color: var(--fundo-site);
+}
+
+.tab-button.active {
+  color: var(--laranja-cuei);
+  border-bottom-color: var(--laranja-cuei);
+  background-color: var(--fundo-site);
+  font-weight: 600;
+}
+
+/* =================================
+   CONTEÚDO DAS ABAS
+   ================================= */
+.tab-content {
+  min-height: 500px;
+  background-color: var(--branco);
+  border-radius: 0 0 24px 24px;
+  padding: 35px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+/* =================================
+   ABA PING - ESTILOS
+   ================================= */
+.ping-tab .ping-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.ping-tab .ping-header h2 {
+  color: var(--preto);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.6px;
+}
+
+.ping-tab .ping-description {
+  color: var(--cinza-escuro);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.ping-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.ping-card {
+  background: var(--branco);
+  border: 2px solid var(--cinza-medio);
+  border-radius: 24px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.ping-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ping-card.pong {
+  border-color: var(--verde-sucesso);
+  background: linear-gradient(145deg, var(--branco) 0%, #f8fff9 100%);
+}
+
+.ping-card.pong .ping-card-header h3 {
+  color: var(--verde-sucesso);
+}
+
+.ping-card.not-pong {
+  border-color: var(--vermelho-erro);
+  background: linear-gradient(145deg, var(--branco) 0%, #fff8f8 100%);
+}
+
+.ping-card.not-pong .ping-card-header h3 {
+  color: var(--vermelho-erro);
+}
+
+.ping-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ping-card-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: var(--vermelho-erro);
+  color: var(--branco);
+  text-transform: uppercase;
+}
+
+.status-badge.pong {
+  background: var(--verde-sucesso);
+}
+
+.ping-details p {
+  margin: 8px 0;
+  color: var(--cinza-escuro);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ping-details .error-message {
+  color: var(--vermelho-erro);
+  background: #f8d7da;
+  padding: 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.ping-summary {
+  display: flex;
+  justify-content: center;
+}
+
+.summary-card {
+  background: var(--branco);
+  border: 2px solid var(--cinza-medio);
+  border-radius: 24px;
+  padding: 30px;
+  min-width: 350px;
+  text-align: center;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.summary-card.healthy {
+  border-color: var(--verde-sucesso);
+  background: linear-gradient(145deg, var(--branco) 0%, #f8fff9 100%);
+}
+
+.summary-card.degraded {
+  border-color: var(--amarelo-aviso);
+  background: linear-gradient(145deg, var(--branco) 0%, #fffef8 100%);
+}
+
+.summary-card.unhealthy {
+  border-color: var(--vermelho-erro);
+  background: linear-gradient(145deg, var(--branco) 0%, #fff8f8 100%);
+}
+
+.summary-card h3 {
+  margin-bottom: 15px;
+  color: var(--preto);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.summary-card p {
+  margin: 8px 0;
+  color: var(--cinza-escuro);
+  font-weight: 400;
+}
+
+/* =================================
+   ABA HEALTH CHECK - ESTILOS
+   ================================= */
+.health-tab .health-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.health-tab .health-header h2 {
+  color: var(--preto);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.6px;
+}
+
+.health-tab .health-description {
+  color: var(--cinza-escuro);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.health-overview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.health-status-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: var(--branco);
+  border: 2px solid var(--cinza-medio);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.health-status-card.healthy {
+  border-color: var(--verde-sucesso);
+  background: linear-gradient(145deg, var(--branco) 0%, #f8fff9 100%);
+}
+
+.health-status-card.degraded {
+  border-color: var(--amarelo-aviso);
+  background: linear-gradient(145deg, var(--branco) 0%, #fffef8 100%);
+}
+
+.health-status-card.unhealthy {
+  border-color: var(--vermelho-erro);
+  background: linear-gradient(145deg, var(--branco) 0%, #fff8f8 100%);
+}
+
+.health-icon {
+  font-size: 3rem;
+}
+
+.health-icon .icon-check-circle {
+  color: var(--verde-sucesso);
+}
+
+.health-icon .icon-alert-triangle {
+  color: var(--amarelo-aviso);
+}
+
+.health-icon .icon-x-circle {
+  color: var(--vermelho-erro);
+}
+
+.health-icon .icon-help-circle {
+  color: var(--cinza-normal);
+}
+
+.health-info h3 {
+  margin: 0 0 10px 0;
+  color: var(--preto);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.health-info .status-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  color: var(--cinza-escuro);
+}
+
+.health-info .status-description {
+  color: var(--cinza-normal);
+  margin: 0;
+  font-weight: 400;
+}
+
+.health-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.health-detail-card {
+  background: var(--fundo-site);
+  border: 1px solid var(--cinza-medio);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.health-detail-card h4 {
+  margin: 0 0 15px 0;
+  color: var(--preto);
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--laranja-cuei);
+  padding-bottom: 10px;
+}
+
+.health-detail-card p {
+  margin: 8px 0;
+  color: var(--cinza-escuro);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.service-list .service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 16px;
+  background: var(--branco);
+  font-weight: 500;
+}
+
+.service-list .service-item.online {
+  background: #d4edda;
+  color: #155724;
+  border-left: 4px solid var(--verde-sucesso);
+}
+
+.service-list .service-item.offline {
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid var(--vermelho-erro);
+}
+
+.service-list .service-item .service-status {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* =================================
+   ABA LOGS - ESTILOS
+   ================================= */
+.logs-tab .logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logs-tab .logs-header h2 {
+  color: var(--preto);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.6px;
+}
+
+.logs-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logs-filters select,
+.logs-filters input {
+  padding: 12px 16px;
+  border: 1px solid var(--cinza-medio);
+  border-radius: 50px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--fundo-site);
+  color: var(--preto);
+  outline: none;
+}
+
+.logs-filters select:focus,
+.logs-filters input:focus {
+  border-color: var(--laranja-cuei);
+  box-shadow: 0 0 0 2px rgba(255, 109, 0, 0.2);
+}
+
+.load-logs-btn {
+  background: var(--azul-info);
+  color: var(--branco);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.load-logs-btn:hover {
+  background: #138496;
+  transform: translateY(-2px);
+}
+
+.logs-container {
+  background: var(--fundo-site);
+  border: 1px solid var(--cinza-medio);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+}
+
+.logs-info {
+  padding: 12px 16px;
+  background: var(--branco);
+  border-radius: 16px;
+  margin-bottom: 15px;
+  color: var(--cinza-escuro);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logs-list {
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid var(--cinza-medio);
+  border-radius: 16px;
+  background: var(--branco);
+}
+
+.log-entry {
+  display: flex;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--cinza-medio);
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  transition: background 0.2s ease;
+}
+
+.log-entry:hover {
+  background: var(--fundo-site);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-entry.error {
+  background: #fff5f5;
+  border-left: 4px solid var(--vermelho-erro);
+}
+
+.log-entry.warn {
+  background: #fffbf0;
+  border-left: 4px solid var(--amarelo-aviso);
+}
+
+.log-entry.info {
+  background: #f0f8fa;
+  border-left: 4px solid var(--azul-info);
+}
+
+.log-timestamp {
+  color: var(--cinza-normal);
+  min-width: 80px;
+  margin-right: 15px;
+  font-weight: 600;
+}
+
+.log-content {
+  flex: 1;
+  word-break: break-all;
+  color: var(--preto);
+}
+
+.no-logs {
+  text-align: center;
+  padding: 40px;
+  color: var(--cinza-normal);
+  font-weight: 400;
+}
+
+/* =================================
+   ABA SISTEMA - ESTILOS
+   ================================= */
+.system-tab .system-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.system-tab .system-header h2 {
+  color: var(--preto);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.6px;
+}
+
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.system-card {
+  background: var(--fundo-site);
+  border: 1px solid var(--cinza-medio);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.system-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.system-card h3 {
+  margin: 0 0 15px 0;
+  color: var(--preto);
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--laranja-cuei);
+  padding-bottom: 8px;
+}
+
+.system-card .system-details p {
+  margin: 8px 0;
+  color: var(--cinza-escuro);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.memory-bar {
+  width: 100%;
+  height: 10px;
+  background: var(--cinza-medio);
+  border-radius: 50px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.memory-usage {
+  height: 100%;
+  background: linear-gradient(90deg, var(--verde-sucesso) 0%, var(--amarelo-aviso) 70%, var(--vermelho-erro) 100%);
+  transition: width 0.5s ease;
+  border-radius: 50px;
+}
+
+.docker-status {
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-weight: 500;
+  margin-top: 10px;
+  background: #f8d7da;
+  color: #721c24;
+  text-align: center;
+}
+
+.docker-status.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.metrics-section h3 {
+  color: var(--preto);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 0.6px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  background: var(--fundo-site);
+  border: 1px solid var(--cinza-medio);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: var(--sombra);
+  -webkit-box-shadow: var(--webkit-box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.metric-card h4 {
+  margin: 0 0 10px 0;
+  color: var(--cinza-normal);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--laranja-cuei);
+  margin: 15px 0;
+  letter-spacing: -1px;
+}
+
+.metric-label {
+  color: var(--cinza-normal);
+  font-size: 14px;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* =================================
+   ANIMAÇÕES
+   ================================= */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* =================================
+   RESPONSIVIDADE
+   ================================= */
+@media (max-width: 768px) {
+  .monitoring-container {
+    padding: 15px;
+  }
+
+  .monitoring-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .monitoring-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .refresh-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tabs {
+    flex-direction: column;
+    border-radius: 16px;
+  }
+
+  .tab-button {
+    padding: 15px 20px;
+    font-size: 13px;
+    justify-content: center;
+    border-bottom: none;
+    border-right: 3px solid transparent;
+  }
+
+  .tab-button.active {
+    border-bottom: none;
+    border-right-color: var(--laranja-cuei);
+  }
+
+  .tab-content {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .ping-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-status-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+  }
+
+  .health-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .logs-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .logs-filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .logs-filters select,
+  .logs-filters input,
+  .load-logs-btn {
+    width: 100%;
+  }
+
+  .system-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metric-card {
+    padding: 20px;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .monitoring-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .tab-content {
+    padding: 15px;
+  }
+
+  .ping-card,
+  .summary-card,
+  .health-status-card,
+  .system-card,
+  .metric-card {
+    padding: 20px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-icon {
+    font-size: 2rem;
+  }
+
+  .health-info h3 {
+    font-size: 1.2rem;
+  }
+
+  .health-info .status-text {
+    font-size: 1rem;
+  }
+}

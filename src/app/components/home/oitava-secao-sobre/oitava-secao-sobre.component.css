@@ -1,0 +1,75 @@
+/* Sobre Section */
+.about {
+  display: flex;
+  padding: 5% 0%;
+  justify-content: center;
+  align-items: center;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  justify-content: center;
+  align-items: left;
+}
+
+.section-title{
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.about .container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px; /* Adiciona padding lateral para não colar nas bordas em telas menores */
+}
+
+.about-content {
+  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-image {
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.about-image img {
+  max-width: 80%;
+  height: auto;
+}
+
+/* Estilo para a imagem logo */
+.logo {
+  width: 500px; /* Ajuste o tamanho de acordo com a sua necessidade */
+  height: auto; /* Mantém a proporção da imagem */
+  max-width: 100%; /* Faz a imagem ser responsiva (não ultrapassa a largura do container) */
+  display: block; /* Remove o espaçamento inferior (padrão em imagens) */
+  margin: 0 auto; /* Centraliza a imagem (caso queira centralizar) */
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .about {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}

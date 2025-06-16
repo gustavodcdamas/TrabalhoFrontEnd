@@ -1,0 +1,98 @@
+/* Benefícios Section */
+.benefits {
+  padding: 0px 0;
+  background-color: var(--fundo-site); /* Fundo cinza */
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 5% 0%;
+  margin: 0 auto; /* Adiciona um padding para não colar nas bordas em telas menores */
+}
+
+.benefits .section-title {
+  text-align: left;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 0;
+}
+
+.benefits-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: var(--laranja); /* Degradê laranja */
+  border-radius: 10px;
+  padding: 30px;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+/* Benefício Item */
+.benefit-item {
+  text-align: center;
+  flex: 1;
+  background-color: #ff8300; /* Fundo laranja */
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15); /* Sombra no fundo */
+  padding: 20px; /* Espaçamento interno */
+  margin: 10px; /* Espaçamento externo entre os itens */
+  color: #fff; /* Letras brancas */
+}
+
+.benefit-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #fff; /* Título branco */
+}
+
+.benefit-description {
+  color: #fff; /* Texto branco */
+  font-size: 14px;
+}
+
+/* Estilo para o card com degradê laranja */
+.card {
+  background: linear-gradient(-20deg, #FF6636, #FFAA5B); /* Degradê de laranja */
+  border-radius: 10px;
+  padding: 20px;
+  margin-left: 0;
+  margin-left: 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15); /* Sombra suave */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  height: 300px; /* Altura do card */
+}
+
+/* Container das imagens dentro do card */
+.card-images {
+  display: flex;
+  flex-direction: row; /* Coloca as imagens lado a lado */
+  justify-content: space-between; /* Espaço igual entre as imagens */
+  align-items: center; /* Alinha as imagens verticalmente */
+  gap: 10px; /* Espaço entre as imagens */
+  position: absolute;
+  top: 50px; /* Alinha as imagens a 50px do topo */
+  left: 50%;
+  transform: translateX(-50%); /* Alinha as imagens no centro */
+  width: 90%; /* Ajusta a largura das imagens para ocupar o espaço disponível */
+  height: 80%; /* As imagens ocupam quase toda a altura do card */
+}
+
+/* Estilo de cada imagem dentro do card */
+.card-image {
+  width: 30%; /* Cada imagem ocupa 30% da largura do card */
+  height: 50%; /* A altura das imagens vai ocupar todo o espaço disponível */
+  object-fit: contain; /* A imagem preencherá o espaço sem distorcer */
+  border-radius: 0; /* Remove as bordas arredondadas */
+  box-shadow: none; /* Remove a sombra das imagens */
+  margin-top: 50px; /* Espaço entre as imagens e o topo do card */
+  margin-bottom: 50px;
+}

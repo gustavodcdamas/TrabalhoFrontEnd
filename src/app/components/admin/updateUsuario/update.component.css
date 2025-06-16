@@ -1,0 +1,321 @@
+/* update.component.css */
+.update-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: var(--fundo-site);
+  padding: 20px;
+}
+
+.update-card {
+  background-color: var(--branco);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 800px; /* Aumentado para acomodar o grid */
+}
+
+.update-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Grid responsivo para os campos */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Tamanhos diferentes para os campos */
+.field-large {
+  grid-column: span 2;
+  min-width: 250px;
+}
+
+.field-medium {
+  grid-column: span 1;
+  min-width: 180px;
+}
+
+.field-small {
+  grid-column: span 1;
+  min-width: 120px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .field-large,
+  .field-medium,
+  .field-small {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+.form-group {
+  position: relative;
+}
+
+/* Estilos dos inputs */
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #f0f0f0;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+input:focus {
+  background-color: #e8e8e8;
+  box-shadow: 0 0 0 2px rgba(255, 105, 0, 0.2);
+}
+
+input[readonly] {
+  background-color: #f8f8f8;
+  color: #666;
+  cursor: not-allowed;
+}
+
+input.invalid {
+  background-color: #fff0f0;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+/* Alertas */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.error-message {
+  color: #ff3e3e;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-left: 15px;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+}
+
+/* Grupo de botões */
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Botão de atualizar */
+.update-button {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ff6a00;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.update-button:hover:not(:disabled) {
+  background-color: #e66000;
+  transform: translateY(-2px);
+}
+
+.update-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Botão de deletar */
+.delete-button {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: 2px solid #dc3545;
+  background-color: transparent;
+  color: #dc3545;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.delete-button:hover:not(:disabled) {
+  background-color: #dc3545;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.delete-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Modal de confirmação */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-bottom: 15px;
+  color: #dc3545;
+  text-align: center;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  text-align: center;
+  color: #666;
+}
+
+.confirm-input {
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cancel-button {
+  padding: 12px 24px;
+  border-radius: 25px;
+  border: 2px solid #6c757d;
+  background-color: transparent;
+  color: #6c757d;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.confirm-delete-button {
+  padding: 12px 24px;
+  border-radius: 25px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.confirm-delete-button:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.confirm-delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 480px) {
+  .update-card {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .update-button,
+  .delete-button {
+    min-width: auto;
+    width: 100%;
+  }
+
+  input {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .confirm-delete-button {
+    width: 100%;
+  }
+}

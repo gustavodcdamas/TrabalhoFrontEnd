@@ -1,0 +1,62 @@
+<!-- Services Section -->
+<section class="services">
+  <div class="container">
+    <h2 class="section-title">Serviços</h2>
+
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading()" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Carregando serviços...</p>
+    </div>
+
+    <!-- Error message (opcional - só mostra se quiser) -->
+    <div *ngIf="error()" class="error-container">
+      <p class="error-message">{{ error() }}</p>
+      <button (click)="reloadData()" class="retry-button">Tentar novamente</button>
+    </div>
+
+    <!-- Services Swiper -->
+    <div *ngIf="!isLoading() && services().length > 0">
+      <swiper
+        [slidesPerView]="getSlidesPerView()"
+        [spaceBetween]="24"
+        [loop]="services().length > getSlidesPerView()"
+        [navigation]="false"
+        [pagination]="false"
+        [autoplay]="true"
+        [autoplay]="{delay: 1000}"
+        class="services-swiper"
+      >
+        <ng-template swiperSlide *ngFor="let service of services(); trackBy: trackByService">
+          <div class="service-card">
+            <div class="service-icon">
+              <img 
+                [src]="getServiceIcon(service)" 
+                [alt]="'Ícone ' + getServiceTitle(service)"
+                (error)="handleImageError($event, service)"
+                (load)="handleImageLoad($event, service)"
+                loading="lazy"
+              />
+            </div>
+            <h3 class="service-title">{{ getServiceTitle(service) }}</h3>
+            
+            <!-- Descrição opcional -->
+            <p class="service-description" *ngIf="getServiceDescription(service)">
+              {{ getServiceDescription(service) }}
+            </p>
+            
+            <!-- Debug info (remover em produção) -->
+            <small class="debug-info" style="font-size: 10px; color: #999; display: block; margin-top: 5px;">
+              ID: {{ service?.id }} | Image: {{ service?.image }} | Icon: {{ service?.icon }}
+            </small>
+          </div>
+        </ng-template>
+      </swiper>
+    </div>
+
+    <!-- Fallback quando não há serviços -->
+    <div *ngIf="!isLoading() && !error() && services().length === 0" class="empty-state">
+      <p>Nenhum serviço encontrado.</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,413 @@
+/* Estilos base - mantém os existentes e adiciona responsividade */
+.container {
+  max-width: 1200px;
+  padding: 5% 5%; /* Alterado para 5% nas laterais */
+  margin: 0 auto; /* Centraliza o container */
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center; /* Centraliza o título */
+}
+
+/* Briefing Form */
+.briefing-form {
+  padding: 50px 0;
+  background-color: var(--cinza-claro);
+  margin-left: 0; /* Remove margens fixas */
+  margin-right: 0;
+}
+
+.formulario-passos {
+  background-color: var(--branco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Header dos passos - responsivo */
+.form-header {
+  display: flex;
+  flex-wrap: wrap; /* Permite quebra de linha */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #E5E5E5;
+  gap: 10px; /* Espaço entre os itens */
+}
+
+.form-step {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 60px; /* Largura mínima para cada passo */
+}
+
+/* Restante dos estilos mantidos... */
+
+/* Media Queries para responsividade */
+@media (max-width: 992px) {
+  .container {
+    padding: 5% 3%;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .form-header {
+    gap: 5px;
+  }
+
+  .form-step p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .form-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .form-step {
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .form-step:last-child {
+    border-bottom: none;
+  }
+
+  .form-step p {
+    margin: 0;
+  }
+
+  .form-options {
+    flex-direction: column;
+  }
+
+  .form-option {
+    width: 100%;
+    text-align: center;
+  }
+
+  .form-nav {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .nav-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .briefing-form {
+    padding: 30px 0;
+  }
+
+  .formulario-passos {
+    padding: 15px;
+    margin-top: 20px;
+  }
+
+  .form-question {
+    margin-bottom: 20px;
+  }
+
+  .formulario-passos input,
+  .formulario-passos textarea,
+  .formulario-passos select {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  /* Ajuste para o campo de moeda e faturamento */
+  .form-group > div {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group select {
+    width: 100%;
+  }
+}
+
+  .step-number {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #eee;
+  color: #333;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+  }
+
+  .step-number.active {
+  background-color: var(--laranja);
+  color: var(--branco);
+  }
+
+  .step-number.ativo {
+  background: var(--laranja-cuei);
+  color: var(--branco);
+  transform: scale(1.15);
+  box-shadow: 0 0 10px var(--laranja-cuei);
+  }
+
+  .form-content {
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-question {
+  margin-bottom: 25px;
+  }
+
+  .form-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  }
+
+  .form-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  }
+
+  .form-option {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 8px 8px 0 0;
+  border: 2px solid #ff8800;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #222;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  user-select: none;
+  }
+
+  .currency-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+@media (max-width: 576px) {
+  .currency-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .currency-input-group select {
+    width: 100%;
+  }
+}
+
+  .form-option:hover {
+  background-color: #E0E0E0;
+  }
+
+  .form-option.selected {
+  background: #ff8800;
+  color: #fff;
+  border-color: #ff8800;
+  }
+
+  .form-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E5E5;
+  }
+
+  .nav-button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  }
+
+  .back-button {
+  background-color: var(--cinza-claro);
+  color: var(--preto);
+  }
+
+  .back-button:hover {
+  background-color: #E0E0E0;
+  }
+
+  .back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  }
+
+  .next-button {
+    padding: 16px 24px;
+    background-color: var(--laranja-cuei);
+    color: var(--branco);
+    border: none;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .next-button:hover {
+    background-color: var(--laranja-contraste); /* Mantém a cor laranja no hover */
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px) scale(1.05);
+  }
+
+.services-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.services-grid-wrapper {
+  flex: 1;
+  overflow: hidden;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.services-grid {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.service-card {
+  width: 165px;
+  margin-right: 20px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.service-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.service-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.services-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.services-nav-button.prev {
+  left: 150px;
+}
+
+.services-nav-button.next {
+  right: 150px;
+
+}
+
+.formulario-passos input,
+.formulario-passos textarea,
+.formulario-passos select {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.formulario-passos input:focus,
+.formulario-passos textarea:focus,
+.formulario-passos select:focus {
+  border-color: #ff8800;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-passos label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input-outros {
+  width: 100%;
+  padding: 12px 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  margin-top: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+

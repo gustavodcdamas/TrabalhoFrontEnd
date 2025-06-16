@@ -1,0 +1,40 @@
+<!-- Nossas Soluções Section -->
+<section class="solutions">
+  <div class="container">
+    <h2 class="section-title">Nossas Soluções</h2>
+    <div class="solutions-container">
+      <!-- Botão Anterior -->
+      <button class="solutions-nav-button prev" (click)="prevSlide()">&#8249;</button>
+
+      <!-- Carrossel de Cards -->
+      <div class="solutions-grid-wrapper">
+        <div class="solutions-grid" [style.transform]="'translateX(' + solutionsPosition + 'px)'">
+          <div class="solution-card" *ngFor="let item of solutionItems">
+            <div>
+              <h3 class="solution-title">{{ item.title }}</h3>
+              <p class="solution-description" *ngFor="let desc of item.descriptions">{{ desc }}</p>
+            </div>
+            <div>
+              <p class="solution-price">{{ item.price }}</p>
+              <button class="contratar-btn">Contratar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão Próximo -->
+      <button class="solutions-nav-button next" (click)="nextSlide()">&#8250;</button>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="solutions-indicators">
+      <div
+        class="solutions-indicator"
+        *ngFor="let index of indicators"
+        [class.active]="index === activeIndex"
+        (click)="goToSlide(index)"
+      ></div>
+    </div>
+  </div>
+</section>
+

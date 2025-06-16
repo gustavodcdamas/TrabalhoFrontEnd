@@ -1,0 +1,434 @@
+/* admin-dashboard.component.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --branco: #FFFFFF;
+  --fundo-site: #EDEDED;
+  --cinza-medio: #C3C3C3;
+  --cinza-normal: #565656;
+  --cinza-escuro: #1D1D1F;
+  --preto: #09070B;
+  --laranja-cuei: #FF6D00;
+  --laranja-contraste: #e45e00;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif !important;
+  color: var(--preto);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* General Styles */
+:host {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Dashboard Wrapper - Container principal */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--fundo-site);
+  position: relative;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--fundo-site) !important;
+  padding: 1rem;
+  width: 100%;
+  z-index: 1060;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  height: 80px; /* Altura fixa para o navbar */
+}
+
+.nav-custom-bg {
+  background-color: var(--fundo-site) !important;
+}
+
+.container-fluid {
+  padding-left: 1%;
+  padding-right: 1%;
+  background-color: var(--fundo-site) !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+/* Logo container */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 3.5rem;
+  width: auto;
+}
+
+/* Área do usuário sempre à direita */
+.navbar-text {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Navbar Toggler - sempre visível em mobile */
+.navbar-toggler {
+  border: none;
+  background: transparent;
+  padding: 1rem;
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  right: 70px; /* Posiciona à esquerda do ícone do usuário */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1070;
+}
+
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--preto);
+  position: relative;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: var(--preto);
+  left: 0;
+}
+
+.navbar-toggler-icon::before {
+  top: -6px;
+}
+
+.navbar-toggler-icon::after {
+  bottom: -6px;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  background-color: var(--fundo-site);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sidebar - Desktop */
+.sidebar {
+  width: 226px;
+  background-color: var(--fundo-site);
+  border-right: 1px solid var(--cinza-medio);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sidebar-nav {
+  overflow-y: auto;
+  height: 100%;
+  padding: 20px 0;
+  scrollbar-width: thin;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--cinza-medio);
+}
+
+.sidebar .sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .sidebar-nav li {
+  margin-bottom: 5px;
+}
+
+.sidebar .sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--cinza-normal);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar .sidebar-nav a fa-icon {
+  margin-right: 12px;
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.sidebar .sidebar-nav a span {
+  font-size: 14px;
+}
+
+.sidebar .sidebar-nav a:hover {
+  background-color: rgba(255, 109, 0, 0.05);
+  color: var(--laranja-cuei);
+}
+
+.sidebar .sidebar-nav li.active a {
+  color: var(--laranja-cuei);
+  border-left: 3px solid var(--laranja-cuei);
+  background-color: rgba(255, 109, 0, 0.05);
+  font-weight: 500;
+}
+
+.sidebar .sidebar-nav li.active a fa-icon {
+  color: var(--laranja-cuei);
+  opacity: 1;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+  background-color: var(--fundo-site);
+  width: 100%;
+  min-width: 0;
+}
+
+/* User Dropdown Styles */
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.user-photo {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.dropdown-header {
+  padding: 0;
+}
+
+.icon-user {
+  font-size: 2rem;
+}
+
+.dropdown-menu {
+  min-width: 280px;
+  padding: 0;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-item fa-icon {
+  margin-right: 0.5rem;
+  width: 20px;
+  text-align: center;
+}
+
+.dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
+/* MEDIA QUERIES RESPONSIVAS */
+
+/* Tablets e Mobile */
+@media (max-width: 992px) {
+  .navbar-toggler {
+    display: block;
+  }
+
+  .dashboard-container {
+    position: relative;
+  }
+
+  /* Sidebar Mobile - Posicionamento Fixo */
+  .sidebar {
+    position: fixed;
+    top: 80px; /* Começa abaixo do header */
+    left: -280px; /* Escondido à esquerda */
+    width: 280px;
+    height: calc(100vh - 80px); /* Altura total menos o header */
+    z-index: 1050;
+    transition: left 0.3s ease;
+    background-color: var(--fundo-site);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid var(--cinza-medio);
+  }
+
+  .sidebar.active {
+    left: 0; /* Visível quando ativo */
+  }
+
+  /* Main content ocupa toda a largura */
+  .main-content {
+    width: 100%;
+    padding: 20px 15px;
+    margin-left: 0;
+  }
+
+  /* Overlay para quando o menu estiver aberto */
+  .sidebar-overlay {
+    position: fixed;
+    top: 80px; /* Começa abaixo do header */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Navbar fica fixo no topo */
+  .navbar {
+    position: relative;
+    z-index: 1060;
+  }
+}
+
+/* Mobile pequeno */
+@media (max-width: 576px) {
+  .sidebar {
+    width: 85%;
+    left: -85%; /* Escondido proporcionalmente */
+    top: 80px; /* Mantém abaixo do header */
+    height: calc(100vh - 80px);
+  }
+
+  .sidebar.active {
+    left: 0; /* Visível quando ativo */
+  }
+
+  .main-content {
+    padding: 15px 10px;
+  }
+
+  .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .navbar-toggler {
+    right: 4.5rem; /* Mais próximo do usuário em telas pequenas */
+  }
+}
+
+/* Correções adicionais para evitar problemas de layout */
+@media (max-width: 992px) {
+  .dashboard-wrapper {
+    overflow-x: hidden;
+  }
+
+  /* Remove qualquer margin ou padding que possa estar causando problemas */
+  .dashboard-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Garante que o conteúdo principal não seja empurrado */
+  .main-content {
+    margin-top: 0;
+    position: relative;
+  }
+}
+
+/* Estilos para ícones */
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--laranja-cuei);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Ajustes finais para garantir que tudo funcione */
+@media (min-width: 993px) {
+  .navbar-toggler {
+    display: none !important;
+  }
+  
+  .sidebar {
+    position: relative !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 226px !important;
+  }
+  
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
+/* Garantir que o menu seja sempre acessível */
+@media (max-width: 992px) {
+  /* Certificar que o sidebar nunca desapareça completamente */
+  .sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* Botão toggle sempre visível em mobile */
+  .navbar-toggler {
+    display: block !important;
+  }
+}

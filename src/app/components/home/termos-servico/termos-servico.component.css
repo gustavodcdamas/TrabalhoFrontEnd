@@ -1,0 +1,179 @@
+/* termos-servico.component.css */
+
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex: 1;
+  padding: 0 150px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
+}
+
+.hero-section {
+  padding: 60px 0 40px;
+  text-align: center;
+  background-color: #0c0c0c;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+.hero-section h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.updated-date {
+  font-size: 14px;
+  color: #ccc;
+  font-style: italic;
+}
+
+.terms-content {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.terms-section {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 25px;
+}
+
+.terms-section:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.terms-section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.terms-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.terms-section ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.terms-section ul li {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 15px;
+}
+
+.terms-section ul li::before {
+  content: "•";
+  position: absolute;
+  left: -5px;
+  color: #ff6a00;
+  font-weight: bold;
+}
+
+/* Seção de contato */
+.contact-section {
+  text-align: center;
+  padding: 30px 0 60px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.contact-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.contact-section p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.contact-button {
+  display: inline-block;
+  background-color: #ff6a00;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: #e45e00;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+  .content-container {
+    padding: 0 50px;
+  }
+
+  .hero-section h1 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    padding: 0 30px;
+  }
+
+  .hero-section {
+    padding: 40px 0 30px;
+  }
+
+  .hero-section h1 {
+    font-size: 28px;
+  }
+
+  .terms-content {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .content-container {
+    padding: 0 20px;
+  }
+
+  .hero-section h1 {
+    font-size: 24px;
+  }
+
+  .terms-content {
+    padding: 20px;
+  }
+
+  .terms-section h2 {
+    font-size: 20px;
+  }
+}

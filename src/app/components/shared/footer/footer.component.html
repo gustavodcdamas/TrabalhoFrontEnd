@@ -1,0 +1,34 @@
+<footer>
+  <div class="container footer-container">
+    <div class="footer-links">
+      <h3>Links Úteis</h3>
+      <ul>
+        <li><a [routerLink]="['/portifolio']" routerLinkActive="active">Projetos</a></li>
+        <li><a [routerLink]="['/contato']" routerLinkActive="active">Contato</a></li>
+        <li><a [routerLink]="['/sobre-nos']" routerLinkActive="active">Sobre nós</a></li>
+        <li><a [routerLink]="['/termos-servico']" routerLinkActive="active">Termos de Serviço</a></li>
+        <li><a [routerLink]="['/politica-privacidade']" routerLinkActive="active">Política de Privacidade</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-logo">
+      <a [routerLink]="['/']" class="logo-link">
+        <img src="/assets/favicon.svg" alt="Logo CUEI" class="logo">
+      </a>
+      <a [routerLink]="['/']" class="logo-text-link">AGÊNCIA CUEI</a>
+      <p>Nos acompanhe nas redes sociais!</p>
+      <div class="social-links">
+        <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'facebook']" class="icon-facebook"></fa-icon></a>
+        <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'instagram']" class="icon-instagram"></fa-icon></a>
+        <a href="#" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'linkedin-in']" class="icon-linkedin"></fa-icon></a>
+        <a href="https://wa.me/5531988664718" target="_blank" class="social-icon" (mouseenter)="hoverIcon($event, true)" (mouseleave)="hoverIcon($event, false)"><fa-icon [icon]="['fab', 'whatsapp']" class="icon-whatsapp"></fa-icon></a>
+      </div>
+    </div>
+
+    <div class="footer-contact">
+      <h3>Fale Conosco</h3>
+      <p id="ctt"><a id="ctt" href="mailto:contato@cuei.com.br" target="_blank">Email: contato&#64;cuei.com.br</a></p>
+      <p id="ctt"><a id="ctt" href="https://api.whatsapp.com/send?phone=5531997904115" target="_blank">WhatsApp: +55 (31) 9 8866-4718</a></p>
+    </div>
+  </div>
+</footer>

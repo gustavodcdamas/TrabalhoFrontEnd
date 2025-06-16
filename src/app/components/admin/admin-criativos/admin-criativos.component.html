@@ -1,0 +1,215 @@
+<div class="criativos-container">
+  <div class="page-header">
+    <h1>Gerenciamento de Projetos Criativos</h1>
+    <div class="actions">
+      <button class="add-button" (click)="abrirModalNovoCriativos()">+ Novo Projeto</button>
+      <div class="search-bar">
+        <fa-icon [icon]="['fas', 'magnifying-glass']" class="icon"></fa-icon>
+        <input 
+          type="text"
+          class="search-input"
+          [(ngModel)]="searchTerm" 
+          (input)="searchCriativos(searchTerm)" 
+          placeholder="Buscar projeto...">
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'all'}" (click)="filterCriativos('all')">Todos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'ativo'}" (click)="filterCriativos('ativo')">Ativos</div>
+    <div class="filter-item" [ngClass]="{'active': currentFilter === 'inativo'}" (click)="filterCriativos('inativo')">Inativos</div>
+    <div class="sort-controls">
+      <button class="add-button" (click)="toggleSort()">
+        Ordenar: {{ currentSort === 'recentes' ? 'Mais Recentes' : 'Mais Antigos' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <p>Carregando projetos criativos...</p>
+  </div>
+
+  <!-- Grid de Projetos -->
+  <div class="criativos-grid" *ngIf="!isLoading">
+    <div class="criativos-card" *ngFor="let criativo of filteredCriativos; let i = index">
+      <div class="criativos-image">
+        <img [src]="getImageUrl(criativo.image)" [alt]="criativo.titulo" 
+             (error)="onImageError($event)" [loading]="i < 2 ? 'eager' : 'lazy'">
+      </div>
+      <div class="criativos-body">
+        <h3 class="criativos-title">{{ criativo.titulo }}</h3>
+        <p class="criativos-client">Cliente: {{ criativo.cliente }}</p>
+        <p class="criativos-description">{{ criativo.descricao }}</p>
+        <div class="criativos-meta">
+          <span class="status" [ngClass]="'status-' + criativo.status">{{ criativo.status }}</span>
+          <span class="date">{{ formatDate(criativo.dataCriacao) }}</span>
+        </div>
+      </div>
+      <div class="criativos-footer">
+        <button class="action-button edit" (click)="editarCriativos(criativo.id)" title="Editar projeto">
+          Editar
+        </button>
+        <button class="action-button details" (click)="verDetalhesCriativos(criativo.id)" title="Ver detalhes">
+          Detalhes
+        </button>
+        <button class="action-button delete" (click)="deletarCriativos(criativo.id)" title="Excluir projeto">
+          Excluir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há projetos -->
+  <div class="no-criativos-message" *ngIf="!isLoading && filteredCriativos.length === 0">
+    <div class="empty-state">
+      <h3>{{ getEmptyStateMessage() }}</h3>
+      <p>{{ getEmptyStateDescription() }}</p>
+      <button class="add-button" (click)="abrirModalNovoCriativos()">+ Adicionar Novo Projeto</button>
+    </div>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination" *ngIf="!isLoading && filteredCriativos.length > 0">
+    <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+    <ng-container *ngFor="let page of getPaginationArray()">
+      <button class="pagination-button" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+    
+    <div class="pagination-info">
+      Página {{ currentPage }} de {{ totalPages }} ({{ getTotalItems() }} projetos)
+    </div>
+  </div>
+
+  <!-- Modal de Novo/Editar Projeto -->
+  <div class="modal" *ngIf="showNovoCriativosModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Editar Projeto Criativo' : 'Novo Projeto Criativo' }}</h2>
+        <button class="close-button" (click)="fecharModalNovoCriativos()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="criativosForm" (ngSubmit)="salvarCriativos()">
+          
+          <!-- Preview da imagem atual (modo edição) -->
+          <div class="form-group" *ngIf="isEditMode && currentImagePreview">
+            <label>Imagem Atual</label>
+            <div class="current-image-preview">
+              <img [src]="currentImagePreview" alt="Imagem atual" class="preview-image">
+              <p class="preview-text">Selecione uma nova imagem para substituir</p>
+            </div>
+          </div>
+
+          <!-- Upload de Imagem -->
+          <div class="form-group">
+            <label for="imagem">{{ isEditMode ? 'Nova Imagem (opcional)' : 'Upload de Imagem *' }}</label>
+            <input type="file" id="imagem" (change)="onFileSelected($event)" accept="image/*">
+            <small *ngIf="selectedFile" class="text-success">
+              📁 Arquivo selecionado: {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+            </small>
+            <div *ngIf="criativosForm.get('image')?.touched && criativosForm.get('image')?.invalid && !isEditMode" class="text-danger">
+              Por favor, selecione uma imagem
+            </div>
+            <small class="form-help">
+              Formatos aceitos: JPG, PNG, WebP. Tamanho máximo: 5MB
+            </small>
+          </div>
+
+          <!-- Título (opcional) -->
+          <div class="form-group">
+            <label for="titulo">Título do Projeto</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Deixe vazio para gerar automaticamente">
+            <small class="form-help">Se não preenchido, será gerado como "Projeto Criativo [Nome do Cliente]"</small>
+          </div>
+
+          <!-- Cliente -->
+          <div class="form-group">
+            <label for="cliente">Cliente *</label>
+            <input type="text" id="cliente" formControlName="cliente" placeholder="Nome do cliente">
+            <div class="error-message" *ngIf="hasError('cliente', 'required')">
+              Cliente é obrigatório
+            </div>
+            <div class="error-message" *ngIf="hasError('cliente', 'minlength')">
+              Cliente deve ter pelo menos 3 caracteres
+            </div>
+          </div>
+
+          <!-- Descrição -->
+          <div class="form-group">
+            <label for="descricao">Descrição *</label>
+            <textarea id="descricao" formControlName="descricao" rows="4" placeholder="Descrição detalhada do projeto criativo"></textarea>
+            <div class="error-message" *ngIf="hasError('descricao', 'required')">
+              Descrição é obrigatória
+            </div>
+            <div class="error-message" *ngIf="hasError('descricao', 'minlength')">
+              Descrição deve ter pelo menos 10 caracteres
+            </div>
+            <small class="form-help">{{ criativosForm.get('descricao')?.value?.length || 0 }} caracteres</small>
+          </div>
+
+          <!-- Status (apenas para edição) -->
+          <div class="form-group" *ngIf="isEditMode">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+          <!-- Ações do Modal -->
+          <div class="form-actions">
+            <button type="submit" class="save-button" [disabled]="!isFormValid()" [class.loading]="isSubmitting">
+              {{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Atualizar' : 'Criar Projeto') }}
+            </button>
+            <button type="button" class="cancel-button" (click)="fecharModalNovoCriativos()" [disabled]="isSubmitting">
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Debug Info (apenas em desenvolvimento) -->
+          <div class="debug-info" *ngIf="showDebugInfo">
+            <h4>Debug Info:</h4>
+            <p><strong>Form Valid:</strong> {{ criativosForm.valid }}</p>
+            <p><strong>Is Edit Mode:</strong> {{ isEditMode }}</p>
+            <p><strong>Selected File:</strong> {{ selectedFile?.name || 'Nenhum arquivo' }}</p>
+            <p><strong>Form Errors:</strong></p>
+            <pre>{{ getFormErrors() | json }}</pre>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <div class="modal" *ngIf="showDeleteModal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>Confirmar Exclusão</h2>
+        <button class="close-button" (click)="cancelarExclusao()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="delete-confirmation">
+          <div class="warning-icon">⚠️</div>
+          <h3>Tem certeza que deseja excluir este projeto criativo?</h3>
+          <p><strong>{{ itemToDelete?.titulo }}</strong></p>
+          <p>Cliente: {{ itemToDelete?.cliente }}</p>
+          <p class="warning-text">Esta ação não pode ser desfeita.</p>
+        </div>
+        <div class="form-actions">
+          <button class="delete-button" (click)="confirmarExclusao()" [disabled]="isDeleting">
+            {{ isDeleting ? 'Excluindo...' : 'Sim, Excluir' }}
+          </button>
+          <button class="cancel-button" (click)="cancelarExclusao()" [disabled]="isDeleting">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

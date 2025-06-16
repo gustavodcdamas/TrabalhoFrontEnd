@@ -1,0 +1,69 @@
+.services-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+
+}
+
+.services-grid-wrapper {
+  flex: 1;
+  overflow: hidden;
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.services-grid {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-bottom: 20px;
+}
+
+.service-card {
+  width: 165px;
+  margin-right: 20px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+}
+
+.service-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.service-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.services-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.services-nav-button.prev {
+  left: 150px;
+}
+
+.services-nav-button.next {
+  right: 150px;
+
+}

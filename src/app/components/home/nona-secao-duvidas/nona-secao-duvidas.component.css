@@ -1,0 +1,64 @@
+/* Dúvidas Section */
+.questions {
+  padding: 5% 0;
+  background-color: var(--fundo-site);
+  text-align: left; /* centraliza todo o texto */
+}
+
+.briefing-container {
+  background-color: #fff;      /* quadrado branco */
+  border-radius: 10px;
+  padding: 32px 40px;
+  margin: 30px auto 0 auto;
+  max-width: 900px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15); /* leve sombra para destacar */
+  text-align: center; /* centraliza texto dentro do bloco */
+}
+
+.container{
+  max-width: 1200px;
+  background-color: var(--fundo-site);
+}
+
+.section-title{
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.briefing-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.briefing-description {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #222;
+}
+
+.briefing-button {
+  width: fit-content;
+  margin: 24px auto 0 auto;
+  padding: 16px 24px;
+  background-color: var(--laranja-cuei);
+  color: var(--branco);
+  border: none;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.briefing-button:hover {
+  background-color: var(--laranja-contraste); /* Mantém a cor laranja no hover */
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px) scale(1.05);
+}
