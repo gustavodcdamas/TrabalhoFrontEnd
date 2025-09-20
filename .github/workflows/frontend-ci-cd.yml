@@ -39,8 +39,8 @@ jobs:
     - name: Build and push Docker image
       working-directory: agencia-frontend
       run: |
-        docker build -t yourusername/agencia-frontend:latest .
-        docker push yourusername/agencia-frontend:latest
+        docker build -t gustavodcdamas/agencia-frontend:latest .
+        docker push gustavodcdamas/agencia-frontend:latest
 
     - name: SSH and deploy
       uses: appleboy/ssh-action@master
